@@ -54,7 +54,7 @@ column_description = 'Description'
 # column_count = 'count_word'
 
 # load the dataset
-dataset = pandas.read_excel(excel_file_name, sheet_name='AoKs_Stories')
+dataset = pandas.read_excel(excel_file_name, sheet_name='bradaronson.com')
 # print(dataset.head())
 
 # Fetch wordcount for each abstract
@@ -64,6 +64,8 @@ dataset = pandas.read_excel(excel_file_name, sheet_name='AoKs_Stories')
 
 ##Descriptive statistics of word counts
 # print(dataset.word_count.describe())
+
+print('preparing corpus...')
 
 # Identify common words
 common = pandas.Series(' '.join(dataset[column_description]).split()).value_counts()[:20]
@@ -81,7 +83,7 @@ stem = PorterStemmer()
 stop_words = set(stopwords.words("english"))
 
 ##Creating a list of custom stopwords
-new_words = ["kind", "kindly", "randomactsofkindness", "act"]
+new_words = ["kind", "kindly", 'kindness', "act", 'even though', 'even', 'though', 'every', 'almost']
 stop_words = stop_words.union(new_words)
 
 corpus = []
@@ -110,7 +112,7 @@ for i in range(0, len(dataset[column_description])):
     text = " ".join(text)
     corpus.append(text)
 
-cv = CountVectorizer(max_df=0.8, stop_words=stop_words, max_features=10000, ngram_range=(1, 1))
+cv = CountVectorizer(max_df=0.8, stop_words=stop_words, max_features=10000, ngram_range=(1, 3))
 X = cv.fit_transform(corpus)
 
 tfidf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True)
@@ -135,6 +137,8 @@ f.write("Description$Keywords" + '\n')
 f.close()
 f = open(fileName, 'a')
 
+print("keywording...")
+
 for i in range(0, len(corpus)):
     # fetch document for which keywords needs to be extracted
     doc = corpus[i]
@@ -149,11 +153,11 @@ for i in range(0, len(corpus)):
     keywords = extract_topn_from_vector(feature_names, sorted_items, 5)
 
     # now print the results
-    print("\nAbstract:")
-    print(doc)
-    print("\nKeywords:")
-    for k in keywords:
-        print(k, keywords[k])
+    # print("\nAbstract:")
+    # print(doc)
+    # print("\nKeywords:")
+    # for k in keywords:
+    #     print(k, keywords[k])
 
     f.write(doc + "$" + ', '.join(keywords.keys()) + '\n')
 
@@ -169,6 +173,7 @@ for i in range(0, len(corpus)):
     # writer.save()
 
 f.close()
+print('done')
 # print(keywords.keys())
 # print(df)
 # df.to_excel(writer)

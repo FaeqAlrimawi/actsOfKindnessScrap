@@ -27,55 +27,67 @@ import re
 
 
 # get links for ideas of acts
-actsOfKindessWebsiteIdeas = "https://www.randomactsofkindness.org/kindness-ideas"
+''' websites visited: 
+ https://www.randomactsofkindness.org/kindness-ideas
+ https://www.bradaronson.com/acts-of-kindness/
+'''
+actsOfKindessWebsiteIdeas = "https://www.bradaronson.com/acts-of-kindness/"
 page = requests.get(actsOfKindessWebsiteIdeas)
 soup = bs(page.content)
 
-actURLs = []
-actTitleURLs = soup.find_all('a', attrs={'href': re.compile("/kindness-ideas/")})
-baseURL = "https://www.randomactsofkindness.org"
-for link in actTitleURLs:
-    fullLink = baseURL + link.get('href')
-    if fullLink not in actURLs:
-        actURLs.append(fullLink)
+## specific to randomactsofkindness.org website
+# actURLs = []
+# actTitleURLs = soup.find_all('a', attrs={'href': re.compile("/kindness-ideas/")})
+# baseURL = "https://www.randomactsofkindness.org"
+# for link in actTitleURLs:
+#     fullLink = baseURL + link.get('href')
+#     if fullLink not in actURLs:
+#         actURLs.append(fullLink)
 
 # prepare file for write
 fileName = "actsOfKindness.txt"
 
-f = open(fileName, 'w')
+f = open(fileName, 'w', encoding='utf8')
 f.write("Title$Description$URL"+'\n')
 f.close()
-f = open(fileName, 'a')
+f = open(fileName, 'a', encoding='utf8')
 
 # get title + description from act URLs
 # index 0: title
 # the rest of indices: description
-for actURL in actURLs:
-    page = requests.get(actURL)
-    soup = bs(page.content)
-    descriptions = [i.text for i in soup.find_all(class_="col-12 blog-details-text last-paragraph-no-margin")]
-    # descriptionsArray = descriptions.pop(0).split('\n')
-    descriptionsArray =  ''.join(descriptions).split('\n')
+# for actURL in actURLs:
+# page = requests.get(actURL)
+# soup = bs(page.content)
+# descriptions = [i.text for i in soup.find_all(style_="col-12 blog-details-text last-paragraph-no-margin")]
+# descriptionsArray = descriptions.pop(0).split('\n')
+# descriptionsArray =  ''.join(descriptions).split('\n')
 
-    # remove any empty cells
-    while "" in descriptionsArray:
-        descriptionsArray.remove("")
+# finding parent <ul> tag
+# parent = soup.find("body").find("ol")
+descriptionsArray = [i.text for i in soup.find('ol').find_all('li')]
+# finding all <li> tags
+# text = list(parent.descendants)
 
-    # get title
-    # actTitle = ""
-    if descriptionsArray:
-        actTitle = descriptionsArray.pop(0)
+print(descriptionsArray)
+# remove any empty cells
+# while "" in descriptionsArray:
+#     descriptionsArray.remove("")
 
-    # get description
-    wholeDes = ""
-    for des in descriptionsArray:
-        wholeDes += des + ' '
+# get title
+# actTitle = ""
+# if descriptionsArray:
+#     actTitle = descriptionsArray.pop(0)
+
+# get description
+wholeDes = '\n'.join(descriptionsArray)
+# for des in descriptionsArray:
+#     wholeDes += des + ' '
 
     # print("title: " + actTitle)
     # print("des: "+ wholeDes)
     # write to file
     # f.write("demofile2.txt", "a")
-    f.write(actTitle+"$"+wholeDes+ '$' + actURL + '\n')
+f.write(wholeDes + '\n')
     # f.close()
 
 f.close()
