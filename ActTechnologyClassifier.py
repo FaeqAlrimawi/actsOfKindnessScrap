@@ -8,21 +8,22 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 from nltk.corpus import stopwords
 import pandas as pd
-from pickle import dump
+from pickle import load
 
-from sklearn.preprocessing import MinMaxScaler
+# load the model
+classifier_model  = load(open('classifier_model.pkl', 'rb'))
 
 file_name = 'actsOfKindness.xlsx'
 description_column = 'Description'
 classifier_column = 'UsesTechnology'
 
 df_train= pd.read_excel(file_name, usecols=[description_column, classifier_column])[:75]
-df_test= pd.read_excel(file_name, usecols=['Description', 'UsesTechnology'])[76:103]
+df_test= pd.read_excel(file_name, usecols=[description_column, classifier_column])[76:102]
 
 # movie_data = load_files(r"D:\txt_sentoken")
-X, y = df_train[description_column], df_train[classifier_column]
+X = df_test[description_column]
 
-# print(X)
+# print("print..." + X[0])
 
 documents = []
 
@@ -30,7 +31,8 @@ from nltk.stem import WordNetLemmatizer
 
 stemmer = WordNetLemmatizer()
 
-for sen in range(0, len(X)):
+for sen in range(76, 101):
+    # print(sen)
     # Remove all the special characters
     document = re.sub(r'\W', ' ', str(X[sen]))
 
@@ -57,6 +59,7 @@ for sen in range(0, len(X)):
 
     documents.append(document)
 
+# print(documents)
 from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
 X = vectorizer.fit_transform(documents).toarray()
@@ -69,25 +72,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
 X = tfidfconverter.fit_transform(documents).toarray()
 
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+# from sklearn.model_selection import train_test_split
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-# # define scaler
-# scaler = MinMaxScaler()
-# # fit scaler on the training dataset
-# scaler.fit(X_train)
-# # transform both datasets
-# X_train_scaled = scaler.transform(X_train)
-# X_test_scaled = scaler.transform(X_test)
+# classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
+# classifier.fit(X_train, y_train)
 
-classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
-classifier.fit(X_train, y_train)
-
-y_pred = classifier.predict(X)
+y_pred = classifier_model.predict(X)
 
 
 # print(X_test)
 print(y_pred)
-
-# save the model
-dump(classifier, open('classifier_model.pkl', 'wb'))

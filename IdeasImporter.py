@@ -30,10 +30,14 @@ import re
 ''' websites visited: 
  https://www.randomactsofkindness.org/kindness-ideas
  https://www.bradaronson.com/acts-of-kindness/
+ https://www.naturalbeachliving.com/acts-of-kindness/
+ https://www.developgoodhabits.com/random-acts-of-kindness-ideas/
+ https://www.worldvision.ca/stories/charitable-giving/acts-of-kindness
+ 
 '''
-actsOfKindessWebsiteIdeas = "https://www.bradaronson.com/acts-of-kindness/"
+actsOfKindessWebsiteIdeas = "https://www.worldvision.ca/stories/charitable-giving/acts-of-kindness"
 page = requests.get(actsOfKindessWebsiteIdeas)
-soup = bs(page.content)
+soup = bs(page.content, 'html.parser')
 
 ## specific to randomactsofkindness.org website
 # actURLs = []
@@ -59,16 +63,43 @@ f = open(fileName, 'a', encoding='utf8')
 # page = requests.get(actURL)
 # soup = bs(page.content)
 # descriptions = [i.text for i in soup.find_all(style_="col-12 blog-details-text last-paragraph-no-margin")]
+
+# descriptions = [i.text for i in soup.find_all('strong', text=re.compile('^\\D.'))]
+# print(soup)
+
+descriptions = soup.find_all('strong', text=re.compile('\s\\D'))
+
+print(descriptions)
+
+descriptionsArray =[]
+
+for i in range(0,len(descriptions)-1):
+    descriptionsArray.append(descriptions[i].next.next.next)
+    # print(descriptions[i].text +'$'+descriptionsArray[i].strip()+'\n')
+    f.write(descriptions[i].text +'$'+descriptionsArray[i].strip()+'\n')
+
+f.close()
+# for des in descriptions:
+
+# descriptionsArray = [i.text for i in soup.find('ol').find_all('li')]
 # descriptionsArray = descriptions.pop(0).split('\n')
 # descriptionsArray =  ''.join(descriptions).split('\n')
 
+# print(descriptions)
+
+# for des in descriptions:
+#     f.write(des+'\n')
+#
+# f.close()
+# print(descriptions)
+# descriptionsArray = []
 # finding parent <ul> tag
 # parent = soup.find("body").find("ol")
-descriptionsArray = [i.text for i in soup.find('ol').find_all('li')]
+# descriptionsArray = [i.text for i in soup.find('ol').find_all('li')]
 # finding all <li> tags
 # text = list(parent.descendants)
 
-print(descriptionsArray)
+# print(descriptionsArray)
 # remove any empty cells
 # while "" in descriptionsArray:
 #     descriptionsArray.remove("")
@@ -79,7 +110,7 @@ print(descriptionsArray)
 #     actTitle = descriptionsArray.pop(0)
 
 # get description
-wholeDes = '\n'.join(descriptionsArray)
+# wholeDes = '\n'.join(descriptionsArray)
 # for des in descriptionsArray:
 #     wholeDes += des + ' '
 
@@ -87,9 +118,9 @@ wholeDes = '\n'.join(descriptionsArray)
     # print("des: "+ wholeDes)
     # write to file
     # f.write("demofile2.txt", "a")
-f.write(wholeDes + '\n')
+# f.write(wholeDes + '\n')
     # f.close()
 
-f.close()
+# f.close()
 
-print("Done! All acts are saved to file: "+fileName)
+# print("Done! All acts are saved to file: "+fileName)
