@@ -13,11 +13,12 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
+sheet_name = 'tech_classification'
 description_column = 'Description'
-classifier_column = 'UsesTechnology'
+classifier_column = 'Tech'
 
-df_train= pd.read_excel(file_name, usecols=[description_column, classifier_column])[:75]
-df_test= pd.read_excel(file_name, usecols=['Description', 'UsesTechnology'])[76:103]
+df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:145]
+df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[76:101]
 
 # movie_data = load_files(r"D:\txt_sentoken")
 X, y = df_train[description_column], df_train[classifier_column]
@@ -58,7 +59,7 @@ for sen in range(0, len(X)):
     documents.append(document)
 
 from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
+vectorizer = CountVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
 X = vectorizer.fit_transform(documents).toarray()
 
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -66,7 +67,7 @@ tfidfconverter = TfidfTransformer()
 X = tfidfconverter.fit_transform(X).toarray()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
+tfidfconverter = TfidfVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
 X = tfidfconverter.fit_transform(documents).toarray()
 
 from sklearn.model_selection import train_test_split
