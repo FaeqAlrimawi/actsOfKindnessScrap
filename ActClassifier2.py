@@ -18,7 +18,7 @@ description_column = 'Description'
 classifier_column = 'Tech'
 
 df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:145]
-df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[76:101]
+# df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[76:101]
 
 # movie_data = load_files(r"D:\txt_sentoken")
 X, y = df_train[description_column], df_train[classifier_column]
@@ -70,6 +70,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 tfidfconverter = TfidfVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
 X = tfidfconverter.fit_transform(documents).toarray()
 
+# transform the dataset
+from imblearn.over_sampling import SMOTE
+oversample = SMOTE()
+X, y = oversample.fit_resample(X, y)
+
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
@@ -84,11 +89,28 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
 classifier.fit(X_train, y_train)
 
-y_pred = classifier.predict(X)
+# print(X_test)
 
+y_pred = classifier.predict(X_test)
+
+from sklearn.metrics import accuracy_score
+# evaluate predictions
+acc = accuracy_score(y_test, y_pred)
+
+print(acc)
+
+# print("Actual Pred")
+# for act, pred in zip(y_test, y_pred):
+#     if act == pred:
+#         print(act, pred)
+#     else:
+#         print(act, pred, "not equalllll")
+
+# print("Pred")
+# print(y_pred)
 
 # print(X_test)
-print(y_pred)
+# print(y_pred)
 
 # save the model
 dump(classifier, open('classifier_model.pkl', 'wb'))
