@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 import re
 import nltk
@@ -93,11 +94,23 @@ classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_test)
 
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 # evaluate predictions
 acc = accuracy_score(y_test, y_pred)
 
-print(acc)
+print("Accuracy: %.3f" % acc)
+
+precision = precision_score(y_test, y_pred, average='binary', pos_label="yes")
+print('Precision: %.3f' % precision)
+
+# calculate recall
+recall = recall_score(y_test, y_pred, average='binary', pos_label='yes')
+print('Recall: %.3f' % recall)
+
+# calculate score
+score = f1_score(y_test, y_pred, average='binary', pos_label='yes')
+print('F-Measure: %.3f' % score)
 
 # print("Actual Pred")
 # for act, pred in zip(y_test, y_pred):
@@ -106,11 +119,6 @@ print(acc)
 #     else:
 #         print(act, pred, "not equalllll")
 
-# print("Pred")
-# print(y_pred)
-
-# print(X_test)
-# print(y_pred)
 
 # save the model
 dump(classifier, open('classifier_model.pkl', 'wb'))
