@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 import re
 import nltk
@@ -8,22 +9,24 @@ from sklearn.ensemble import RandomForestClassifier
 import pickle
 from nltk.corpus import stopwords
 import pandas as pd
-from pickle import load
+from pickle import dump
 
-# load the model
-classifier_model  = load(open('classifier_model.pkl', 'rb'))
+from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
+sheet_name = 'tech_classification'
 description_column = 'Description'
-classifier_column = 'UsesTechnology'
+classifier_column = 'Tech'
 
-df_train= pd.read_excel(file_name, usecols=[description_column, classifier_column])[:101]
-df_test= pd.read_excel(file_name, usecols=[description_column, classifier_column])[76:102]
+start_index = 182
+end_index = 208
+# df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:170]
+df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[start_index:end_index]
 
 # movie_data = load_files(r"D:\txt_sentoken")
-X = df_test[description_column]
+X, y = df_test[description_column], df_test[classifier_column]
 
-# print("print..." + X[0])
+# print(X)
 
 documents = []
 
@@ -31,8 +34,7 @@ from nltk.stem import WordNetLemmatizer
 
 stemmer = WordNetLemmatizer()
 
-for sen in range(76, 101):
-    # print(sen)
+for sen in range(start_index, end_index):
     # Remove all the special characters
     document = re.sub(r'\W', ' ', str(X[sen]))
 
@@ -59,9 +61,8 @@ for sen in range(76, 101):
 
     documents.append(document)
 
-# print(documents)
 from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
+vectorizer = CountVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
 X = vectorizer.fit_transform(documents).toarray()
 
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -69,17 +70,57 @@ tfidfconverter = TfidfTransformer()
 X = tfidfconverter.fit_transform(X).toarray()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7, stop_words=stopwords.words('english'))
+tfidfconverter = TfidfVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
 X = tfidfconverter.fit_transform(documents).toarray()
+
+# transform the dataset
+# from imblearn.over_sampling import SMOTE
+# oversample = SMOTE()
+# X, y = oversample.fit_resample(X, y)
 
 # from sklearn.model_selection import train_test_split
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
+# # define scaler
+# scaler = MinMaxScaler()
+# # fit scaler on the training dataset
+# scaler.fit(X_train)
+# # transform both datasets
+# X_train_scaled = scaler.transform(X_train)
+# X_test_scaled = scaler.transform(X_test)
+
 # classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
 # classifier.fit(X_train, y_train)
 
-y_pred = classifier_model.predict(X)
-
-
 # print(X_test)
-print(y_pred)
+model = pickle.load(open('classifier_model.pkl', 'rb'))
+y_pred = model.predict(X)
+
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# evaluate predictions
+acc = accuracy_score(X, y_pred)
+
+print("Accuracy: %.3f" % acc)
+
+precision = precision_score(X, y_pred, average='binary', pos_label="yes")
+print('Precision: %.3f' % precision)
+
+# calculate recall
+recall = recall_score(X, y_pred, average='binary', pos_label='yes')
+print('Recall: %.3f' % recall)
+
+# calculate score
+score = f1_score(X, y_pred, average='binary', pos_label='yes')
+print('F-Measure: %.3f' % score)
+
+print("Actual Pred")
+for act, pred in zip(X, y_pred):
+    if act == pred:
+        print(act, pred)
+    else:
+        print(act, pred, "not equalllll")
+
+
+# save the model
+# dump(classifier, open('classifier_model.pkl', 'wb'))

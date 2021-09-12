@@ -18,7 +18,7 @@ sheet_name = 'tech_classification'
 description_column = 'Description'
 classifier_column = 'Tech'
 
-df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:145]
+df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:180]
 # df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[76:101]
 
 # movie_data = load_files(r"D:\txt_sentoken")

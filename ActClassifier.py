@@ -26,6 +26,7 @@ file_name = 'actsOfKindness.xlsx'
 description_column = 'Description'
 classifier_column = 'UsesTechnology'
 
+
 df_train= pd.read_excel(file_name, usecols=[description_column, classifier_column])[:101]
 df_test= pd.read_excel(file_name, usecols=['Description', 'UsesTechnology'])[18:104]
 
