@@ -18,7 +18,7 @@ sheet_name = 'tech_classification'
 description_column = 'Description'
 classifier_column = 'Tech'
 
-df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:180]
+df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:50]
 # df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[76:101]
 
 # movie_data = load_files(r"D:\txt_sentoken")
@@ -59,13 +59,13 @@ for sen in range(0, len(X)):
 
     documents.append(document)
 
-from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
-X = vectorizer.fit_transform(documents).toarray()
+# from sklearn.feature_extraction.text import CountVectorizer
+# vectorizer = CountVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))
+# X = vectorizer.fit_transform(documents).toarray()
 
-from sklearn.feature_extraction.text import TfidfTransformer
-tfidfconverter = TfidfTransformer()
-X = tfidfconverter.fit_transform(X).toarray()
+# from sklearn.feature_extraction.text import TfidfTransformer
+# tfidfconverter = TfidfTransformer()
+# X = tfidfconverter.fit_transform(X).toarray()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 tfidfconverter = TfidfVectorizer(max_features=500, min_df=5, max_df=1.0, stop_words=stopwords.words('english'))

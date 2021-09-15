@@ -14,12 +14,12 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'tech_classification'
+sheet_name = 'test'
 description_column = 'Description'
 classifier_column = 'Tech'
 
-start_index = 182
-end_index = 208
+start_index = 100
+end_index = 151
 # df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:170]
 df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[start_index:end_index]
 
@@ -94,6 +94,7 @@ X = tfidfconverter.fit_transform(documents).toarray()
 
 # print(X_test)
 model = pickle.load(open('classifier_model.pkl', 'rb'))
+
 y_pred = model.predict(X)
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
