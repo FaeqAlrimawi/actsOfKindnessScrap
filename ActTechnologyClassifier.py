@@ -14,17 +14,17 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'test'
+sheet_name = 'bradaronson.com'
 description_column = 'Description'
 classifier_column = 'Tech'
-
 start_index = 0
-end_index = 208
+end_index = 129
+
 # df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:170]
-df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[start_index:end_index]
+df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])[start_index:end_index]
 
 # movie_data = load_files(r"D:\txt_sentoken")
-X, y = df_test[description_column], df_test[classifier_column]
+X = df_test[description_column]
 
 model = pickle.load(open('classifier_model.pkl', 'rb'))
 
@@ -39,7 +39,20 @@ X = transformer.fit_transform(converted_data).toarray()
 
 y_pred = model.predict(X)
 
+
+## save to cvs file
+fileName = "acts_preds.txt"
+f = open(fileName, 'w', encoding='utf-8')
+f.write("Description$Tech-pred" + '\n')
+f.close()
+f = open(fileName, 'a', encoding='utf-8')
+
 # print("Actual Pred")
 for act, pred in zip(df_test[description_column], y_pred):
     print(pred, act)
+    f.write(act+'$'+pred+'\n')
+
+f.close()
+
+
 
