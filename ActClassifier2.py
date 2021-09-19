@@ -99,6 +99,12 @@ y_pred = classifier.predict(X_test)
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
+# info about model, train and test data
+print('model: ', classifier)
+print('acutal number of acts: ', len(df_train[description_column]))
+print("# of training acts (with oversampling): ", len(X_train))
+print('# of test acts: ', len(y_test))
+
 # evaluate predictions
 acc = accuracy_score(y_test, y_pred)
 

@@ -1,101 +1,101 @@
 Description$Tech-pred
- Take the time to write a great online review for a restaurant you love$yes
- Leave a positive comment on a news article or blog post$no
- Call your mom or dad just to say I love you$yes
- Send a message to a friend, letting them know you appreciate them$yes
- Give an unexpected compliment$no
- Plant a tree$no
- Let someone cut in front of you in line$no
- Pay the toll for the car behind you$no
- Slow down so someone can merge in front of you in traffic$no
- Let someone else take that primo parking spot$no
- Give someone your seat on a crowded bus or subway$no
- Put coins in an expired parking meter$no
- Give up your seat on a plane so other travelers can sit together$no
- Buy a warm meal for someone in need$no
- Help someone struggling to carry their grocery bags$no
- Stop to assist someone who looks lost$no
- Say something encouraging to a parent who’s struggling with rambunctious kids in a restaurant or grocery store$no
- Offer to return a stranger’s grocery cart to the front of the store$no
- Keep plastic bags filled with snacks and sample-size toiletries in your car to give to the homeless$no
- Donate flowers to a nursing home$no
- Hand out disposable water bottles to people working outside on a hot day$no
- Buy a gift card to hand to someone on your way out of the coffee shop$no
- Leave a great coupon next to that item in the grocery store$no
- Pick up a piece of litter on the street and throw it out$no
- Pass along a compliment to a service worker’s boss$no
- Pay for the meal of the people at the next table$no
- Learn CPR$no
- Give an extra tip and write an encouraging note along with it$no
- Keep an extra umbrella in your car to give to someone stuck in the rain$no
- Buy lemonade from a child’s lemonade stand$no
- Visit a nursing home — read books to or play board games with residents$no
- Send a care package to a service member$no
- Bring treats to your local fire station$no
- Write a thank you note to your mail carrier$no
- Talk to a stranger at a party who looks like they don’t know anyone$no
- Smile at someone who looks sad$no
- Participate in a charity walk or run$no
- Give blood$no
- Donate your old cell phone or other electronics to charity$no
- Sign up for a bone marrow registry$no
- Become an organ donor$no
- Donate gently used clothes to a charitable thrift shop$no
- Give old blankets, sheets and towels to an animal shelter$no
- Donate your unused frequent flyer miles to a charity partner of your airline$no
- Sign up for a shift at your local soup kitchen$no
- Play with animals at a local shelter$no
- Donate your old glasses$no
- Contribute used books to the library or school media center$no
- Organize a donation drive for coloring books, toys and art supplies for a hospital pediatric ward$no
- Donate a vacation or sick day to a colleague who’s struggling with an illness or caring for a sick loved one$no
- Tell your boss one thing you love about him/her$no
- Bring in a favorite treat and leave it in the break room$no
- Compliment a colleague to your boss$no
- Deliver coffee to an office assistant$no
- Post sticky notes with uplifting messages on the bathroom mirrors$no
- Stay late for a co-worker who needs to get home$no
- Invite a co-worker who is alone over the holidays to your home to celebrate$no
- Share your knowledge freely$no
- Mentor someone$no
- Write a thank you note to someone who has helped your career$no
- Make friends with someone new to the company$no
- Add a positive comment to the conversation if office chatter becomes negative$no
- Tell a joke to lighten the mood when a co-worker is handling a tough assignment$no
- Introduce yourself, even if — especially if — you’ve lived near each other for a while but haven’t met$no
- Compliment a neighbor on a feature of their home$no
- Scrape the ice off a neighbor’s windshield after you’ve finished doing yours$no
- Mow their lawn, rake their leaves or sweep their sidewalk as a surprise$no
- Make a double batch of the cookies you’re baking and bring some next door$no
- Plan a neighborhood block party so everyone can get to know each other better$no
- Walk your neighbor’s dog when he has to stay late at the office$no
- Offer to babysit a neighbor’s child for free$no
- Build a “little free library” box in your yard$no
- Make dinner for a neighbor who has just had a baby or surgery$no
- Write a thank you note to a teacher who made a difference in your life$no
- Tell the principal how much you love your child’s teacher$no
- Offer to read to your child’s class during story time$no
- Offer to make copies or do other chores for your child’s teacher$no
- Create a new bulletin board for a teacher$no
- Send in glue sticks, pencils, sticky notes and paper towels for your child’s classroom in the middle of the school year as supplies dwindle$no
- Plan a surprise gift or lunch for a teacher during Teacher Appreciation Week$no
- Raise money for a project on your teacher’s classroom wish list$no
- Send in hand sanitizer and tissues during flu season$no
- Send in tissues for spring allergy season$no
- Be on time$no
- Research your family tree and share what you learned with other family members$no
- Tell a friend what you love about their children$no
- Attend an event, such as a dance recital or sporting event, of a friend’s child$no
- Reconnect with an old friend you’ve lost touch with over the years$no
- Forgive someone who has wronged you$no
- Make amends with someone you have wronged$no
- Do chores for a family member who could use some extra free time$no
- Let your spouse sleep in when it’s his/her turn to get up early with the kids$no
- Donate to a friend’s favorite charity in their name$no
- Give a friend a book you think they would like$no
- Send a print of a photo you took of a friend or their child$no
- Write a letter of encouragement to a child you know is having a hard time$no
- Send a friend a helpful or inspiring article that made you think of them$no
- Figure out a friend or family member’s half birthday (six months from their full birthday) and surprise them with a little treat on that day$no
- Write a sweet, encouraging note and put it in your child’s lunch box or under their pillow$no
- Don’t forget yourself! Schedule a pedicure or massage, spend a few hours reading a great book or make time for another activity you love$no
+ Call your grandparents and ask them about their childhood$yes
+ Call a friend you haven’t seen in a while to say hello$yes
+ Tape a video message for faraway friends$no
+ Adopt an animal online$yes
+ Put change in a vending machine$no
+ Hold the door open for someone$no
+ Do a chore for someone without them knowing$no
+ Tell a joke$no
+ Return someone’s cart at the store$no
+ Give candy to your bank teller$no
+ Leave a letter in a library book$no
+ Feed the birds$no
+ Leave happy notes around town$no
+ Put a small bin in your car to collect recycling$no
+ Pick up litter$no
+ Let someone go ahead of you in line$no
+ Compliment a friend$no
+ Wash someone’s car$no
+ Write a thank you note for your mail carrier$no
+ Plant something$no
+ Bake dessert for a neighbor$no
+ Walk dogs at the animal shelter$no
+ Check in on an elderly neighbor$no
+ Set up a lemonade stand and donate the profits$no
+ Send a card to a service member$no
+ Bury treasure at the playground$no
+ Set the table for dinner$no
+ Leave bubbles on someone’s doorstep$no
+ Put money on a stranger’s layaway bill$no
+ Tell someone why they are special to you$no
+ Donate outgrown clothes$no
+ Buy a coffee for a stranger$no
+ Pass out stickers to kids waiting in line$no
+ Talk to someone new at school$no
+ Write chalk messages on the sidewalk$no
+ Weed or shovel for a neighbor$no
+ Donate food to the food pantry$no
+ Bring flowers to your teacher$no
+ Tell a manager how good your service was$no
+ Tape change to a parking meter$no
+ Donate socks and supplies to the homeless shelter$no
+ Give a lottery ticket to a stranger$no
+ Tape money for the ice cream truck to a friend’s front door$no
+ Take treats to the fire station$no
+ Read a book to someone$no
+ Leave heads up pennies on the sidewalk$no
+ Donate a book to a doctor’s office waiting room$no
+ Tell someone how much you love them$no
+ Say hello to everyone you see$no
+ Make someone else’s bed$no
+ Hold the door open for someone$no
+ Wave at kids on school buses$no
+ Sing songs at a nursing home$no
+ Invite someone to play on the playground$no
+ Tell the principal how great your teacher is$no
+ Donate a toy to Toys for Tots$no
+ Turn off the water while brushing your teeth$no
+ Say thank you when you see service members$no
+ Fill a kindness jar with candy for another family$no
+ Make a thank you sign for sanitation workers$no
+ Make a busy bag for a family with young children$no
+ Bring cookies to the custodian$no
+ Help make dinner$no
+ Donate new pajamas for foster kids$no
+ Make a get well card for someone$no
+ Bring your neighbors’ garbage cans up for them$no
+ Take care of someone’s pet while they’re away$no
+ Leave a popcorn surprise on a DVD rental machine$no
+ Share a special toy with a friend$no
+ Clean up your room without being asked$no
+ Leave kindness stones at the park$no
+ Give a candy bar to the bus driver$no
+ Send dessert to another family at a restaurant$no
+ Give spare change to the food pantry$no
+ Buy extra school supplies for a teacher$no
+ Make muffins for your pharmacist$no
+ Teach someone something new$no
+ Reuse paper when you are drawing$no
+ Pay for someone’s toll$no
+ Give someone a hug coupon$no
+ Volunteer at a soup kitchen$no
+ Write a note for someone’s lunch$no
+ Collect money or items for your favorite charity$no
+ Donate coloring books and crayons to the children’s hospital$no
+ Write a poem for a friend$no
+ Ask for donations instead of birthday gifts$no
+ Help someone unload groceries at the store$no
+ Make a candy gram for the police department$no
+ Collect books for the library$no
+ Decorate tissue boxes and hand sanitizer for nursing stations$no
+ Make a homemade gift for someone$no
+ Clean up your toys without being asked$no
+ Deliver water bottles to the homeless shelter$no
+ Create activity bags for families of deployed soldiers$no
+ Give high fives to a friend$no
+ Make a thank you card for your librarian$no
+ Dry the slides at the park with a towel after it rains$no
+ Make play dough for a preschool class$no
+ Send a postcard to a friend$no
+ Smile at everybody. It's contagious$no

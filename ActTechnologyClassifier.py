@@ -14,7 +14,7 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'signupgenius-cleaned (trained)'
+sheet_name = 'coffeecupsandcrayons.com'
 description_column = 'Description'
 classifier_column = 'Tech'
 # start_index = 0
@@ -40,6 +40,7 @@ X = transformer.fit_transform(converted_data).toarray()
 y_pred = model.predict(X)
 
 
+
 ## save to cvs file
 fileName = "acts_preds.txt"
 f = open(fileName, 'w', encoding='utf-8')
@@ -54,5 +55,10 @@ for act, pred in zip(df_test[description_column], y_pred):
 
 f.close()
 
+# print info
+print('\n\nacts file info: {}, {}'.format(file_name, sheet_name))
+print('# of acts predicted: ', len(X))
+print('model info: ', model)
+print('predictions saved into file: ', fileName)
 
 
