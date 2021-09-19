@@ -14,11 +14,13 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'test'
+sheet_name = 'train_data'
 description_column = 'Description'
 classifier_column = 'Tech'
+# start_index = 0
+# end_index = 129
 
-df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:207]
+df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])
 # df_predict = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[151:208]
 
 # movie_data = load_files(r"D:\txt_sentoken")
