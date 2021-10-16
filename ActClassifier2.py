@@ -1,3 +1,5 @@
+import os
+
 import numpy
 import numpy as np
 import re
@@ -24,7 +26,7 @@ df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_c
 # df_predict = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[151:208]
 
 # movie_data = load_files(r"D:\txt_sentoken")
-X, y = df_train[description_column], df_train[classifier_column]
+act_description, act_tech = df_train[description_column], df_train[classifier_column]
 
 # print(X)
 
@@ -34,9 +36,9 @@ from nltk.stem import WordNetLemmatizer
 
 stemmer = WordNetLemmatizer()
 
-for sen in range(0, len(X)):
+for sen in range(0, len(act_description)):
     # Remove all the special characters
-    document = re.sub(r'\W', ' ', str(X[sen]))
+    document = re.sub(r'\W', ' ', str(act_description[sen]))
 
     # remove all single characters
     document = re.sub(r'\s+[a-zA-Z]\s+', ' ', document)
@@ -70,17 +72,17 @@ for sen in range(0, len(X)):
 # X = tfidfconverter.fit_transform(X).toarray()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
-tfidfconverter = TfidfVectorizer(max_features=1000, min_df=5, max_df=0.8, stop_words=stopwords.words('english'))
-X = tfidfconverter.fit_transform(documents).toarray()
-
+tfidfconverter = TfidfVectorizer(max_features=1000, min_df=5, max_df=0.8, sublinear_tf=True, ngram_range=(1,2), stop_words=stopwords.words('english'))
+features = tfidfconverter.fit_transform(documents)
+print("features: ", features.shape)
 
 # transform the dataset
 from imblearn.over_sampling import SMOTE
 oversample = SMOTE()
-X, y = oversample.fit_resample(X, y)
+features, act_tech = oversample.fit_resample(features, act_tech)
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_size=0.2, random_state=0)
 
 # # define scaler
 # scaler = MinMaxScaler()
@@ -102,8 +104,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 # info about model, train and test data
 print('model: ', classifier)
 print('acutal number of acts: ', len(df_train[description_column]))
-print("# of training acts (with oversampling): ", len(X_train))
-print('# of test acts: ', len(y_test))
+print("# of training acts (with oversampling): ", len(X_train.toarray()))
+print('# of test acts (with oversampling): ', len(y_test))
 
 # evaluate predictions
 acc = accuracy_score(y_test, y_pred)
@@ -140,5 +142,10 @@ print('F-Measure: %.3f' % score)
 #     print(y_pred[i], X_predict_array[i])
 
 # save the model and features
-dump(classifier, open('classifier_model.pkl', 'wb'))
-dump(tfidfconverter.vocabulary_, open('features.pkl', 'wb'))
+file_model = open('classifier_model.pkl', 'wb')
+file_features = open('features.pkl', 'wb')
+dump(classifier, file_model)
+dump(tfidfconverter.vocabulary_, file_features)
+
+print('\nmodel saved to: ', os.path.abspath(file_model.name))
+print('features saved to: ', os.path.abspath(file_features.name))
