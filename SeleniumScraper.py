@@ -32,13 +32,23 @@ for element in actResults:
     print(element.text)
 
 #move to the next page
-btnNext = driver.find_element(By.XPATH, "//a[@class='xPagingButton xActionPaginate xActionShowNext']")
+btnNext = driver.find_element(By.XPATH, "//a[@class='xPagingButton xActionPaginate']")
 # driver.execute_script("arguments[0].click();", WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//a[@class='xPagingButton xActionPaginate xActionShowNext']"))))
 # driver.execute_script("arguments[0].click();", btnNext)
 # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(btnNext)).click()
-WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(driver.find_element(By.XPATH, '//*[@id="ngxFrame911cf8af-4547-4844-9588-8581559255a0"]"')))
+# WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(driver.find_element(By.XPATH, '//*[@id="ngxFrame911cf8af-4547-4844-9588-8581559255a0"]"')))
 # time.sleep(30)
 # print(btnNext.tag_name, btnNext.text)
+
+# actResults = driver.find_elements(By.XPATH, "//h1[@class='xTitle xHeading']")
+
+WebDriverWait(driver,30).until(EC.element_to_be_clickable((By.XPATH,
+    '//button[@data-text="Allow"]'))).click()
+
+
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,
+    '//*[@data-text = "Show More"]'))).click()
+
 
 actResults = driver.find_elements(By.XPATH, "//h1[@class='xTitle xHeading']")
 
