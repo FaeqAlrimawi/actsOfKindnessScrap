@@ -21,7 +21,7 @@ from sklearn.preprocessing import MinMaxScaler
 file_name = 'actsOfKindness.xlsx'
 sheet_name = 'Adams Media'
 description_column = 'Description'
-classifier_column = 'Tech'
+# classifier_column = 'Tech'
 start_index = 0
 end_index = 560
 

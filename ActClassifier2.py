@@ -1,4 +1,6 @@
 # Generates a model to predict whether an AoK is technology-mediated or not
+# it is also used to create a model to predict whether a given act (or a statement can be an AoK)
+#generated model is saved where the project is
 
 
 import os
@@ -18,10 +20,11 @@ from pickle import dump
 
 from sklearn.preprocessing import MinMaxScaler
 
+### last used to create a model predicting AoKs
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'train_data'
+sheet_name = 'AoK_test'
 description_column = 'Description'
-classifier_column = 'Tech'
+classifier_column = 'AoK'
 # start_index = 0
 # end_index = 129
 
@@ -145,8 +148,8 @@ print('F-Measure: %.3f' % score)
 #     print(y_pred[i], X_predict_array[i])
 
 # save the model and features
-file_model = open('classifier_model.pkl', 'wb')
-file_features = open('features.pkl', 'wb')
+file_model = open('AoK_classifier_model.pkl', 'wb')
+file_features = open('AoK_features.pkl', 'wb')
 dump(classifier, file_model)
 dump(tfidfconverter.vocabulary_, file_features)
 
