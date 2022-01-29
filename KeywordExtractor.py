@@ -1,3 +1,8 @@
+# Extracts keywords for each given AoK from an excel sheet
+# keywords are saved to: acts_keywords.txt
+# the file is composed of two columns: a descirption (the AoK), and keywords; separated by a $
+import os
+
 import pandas
 from nltk.stem.porter import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -54,7 +59,7 @@ column_description = 'Description'
 # column_count = 'count_word'
 
 # load the dataset
-dataset = pandas.read_excel(excel_file_name, sheet_name='bradaronson.com')
+dataset = pandas.read_excel(excel_file_name, sheet_name='Adams Media')
 # print(dataset.head())
 
 # Fetch wordcount for each abstract
@@ -174,6 +179,7 @@ for i in range(0, len(corpus)):
 
 f.close()
 print('done')
+print("saved to: " + os.path.abspath(f.name))
 # print(keywords.keys())
 # print(df)
 # df.to_excel(writer)

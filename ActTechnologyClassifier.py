@@ -1,6 +1,9 @@
 # This script predicts whether given AoKs are technology-mediate or not
 # the output is saved in a text file name: acts_preds.txt (same path as the project)
 # the file contains two columns: one for the description (i.e. the AoK) and the prediction (Yes [technology-mediated], No [ technology-unmediated]
+# the two columns are separated by $
+import os
+
 import numpy as np
 import re
 import nltk
@@ -61,6 +64,6 @@ f.close()
 print('\n\nacts file info: {}, {}'.format(file_name, sheet_name))
 print('# of acts predicted: ', len(X))
 print('model info: ', model)
-print('predictions saved into file: ', fileName)
+print("saved to: " + os.path.abspath(f.name))
 
 
