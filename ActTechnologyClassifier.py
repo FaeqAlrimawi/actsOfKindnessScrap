@@ -1,3 +1,6 @@
+# This script predicts whether given AoKs are technology-mediate or not
+# the output is saved in a text file name: acts_preds.txt (same path as the project)
+# the file contains two columns: one for the description (i.e. the AoK) and the prediction (Yes [technology-mediated], No [ technology-unmediated]
 import numpy as np
 import re
 import nltk
@@ -13,11 +16,11 @@ from pickle import dump
 from sklearn.preprocessing import MinMaxScaler
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'AoKs_Stories'
+sheet_name = 'Adams Media'
 description_column = 'Description'
 classifier_column = 'Tech'
 start_index = 0
-end_index = 100
+end_index = 560
 
 # df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, classifier_column])[:170]
 df_test= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])[start_index:end_index]

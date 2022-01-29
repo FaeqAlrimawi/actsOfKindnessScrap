@@ -1,3 +1,6 @@
+# Generates a model to predict whether an AoK is technology-mediated or not
+
+
 import os
 
 import numpy
