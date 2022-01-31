@@ -22,7 +22,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 ### last used to create a model predicting AoKs
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'AoK_test'
+sheet_name = 'AoK_class_train'
 description_column = 'Description'
 classifier_column = 'AoK'
 # start_index = 0
