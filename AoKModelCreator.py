@@ -102,9 +102,9 @@ X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_siz
 # X_test_scaled = scaler.transform(X_test)
 
 #### Random Forest Classifier (default parameters): result: 97.2%
-# classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
-# classifier.fit(X_train, y_train)
-# y_pred = classifier.predict(X_test)
+classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 
 #### (Tuned) Random Forest Classifier: result: 94.4%
 # classifier = RandomForestClassifier(max_depth=25, min_samples_split=10)
