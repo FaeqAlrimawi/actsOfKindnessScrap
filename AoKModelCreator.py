@@ -101,17 +101,40 @@ X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_siz
 # X_train_scaled = scaler.transform(X_train)
 # X_test_scaled = scaler.transform(X_test)
 
-#### Random Forest Classifier
+#### Random Forest Classifier (default parameters): result: 97.2%
 # classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
 # classifier.fit(X_train, y_train)
 # y_pred = classifier.predict(X_test)
 
-####
-classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
-classifier.fit(X_train,y_train)
-y_pred = classifier.predict(X_test)
+#### (Tuned) Random Forest Classifier: result: 94.4%
+# classifier = RandomForestClassifier(max_depth=25, min_samples_split=10)
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
 
-#parameter tuning
+#tuning parameters for Random Forest
+# from sklearn.model_selection import GridSearchCV
+# classifier = RandomForestClassifier()
+# n_estimators = [100, 300, 500, 800, 1200]
+# max_depth = [5, 8, 15, 25, 30]
+# min_samples_split = [2, 5, 10, 15, 100]
+# min_samples_leaf = [1, 2, 5, 10]
+#
+# hyperF = dict(n_estimators = n_estimators, max_depth = max_depth,
+#               min_samples_split = min_samples_split,
+#              min_samples_leaf = min_samples_leaf)
+#
+# gridF = GridSearchCV(classifier, hyperF, cv = 3, verbose = 1,
+#                       n_jobs = -1)
+# bestF = gridF.fit(X_train, y_train)
+# print(bestF.best_estimator_)
+
+
+#### Stochastic Gradient Classifier (SGC, tuned parameters): result: 95%
+# classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
+# classifier.fit(X_train,y_train)
+# y_pred = classifier.predict(X_test)
+
+#parameter tuning for SGC
 # from sklearn.model_selection import GridSearchCV
 # #model
 # model = SGDClassifier(random_state=42)
@@ -124,8 +147,46 @@ y_pred = classifier.predict(X_test)
 # #the selected parameters by grid search
 # print(clf.best_estimator_)
 
+### SVC: Support Vector Classifier (default parameters): result: 91.6%
+# from sklearn.svm import SVC
+# classifier = SVC()
+# classifier.fit(X_train,y_train)
+# y_pred = classifier.predict(X_test)
 
-# from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+### DecisionTreeClassifier (default parameters): result: 88.8%
+# from sklearn.tree import DecisionTreeClassifier
+# classifier = DecisionTreeClassifier()
+# classifier.fit(X_train,y_train)
+# y_pred = classifier.predict(X_test)
+
+
+### GaussianNB (default parameters): result: 88.8%
+# from sklearn.naive_bayes import GaussianNB
+# classifier = GaussianNB()
+# classifier.fit(X_train.toarray(),y_train)
+# y_pred = classifier.predict(X_test.toarray())
+
+### KNeighborsClassifier (default parameters): result: 51.6%
+# from sklearn.neighbors import KNeighborsClassifier
+# classifier = KNeighborsClassifier()
+# classifier.fit(X_train,y_train)
+# y_pred = classifier.predict(X_test)
+
+### LinearDiscriminantAnalysis (default parameters): result: 84.4%
+# from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+# classifier = LinearDiscriminantAnalysis()
+# classifier.fit(X_train.toarray(),y_train)
+# y_pred = classifier.predict(X_test.toarray())
+
+
+##### Comparison between tested classifiers:
+# RandomTreeClassifier             97.2%
+# SGC                              95.0%
+# SVC                              91.6%
+# GaussianNB                       89.4%
+# DecisionTreeClassifier           88.8%
+# LinearDiscriminantAnalysis       84.4%
+# KNeighborsClassifier             51.6%
 
 
 # info about model, train and test data
@@ -138,6 +199,19 @@ from sklearn.metrics import classification_report,accuracy_score
 print(classification_report(y_test, y_pred))
 print(accuracy_score(y_test, y_pred))
 
+
+# save the model and features
+file_model = open('AoK_classifier_model.pkl', 'wb')
+file_features = open('AoK_features.pkl', 'wb')
+dump(classifier, file_model)
+dump(tfidfconverter.vocabulary_, file_features)
+
+print('\nmodel saved to: ', os.path.abspath(file_model.name))
+print('features saved to: ', os.path.abspath(file_features.name))
+
+
+
+#### to be deleted
 # evaluate predictions
 # acc = accuracy_score(y_test, y_pred)
 #
@@ -171,12 +245,3 @@ print(accuracy_score(y_test, y_pred))
 #
 # for i in range(len(X_predict_array)):
 #     print(y_pred[i], X_predict_array[i])
-
-# save the model and features
-file_model = open('AoK_classifier_model.pkl', 'wb')
-file_features = open('AoK_features.pkl', 'wb')
-dump(classifier, file_model)
-dump(tfidfconverter.vocabulary_, file_features)
-
-print('\nmodel saved to: ', os.path.abspath(file_model.name))
-print('features saved to: ', os.path.abspath(file_features.name))
