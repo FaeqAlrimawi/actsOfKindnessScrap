@@ -18,6 +18,7 @@ from nltk.corpus import stopwords
 import pandas as pd
 from pickle import dump
 
+from sklearn.linear_model import SGDClassifier
 from sklearn.preprocessing import MinMaxScaler
 
 ### last used to create a model predicting AoKs
@@ -34,7 +35,9 @@ df_train= pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_c
 # movie_data = load_files(r"D:\txt_sentoken")
 act_description, act_tech = df_train[description_column], df_train[classifier_column]
 
-# print(X)
+print("Creating model for file:", os.path.abspath(file_name))
+print("Sheet in the file:", sheet_name)
+print("Number of AoKs:", len(act_description))
 
 documents = []
 
@@ -88,7 +91,7 @@ oversample = SMOTE()
 features, act_tech = oversample.fit_resample(features, act_tech)
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_size=0.3, random_state=0)
 
 # # define scaler
 # scaler = MinMaxScaler()
@@ -98,14 +101,32 @@ X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_siz
 # X_train_scaled = scaler.transform(X_train)
 # X_test_scaled = scaler.transform(X_test)
 
-classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
-classifier.fit(X_train, y_train)
+#### Random Forest Classifier
+# classifier = RandomForestClassifier(n_estimators=1000, random_state=0)
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
 
-# print(X_test)
-
+####
+classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
+classifier.fit(X_train,y_train)
 y_pred = classifier.predict(X_test)
 
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+#parameter tuning
+# from sklearn.model_selection import GridSearchCV
+# #model
+# model = SGDClassifier(random_state=42)
+# #parameters
+# params = {'loss': ["hinge", "log", "perceptron"],
+#           'alpha':[0.001, 0.0001, 0.00001]}
+# #carrying out grid search
+# clf = GridSearchCV(model, params)
+# clf.fit(X_train, y_train)
+# #the selected parameters by grid search
+# print(clf.best_estimator_)
+
+
+# from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 
 # info about model, train and test data
 print('model: ', classifier)
@@ -113,21 +134,25 @@ print('acutal number of acts: ', len(df_train[description_column]))
 print("# of training acts (with oversampling): ", len(X_train.toarray()))
 print('# of test acts (with oversampling): ', len(y_test))
 
+from sklearn.metrics import classification_report,accuracy_score
+print(classification_report(y_test, y_pred))
+print(accuracy_score(y_test, y_pred))
+
 # evaluate predictions
-acc = accuracy_score(y_test, y_pred)
-
-print("Accuracy: %.3f" % acc)
-
-precision = precision_score(y_test, y_pred, average='binary', pos_label="yes")
-print('Precision: %.3f' % precision)
-
-# calculate recall
-recall = recall_score(y_test, y_pred, average='binary', pos_label='yes')
-print('Recall: %.3f' % recall)
-
-# calculate score
-score = f1_score(y_test, y_pred, average='binary', pos_label='yes')
-print('F-Measure: %.3f' % score)
+# acc = accuracy_score(y_test, y_pred)
+#
+# print("Accuracy: %.3f" % acc)
+#
+# precision = precision_score(y_test, y_pred, average='binary', pos_label="yes")
+# print('Precision: %.3f' % precision)
+#
+# # calculate recall
+# recall = recall_score(y_test, y_pred, average='binary', pos_label='yes')
+# print('Recall: %.3f' % recall)
+#
+# # calculate score
+# score = f1_score(y_test, y_pred, average='binary', pos_label='yes')
+# print('F-Measure: %.3f' % score)
 
 # print("Actual Pred")
 # for act, pred in zip(y_test, y_pred):
