@@ -10,7 +10,7 @@ layout = [
 
     [
         sg.Text("Enter act:"),
-        sg.In(size=(25, 1), enable_events=True, key="-ACT-"),
+        sg.In(size=(50, 10), enable_events=True, key="-ACT-"),
         sg.Button("Check", key="-CHECK-")
     ],
     [
@@ -39,13 +39,16 @@ while True:
         break
 
     if event == "-CHECK-":
-        print(values["-ACT-"])
         X = [values["-ACT-"]]
         converted_data = loaded_vec.fit_transform(X)
         transformer = TfidfTransformer()
         X = transformer.fit_transform(converted_data).toarray()
         y_pred = model.predict(X)
-        window["-RESULT-"].update("Is an AoK? " + y_pred)
+        result = "".join(y_pred).upper()
+        if result == "NO":
+            window["-RESULT-"].update("Is an AoK? Not Really!")
+        else:
+            window["-RESULT-"].update("Is an AoK? Yep!")
 
 
 window.close()
