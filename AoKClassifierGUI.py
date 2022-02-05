@@ -45,13 +45,18 @@ while True:
         converted_data = loaded_vec.fit_transform(X)
         transformer = TfidfTransformer()
         X = transformer.fit_transform(converted_data).toarray()
-        y_pred = model.predict(X)
-        result = "".join(y_pred).upper()
+        y_pred = model.predict_proba(X)
+        # result = "".join(y_pred).upper()
+        yes_result = y_pred[0][1]
+        lower_threshold = 0.4
+        upper_threshold = 0.6
 
-        if result == "NO":
-            window["-RESULT-"].update("Is an AoK? Not Really!")
+        if yes_result < lower_threshold:
+            window["-RESULT-"].update("Is an AoK? Not Really! (Yes% " + str(y_pred[0][1]*100)+ "%)")
+        elif yes_result >= lower_threshold and yes_result <= upper_threshold:
+            window["-RESULT-"].update("Is an AoK? Hmmm maybe?! (Yes% " + str(y_pred[0][1] * 100) + "%)")
         else:
-            window["-RESULT-"].update("Is an AoK? Yep!")
+            window["-RESULT-"].update("Is an AoK? Yep! (Yes% " + str(y_pred[0][1]*100)+ "%)")
 
 
 window.close()

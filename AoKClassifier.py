@@ -44,7 +44,7 @@ transformer = TfidfTransformer()
 X = transformer.fit_transform(converted_data).toarray()
 
 y_pred = model.predict(X)
-
+# y_pred = model.predict_proba(X)
 
 
 ## save to cvs file
@@ -57,7 +57,8 @@ f = open(fileName, 'a', encoding='utf-8')
 # print("Actual Pred")
 for act, pred in zip(df_test[description_column], y_pred):
     print(pred, act)
-    f.write(act+'$'+pred+'\n')
+    prediction_str = act+'$' + str(pred) + '\n'
+    f.write(prediction_str)
 
 f.close()
 
