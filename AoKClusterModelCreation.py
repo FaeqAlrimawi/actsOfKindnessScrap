@@ -1,3 +1,5 @@
+#### The goal of this script is to create a clustering model that can be use to cluster AoKs
+### it clusters AoKs into a predifined number of clusters/classes (each cluster is identified by a set of keywords; no name is given)
 
 from sklearn.datasets import fetch_20newsgroups
 
@@ -16,6 +18,10 @@ import pandas as pd
 # nltk.download('wordnet')
 
 
+file_name = 'actsOfKindness.xlsx'
+sheet_name = 'train_data_AoK'
+description_column = 'Description'
+num_topics = 5
 '''
 Write a function to perform the pre processing steps on the entire dataset
 '''
@@ -68,13 +74,15 @@ Preview a document after preprocessing
 # print(preprocess(doc_sample))
 
 ### my own training data from the description of AoKs excel sheet
-acts_excel = pd.read_excel("actsOfKindess.xlsx", sheet_name='training_data')
-newsgroups_train = acts_excel['Description']
+acts_excel = pd.read_excel(file_name, sheet_name=sheet_name)
+newsgroups_train = acts_excel['Description'][0:398]
+# print(newsgroups_train)
+
 
 processed_docs = []
 
 for doc in newsgroups_train:
-    processed_docs.append(preprocess(doc))
+    processed_docs.append(preprocess(str(doc)))
 
 
 '''
@@ -104,7 +112,7 @@ Remove very rare and very common words:
 '''
 # dictionary.filter_extremes(no_below=15, no_above=0.1, keep_n=100000)
 
-print(dictionary)
+# print(dictionary)
 
 # dictionary.save("dictionary")
 
@@ -118,7 +126,7 @@ bow_corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
 print("creating the model...")
 # LDA mono-core -- fallback code in case LdaMulticore throws an error on your machine
 lda_model = gensim.models.LdaModel(bow_corpus,
-                                   num_topics=10,
+                                   num_topics=num_topics,
                                    id2word=dictionary,
                                    passes=50)
 
