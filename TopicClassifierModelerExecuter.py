@@ -3,6 +3,12 @@ from gensim.models import LdaModel
 from nltk import SnowballStemmer, WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
 import pandas as pd
+
+
+file_name = 'actsOfKindness.xlsx'
+sheet_name = 'train_data_AoK'
+description_column = 'Description'
+
 '''
 Write a function to perform the pre processing steps on the entire dataset
 '''
@@ -76,9 +82,9 @@ Remove very rare and very common words:
 # print(vector)
 
 ## test from the acts of kindness
-acts_excel  =pd.read_excel("actsOfKindess.xlsx", sheet_name='AoKs_Ideas')
+acts_excel  =pd.read_excel(file_name, sheet_name=sheet_name)
 
-cell_description_value = acts_excel['Description'][2]
+cell_description_value = acts_excel[description_column][2]
 print(cell_description_value)
 
 
