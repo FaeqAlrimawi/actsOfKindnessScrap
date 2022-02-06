@@ -13,11 +13,6 @@ from nltk.stem import WordNetLemmatizer
 from textblob import TextBlob
 
 # Define a function to clean the text
-def clean(text):
-# Removes all special characters and numericals leaving the alphabets
-    text = re.sub('[^A-Za-z]+', ' ', text)
-    return text
-
 
 file_name = 'actsOfKindness.xlsx'
 sheet_name = 'train_sentiment'
@@ -28,9 +23,17 @@ description_column = 'Description'
 data = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
 # print(data.head())
 
+
+def clean(text):
+# Removes all special characters and numericals leaving the alphabets
+    text = re.sub('[^A-Za-z]+', ' ', text)
+    return text
+
+
 # Cleaning the text in the review column
 data['Cleaned Description'] = data[description_column].apply(clean)
 # print(data.head())
+
 
 # POS tagger dictionary
 pos_dict = {'J':wordnet.ADJ, 'V':wordnet.VERB, 'N':wordnet.NOUN, 'R':wordnet.ADV}
@@ -113,7 +116,42 @@ def vader_analysis(compound):
 
 
 fin_data['Vader Analysis'] = fin_data['Vader Sentiment'].apply(vader_analysis)
-# fin_data.head()
+fin_data.head()
+
+#### Sentiment Analysis using SentiWordnet
+# nltk.download('sentiwordnet')
+# from nltk.corpus import sentiwordnet as swn
+#
+#
+# def sentiwordnetanalysis(pos_data):
+#     sentiment = 0
+#     tokens_count = 0
+#     for word, pos in pos_data:
+#         if not pos:
+#             continue
+#         lemma = wordnet_lemmatizer.lemmatize(word, pos=pos)
+#         if not lemma:
+#             continue
+#         synsets = wordnet.synsets(lemma, pos=pos)
+#         if not synsets:
+#             continue
+#         # Take the first sense, the most common
+#         synset = synsets[0]
+#         swn_synset = swn.senti_synset(synset.name())
+#         sentiment += swn_synset.pos_score() - swn_synset.neg_score()
+#         tokens_count += 1
+#         # print(swn_synset.pos_score(),swn_synset.neg_score(),swn_synset.obj_score())
+#         if not tokens_count:
+#             return 0
+#         if sentiment>0:
+#             return "Positive"
+#         if sentiment==0:
+#             return "Neutral"
+#         else:
+#             return "Negative"
+
+# fin_data = pd.DataFrame(data[[description_column, 'Lemma']])
+# fin_data['SWN analysis'] = data['POS tagged'].apply(sentiwordnetanalysis)
 
 print(fin_data)
 fin_data.to_excel("sentiment_data.xlsx")
