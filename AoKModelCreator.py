@@ -101,7 +101,7 @@ X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_siz
 # X_train_scaled = scaler.transform(X_train)
 # X_test_scaled = scaler.transform(X_test)
 
-#### Random Forest Classifier (default parameters): result: 97.2%
+#### Random Forest Classifier (default parameters)
 classifier = RandomForestClassifier(n_estimators=100, random_state=0)
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
@@ -130,7 +130,7 @@ y_pred = classifier.predict(X_test)
 # print(bestF.best_estimator_)
 
 
-#### Stochastic Gradient Classifier (SGC, tuned parameters): result: 95%
+#### Stochastic Gradient Classifier (SGC, tuned parameters)
 # classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
 # classifier.fit(X_train,y_train)
 # y_pred = classifier.predict(X_test)
@@ -148,39 +148,39 @@ y_pred = classifier.predict(X_test)
 # #the selected parameters by grid search
 # print(clf.best_estimator_)
 
-### SVC: Support Vector Classifier (default parameters): result: 91.6%
+### SVC: Support Vector Classifier (default parameters)
 # from sklearn.svm import SVC
 # classifier = SVC()
 # classifier.fit(X_train,y_train)
 # y_pred = classifier.predict(X_test)
 
-### DecisionTreeClassifier (default parameters): result: 88.8%
+### DecisionTreeClassifier (default parameters)
 # from sklearn.tree import DecisionTreeClassifier
 # classifier = DecisionTreeClassifier()
 # classifier.fit(X_train,y_train)
 # y_pred = classifier.predict(X_test)
 
 
-### GaussianNB (default parameters): result: 88.8%
+### GaussianNB (default parameters)
 # from sklearn.naive_bayes import GaussianNB
 # classifier = GaussianNB()
 # classifier.fit(X_train.toarray(),y_train)
 # y_pred = classifier.predict(X_test.toarray())
 
-### KNeighborsClassifier (default parameters): result: 51.6%
+### KNeighborsClassifier (default parameters)
 # from sklearn.neighbors import KNeighborsClassifier
 # classifier = KNeighborsClassifier()
 # classifier.fit(X_train,y_train)
 # y_pred = classifier.predict(X_test)
 
-### LinearDiscriminantAnalysis (default parameters): result: 84.4%
+### LinearDiscriminantAnalysis (default parameters)
 # from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 # classifier = LinearDiscriminantAnalysis()
 # classifier.fit(X_train.toarray(),y_train)
 # y_pred = classifier.predict(X_test.toarray())
 
 
-##### Comparison between tested classifiers:
+##### Comparison between tested classifiers (# of AoKs: 500):
 # RandomTreeClassifier             97.2%
 # SGC                              95.0%
 # SVC                              91.6%
