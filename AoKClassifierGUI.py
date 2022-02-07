@@ -49,11 +49,12 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 def vadersentimentanalysis(review):
     vs = analyzer.polarity_scores(review)
-    return vs['compound']
+    # return vs['compound']
+    return vs
 
 
 def vader_analysis(compound):
-    if compound >= 0.5:
+    if compound > 0:
         return 'Positive'
     elif compound <= -0.5 :
         return 'Negative'
@@ -66,10 +67,11 @@ def get_sentiment(aok):
     cleaned_text = clean(str(original_text))
     pos_text = token_stop_pos(cleaned_text)
     lemma_text = lemmatize(pos_text)
-    print("original text {}, pos {}, lemma {}".format(original_text, pos_text, lemma_text))
+    # print("original text {}, pos {}, lemma {}".format(original_text, pos_text, lemma_text))
     sentiment_value = vadersentimentanalysis(lemma_text)
-    return vader_analysis(sentiment_value)
-    # print("sentiment: {}".format(sentiment_value_text))
+    return sentiment_value
+    # return vader_analysis(sentiment_value)
+    # print("sentiment: {}".format(sentiment_value))
 
 
 # ----- Full layout -----
@@ -121,16 +123,24 @@ while True:
         upper_threshold = 0.6
 
         # get sentiment
-        print(get_sentiment(original_text))
+        # print(get_sentiment(original_text))
+        sentiment_analysis = get_sentiment(original_text)
+        sentiment_judgment_value = vader_analysis(sentiment_analysis['compound'])
+        sentiment_analysis_text = "Sentiment: {}. Details: Positive [{}], Neutral [{}], Negative [{}]".format(sentiment_judgment_value, sentiment_analysis['pos'],
+                                                                                                                     sentiment_analysis['neu'], sentiment_analysis['neg'])
+        print(sentiment_analysis_text, "compound [{}]".format(sentiment_analysis['compound']))
+        label = ""
 
         if yes_result < lower_threshold:
-
             # print(lemmatize(pos_tag())))
-            window["-RESULT-"].update("Is an AoK? Not Really! (Confidence in [not AoK] " + str(y_pred[0][0]*100)+ "%)")
-        elif yes_result >= lower_threshold and yes_result <= upper_threshold:
-            window["-RESULT-"].update("Is an AoK? Hmmm maybe?! (Confidence in [an AoK] " + str(y_pred[0][1] * 100) + "%)")
-        else:
-            window["-RESULT-"].update("Is an AoK? Yep! (Confidence in [an AoK] " + str(y_pred[0][1]*100)+ "%)")
+            label += "Is an AoK? Not Really! (Confidence in [not AoK] " + str(y_pred[0][0]*100)+ "%)"
 
+        elif lower_threshold <= yes_result <= upper_threshold:
+            label += "Is an AoK? Hmmm maybe?! (Confidence in [an AoK] " + str(y_pred[0][1] * 100) + "%)"
+        else:
+            label += "Is an AoK? Yep! (Confidence in [an AoK] " + str(y_pred[0][1]*100)+ "%)"
+
+        label += "\n"+sentiment_analysis_text
+        window["-RESULT-"].update(label)
 
 window.close()
