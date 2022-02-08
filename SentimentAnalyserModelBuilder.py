@@ -1,4 +1,4 @@
-
+import os.path
 import re
 import pandas as pd
 import nltk
@@ -15,7 +15,7 @@ from textblob import TextBlob
 # Define a function to clean the text
 
 file_name = 'actsOfKindness.xlsx'
-sheet_name = 'train_sentiment'
+sheet_name = 'AoK_class_test'
 description_column = 'Description'
 
 
@@ -107,7 +107,7 @@ fin_data['Vader Sentiment'] = fin_data['Lemma'].apply(vadersentimentanalysis)
 
 # function to analyse
 def vader_analysis(compound):
-    if compound >= 0.5:
+    if compound > 0.0:
         return 'Positive'
     elif compound <= -0.5 :
         return 'Negative'
@@ -154,4 +154,6 @@ fin_data.head()
 # fin_data['SWN analysis'] = data['POS tagged'].apply(sentiwordnetanalysis)
 
 print(fin_data)
-fin_data.to_excel("sentiment_data.xlsx")
+output_file = "sentiment_data.xlsx"
+fin_data.to_excel(output_file)
+print("Result saved to: ", os.path.abspath(output_file))

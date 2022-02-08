@@ -102,15 +102,15 @@ X_train, X_test, y_train, y_test = train_test_split(features, act_tech, test_siz
 # X_test_scaled = scaler.transform(X_test)
 
 #### Random Forest Classifier (default parameters)
-classifier = RandomForestClassifier(n_estimators=100, random_state=0)
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
+# classifier = RandomForestClassifier(n_estimators=100, random_state=0)
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
 # y_pred = classifier.predict_proba(X_test)
 
 #### (Tuned) Random Forest Classifier: result: 94.4%
-# classifier = RandomForestClassifier(max_depth=25, min_samples_split=10)
-# classifier.fit(X_train, y_train)
-# y_pred = classifier.predict(X_test)
+classifier = RandomForestClassifier(max_depth=25, min_samples_split=10)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 
 #tuning parameters for Random Forest
 # from sklearn.model_selection import GridSearchCV
@@ -131,9 +131,9 @@ y_pred = classifier.predict(X_test)
 
 
 #### Stochastic Gradient Classifier (SGC, tuned parameters)
-# classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
-# classifier.fit(X_train,y_train)
-# y_pred = classifier.predict(X_test)
+classifier = SGDClassifier(alpha=0.001, loss='log', random_state=42)
+classifier.fit(X_train,y_train)
+y_pred = classifier.predict(X_test)
 
 #parameter tuning for SGC
 # from sklearn.model_selection import GridSearchCV

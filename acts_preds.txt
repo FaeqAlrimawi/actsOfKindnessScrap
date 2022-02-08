@@ -11,7 +11,7 @@ Not practicing safe sex$no
 Kiss and telling$no
 Go to social events/parties out of obligation, not desire or love$no
 Engage with people who are judgmental and gossipy$no
-Tell secrets$no
+Tell secrets$yes
 Lose focus when talking to others$no
 Try to change your significant other$no
 Avoid ALL arguments$no
@@ -55,14 +55,14 @@ Fidgeting$no
 Buy things because others like them, not because you like them$no
 Social withdrawal$no
 Excessive preoccupation with personal problems$no
-Let fear stop you from trying new things$no
+Let fear stop you from trying new things$yes
 Forget names of people you meet$no
 Repeat yourself$no
 Be unfriendly$no
 Not holding eye contact$no
 Rambling$no
 Excessive throat clearing$no
-Forgetting what you’ve told someone$no
+Forgetting what you’ve told someone$yes
 Gossiping$no
 Finishing other people’s sentences$no
 Interrupt others$no
@@ -84,7 +84,7 @@ Not taking off shoes when you enter your home$no
 Save broken things to fix…someday$no
 Have no schedule for decluttering/organizing/cleaning$no
 Keep items/clothes you haven’t worn or used in years$yes
-Buy stuff you don’t need only to keep it at home$no
+Buy stuff you don’t need only to keep it at home$yes
 Put dishes in the sink and not washing them$no
 Hoarding$no
 Compulsive lying$no
@@ -100,10 +100,10 @@ Smoking (if habit is really bad)$no
 Being aggressive toward others (fights, abuse)$no
 Overmedicating$no
 Learn sign language and then embrace the opportunity to communicate with your nonhearing friends.$yes
-Return phone calls and emails promptly. It shows respect and kindness for the caller and writer.$no
+Return phone calls and emails promptly. It shows respect and kindness for the caller and writer.$yes
 Teach a child to cook. Make sure the project is age appropriate and the child’s safety is ensured. Make it fun and easy. Cooking together will instill confidence in the child and provide a way for you to spend quality time together.$yes
-Set out a bowl of candy for everyone in the office to share.$no
-SURPRISE YOUR LOVER WITH BREAKFAST IN BED.$yes
+Set out a bowl of candy for everyone in the office to share.$yes
+SURPRISE YOUR LOVER WITH BREAKFAST IN BED.$no
 Encourage a friend to exercise and diet with you. Reinforce each other’s efforts to get healthy and stay that way. Sometimes the hardest part of staying healthy is doing it alone.$yes
 Make a donation to an animal sterilization clinic. Look into organizations like Spay Neuter Assistance Program (SNAP) or the American Society for the Prevention of Cruelty to Animals (ASPCA). Through spay/neuter clinics on wheels, such organizations usually offer services free or at reduced fees to low-income families receiving public assistance such as food stamps. To find out more go to www.spayusa.org or www.aspca.org.$yes
 Give a massage. Nothing promotes the sense of healing and nurturing as the human touch. We all need it. So offer a massage to a friend. If you don’t think you can give a good enough one, then pay for a massage. Many spas offer a variety of types such as Japanese, Swedish, Ayurvedic, and myriad others. Some include aromatherapy and a hot presoak before the massage.$yes
@@ -120,7 +120,7 @@ Bring the joy of animals to at-risk youth. Volunteer to work with an organizatio
 Invite your partner out for a wild afternoon. Take him to the zoo. Learn about the animals and make a donation to support their care and feeding.$yes
 Promote healthy living. Make sure your family is not only eating and exercising well but is in a good state of mental health. Talk to them. Cheer them up. Get them to discuss their feelings. Offer to help with a friend’s wedding. It can be overwhelming, and an extra pair of hands and eyes may be just what the family needs. Whether it’s running simple errands or helping set up the event hall, your kindness will be appreciated.$yes
 Be there to do the small things on moving day. Moving day is a hectic time, so be there for your friend. Offer to do a run to a local coffee shop since she probably doesn’t have the time to make a pot of java. Provide encouraging words as she may be feeling a little overwhelmed. Help her focus on what needs to be done, be there at the end to support her, and know that strong friendships can be sustained across many miles and over lifetimes.$yes
-Compliment your partner’s inner beauty. Appreciate her kindness, grace, intelligence, humor, and generosity—all sexy and sought-after attributes far better and longer lasting than a facial, manicure, and haircut. Inner beauty is more attractive and longer lasting than physical appearance.$no
+Compliment your partner’s inner beauty. Appreciate her kindness, grace, intelligence, humor, and generosity—all sexy and sought-after attributes far better and longer lasting than a facial, manicure, and haircut. Inner beauty is more attractive and longer lasting than physical appearance.$yes
 Remain positive. Don’t be defeatist. Accept that you are someone unique (because you are). There is no one else exactly like you in the world; even identical twins or multiples have some differences. Celebrate your gifts and talents.$yes
 Focus on them rather than what you lack. You are here for a reason, so be kind to yourself!$no
 Know when not to involve yourself. Recognize when someone in crisis does not want your help and respect her position. It is one of the hardest things to do. Our impulse is to rush in and fix the problem. But we have to remember it is her crisis, not ours. We must honor her desire to figure things out alone.$yes
@@ -128,25 +128,25 @@ READ TO YOUR CHILDREN.$no
 Think positively. When you imagine wonderful things in your life, imagine equally wonderful things manifesting in the lives of others.$no
 Don’t worry. Replace worry with positive affirmations and a strong and clear mental image of what you want manifested in your life. Use your will yoked with a positive course of action to make it happen.$yes
 Take the whole family on a weekend outing. A short trip to a local strawberry patch or an apple orchard can be fun for the kids and relaxing for the parents. When the entire family participates in frequent outings, it brings everyone closer together and reduces the tensions that have built up during the week.$yes
-Do something new with your partner. Psychologists say sharing novel experiences can deepen your happiness.$no
+Do something new with your partner. Psychologists say sharing novel experiences can deepen your happiness.$yes
 Keep children and teens busy with fun activities. Volunteer at after-school clubs, camps, church events, and service projects. A youngster with too much time and nothing to do is more likely to get into trouble than a child who has an active social life.$yes
 Donate used household electronics to charities. Box up old fax machines, monitors, computers, televisions, radios, and cell phones that your family no longer uses and give them to worthwhile causes. They are always looking for functioning equipment that is in good shape.$yes
 Knit something for a new addition. If you’ve recently added a new member to your immediate or extended family, make some booties, a sweater, or a hat for the new baby. These types of personally crafted gifts truly come from the heart and will be appreciated and cherished by the parents.$yes
-Be kind to your skin. If it is dry and cracked, fill a tub full of warm to hot water and pour in a few capfuls of body oil. Get into the tub and lie on your back, then stomach, then back again. Massage the oil into your skin. When you get out of the tub, take care not to slip. Continue rubbing in the oil all over and then pat your skin dry. The fine lines and cracks will have disappeared.$no
+Be kind to your skin. If it is dry and cracked, fill a tub full of warm to hot water and pour in a few capfuls of body oil. Get into the tub and lie on your back, then stomach, then back again. Massage the oil into your skin. When you get out of the tub, take care not to slip. Continue rubbing in the oil all over and then pat your skin dry. The fine lines and cracks will have disappeared.$yes
 Don’t let anyone drive under the influence. If you are out with a friend who has had too much to drink, call him a taxi or get him an Uber, then help him retrieve his car in the morning$yes
 Take a class and learn about conflict resolution. Apply it to the relationships in your life and watch how the causes of conflicts begin to shift or diminish.$no
 Swap skills with a friend. Offer to teach a friend how to make killer guacamole if he will show you how to irrigate your lawn. You both benefit from sharing your knowledge with each other.$yes
 Strive for equality in your love relationship. Relationships in which the couples share equally in sacrifices, decision-making, communication, and chores are more likely to succeed than those relationships in which one person dominates the other.$yes
-Plan a children’s tea party. Invite bears, dolls, and other stuffed animals. Wear fancy hats. Allow the children to set the table with napkins, spoons, and teacups. Add a plate of sandwiches and jar of gingersnaps. The children will love it.$no
+Plan a children’s tea party. Invite bears, dolls, and other stuffed animals. Wear fancy hats. Allow the children to set the table with napkins, spoons, and teacups. Add a plate of sandwiches and jar of gingersnaps. The children will love it.$yes
 Help a friend who wants to learn to cook. Buy him new pans  or donate your old ones and one of your cookbooks. Don’t do it because he might reward you with a gourmet meal; do it because it will give him such joy to have the necessary tools to start cooking.$yes
 Plant some perennials in a cancer patient’s garden. Put them where he can see them blooming. Annuals die each year and must be replaced, but perennials return year after year. Your gesture is a small, unspoken statement of your hope$yes
 Boycott unregulated foreign products. These companies can have harsh regimes. In particular do not support products coming from places where governments exploit their own people, force people to work in unsafe conditions, and sustain control of power through threats of violence or imprisonment.$no
-Find the greater good in every moment. Learn from the stressful and negative experiences but put your energy into finding the silver lining, seeing the good, and praising it.$no
+Find the greater good in every moment. Learn from the stressful and negative experiences but put your energy into finding the silver lining, seeing the good, and praising it.$yes
 Carry a piece of luggage for a stranger. Help an elderly person or parent with a stroller carry large pieces of luggage. Chances are she has been toting those big bags around for a while now and could   use the help.$yes
 Expand your horizons. Take a lifelong learning trip. Offered through universities, you can go on an archeological dig, an Audubon expedition, a history excursion, or myriad other adventures, often with a college professor as your guide and guest lecturer.$no
 Truly listen to your partner’s joys and concerns. Take time out to listen, even just about the events of the day. Make sure you’re actually listening and not interrupting with your own stories.$yes
 Let someone have the taxi you’ve just hailed. Next time you hail a cab while it’s busy on the street, let the person standing next to you$yes
-have it. This simple gesture may cost a few minutes of your time, but it will mean the world to the stranger you helped.$no
+have it. This simple gesture may cost a few minutes of your time, but it will mean the world to the stranger you helped.$yes
 Allow someone to go out in front of you from the elevator. Don’t rush in front of people the next time you exit an elevator. Let the other occupants get out before you go on with your day.$yes
 Help a child learn about investing. Start with the financial basics: earning, saving, and finding ways to make the money grow. What better way to help a young person develop some real-world skills that will serve him throughout life.$yes
 Write your lover a love letter. Fill it with your thoughts of a strong and deep inner passion.$yes
@@ -162,7 +162,7 @@ Give up your seat on a bus. Whether it’s to an elderly person, a pregnant woma
 Be punctual. Don’t make your friends wait. Show them that you respect their time. When you agree to meet for socializing, don’t be late. Chronic lateness suggests many negatives: you don’t care, you don’t know how to budget time, you are a procrastinator, or you are careless and do not pay attention to details (like knowing what time it is).$yes
 Don’t talk about stress; do something about it. Break the cycle of complaining about your high stress level. It’s giving mental energy to bringing more of it your way. Instead focus on how you can de-stress your life.$yes
 Pay back any money that you owe, be it to a family member, a friend, or a business colleague. Make the effort to do the right thing, even if you can afford to make only small payments.$yes
-Stop being competitive. Let go of competition with your lover or spouse over who earns the most money. In the grand scheme of things it really doesn’t matter, does it? Just count your blessings that you both can contribute to your income.$no
+Stop being competitive. Let go of competition with your lover or spouse over who earns the most money. In the grand scheme of things it really doesn’t matter, does it? Just count your blessings that you both can contribute to your income.$yes
 Help someone change a flat tire, even if it’s raining. If you’ve ever had to change a flat tire on your own before, you know how much of a hassle it can be. So next time you see someone changing a tire on the side of the road, pull over and offer an extra hand—even if it’s just to hold an umbrella over someone’s head.$yes
 Pull all the way forward at the gas pump. This way the car following can use the pump behind you. Otherwise, that driver will have to wait until you finish pumping your gas, find another pump, or do tricky maneuvering to get into a position elsewhere at the station.$yes
 Forgive. Priests, psychologists, and doctors know that the act of forgiveness helps heal a person’s body as well as heart, mind, and soul. You may think forgiving helps the other person, but, in fact, it helps you both.$yes
@@ -187,8 +187,8 @@ Lobby for free rides for the homeless. Petition your community public transporta
 Send a care package to your child in college. When your college-age daughter becomes frustrated or a little depressed during her final examinations, make her a special basket. Put in scented oils, mini French-milled soaps, mint lotion for the feet, pumice, nail clippers, a bag of chamomile tea, and a CD of beautiful relaxing music.$yes
 Give the gift of separation. Allow for some time apart from your loved one to appreciate your relationship. Love depends more on the quality of time spent together rather than the amount of time. Time apart can be healthy and good for a romantic relationship.$yes
 Volunteer to be a mentor to a child. Your commitment could have a positive$yes
-impact on the life of a young person.$no
-Be responsible about your finances. Try not to spend money you don’t have. Keep track of your credit card debt and pay off the entire bill if you can every billing cycle.$no
+impact on the life of a young person.$yes
+Be responsible about your finances. Try not to spend money you don’t have. Keep track of your credit card debt and pay off the entire bill if you can every billing cycle.$yes
 Help fix up a friend’s home before she sells it. You might pack boxes, wrap pictures and paintings in brown paper for shipping, put outdated documents through a shredder so they don’t have to be part of the move, clean out the garage so excess furniture can be put there when the new carpet goes in, or go through the house with spackle and a trowel to patch small nail holes in preparation for the painters.$yes
 Cook a meal for a relative with a new baby. After the birth of a baby, everyone’s so busy there’s hardly any time to eat. Help out the family by putting together a homemade dinner and delivering it to their home.$yes
 Learn cardiopulmonary resuscitation (CPR). Your knowledge and fast action could save someone’s life. Courses are offered through community colleges, parks and recreation departments, and local branches of the Red Cross. You can even learn CPR from a video that has been approved by the American Heart Association. Check out www.cpr-training-classes.com to sign up.$yes
