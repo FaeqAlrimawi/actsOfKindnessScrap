@@ -11,7 +11,7 @@ Not practicing safe sex$no
 Kiss and telling$no
 Go to social events/parties out of obligation, not desire or love$no
 Engage with people who are judgmental and gossipy$no
-Tell secrets$yes
+Tell secrets$no
 Lose focus when talking to others$no
 Try to change your significant other$no
 Avoid ALL arguments$no
@@ -52,10 +52,10 @@ Give up too easily$yes
 Compare yourself negatively to others$no
 Slouching$no
 Fidgeting$no
-Buy things because others like them, not because you like them$no
+Buy things because others like them, not because you like them$yes
 Social withdrawal$no
 Excessive preoccupation with personal problems$no
-Let fear stop you from trying new things$yes
+Let fear stop you from trying new things$no
 Forget names of people you meet$no
 Repeat yourself$no
 Be unfriendly$no
@@ -68,7 +68,7 @@ Finishing other people’s sentences$no
 Interrupt others$no
 Monopolize the conversation$no
 Saying “ummm” and “ahhh” frequently$no
-Pick fights$yes
+Pick fights$no
 Be overly critical$no
 Be argumentative$no
 Be a know-it-all$no
@@ -83,9 +83,9 @@ Not dusting$no
 Not taking off shoes when you enter your home$no
 Save broken things to fix…someday$no
 Have no schedule for decluttering/organizing/cleaning$no
-Keep items/clothes you haven’t worn or used in years$yes
+Keep items/clothes you haven’t worn or used in years$no
 Buy stuff you don’t need only to keep it at home$yes
-Put dishes in the sink and not washing them$no
+Put dishes in the sink and not washing them$yes
 Hoarding$no
 Compulsive lying$no
 Bullying$no
@@ -99,7 +99,7 @@ Drugs$no
 Smoking (if habit is really bad)$no
 Being aggressive toward others (fights, abuse)$no
 Overmedicating$no
-Learn sign language and then embrace the opportunity to communicate with your nonhearing friends.$yes
+Learn sign language and then embrace the opportunity to communicate with your nonhearing friends.$no
 Return phone calls and emails promptly. It shows respect and kindness for the caller and writer.$yes
 Teach a child to cook. Make sure the project is age appropriate and the child’s safety is ensured. Make it fun and easy. Cooking together will instill confidence in the child and provide a way for you to spend quality time together.$yes
 Set out a bowl of candy for everyone in the office to share.$yes
@@ -137,7 +137,7 @@ Don’t let anyone drive under the influence. If you are out with a friend who h
 Take a class and learn about conflict resolution. Apply it to the relationships in your life and watch how the causes of conflicts begin to shift or diminish.$no
 Swap skills with a friend. Offer to teach a friend how to make killer guacamole if he will show you how to irrigate your lawn. You both benefit from sharing your knowledge with each other.$yes
 Strive for equality in your love relationship. Relationships in which the couples share equally in sacrifices, decision-making, communication, and chores are more likely to succeed than those relationships in which one person dominates the other.$yes
-Plan a children’s tea party. Invite bears, dolls, and other stuffed animals. Wear fancy hats. Allow the children to set the table with napkins, spoons, and teacups. Add a plate of sandwiches and jar of gingersnaps. The children will love it.$yes
+Plan a children’s tea party. Invite bears, dolls, and other stuffed animals. Wear fancy hats. Allow the children to set the table with napkins, spoons, and teacups. Add a plate of sandwiches and jar of gingersnaps. The children will love it.$no
 Help a friend who wants to learn to cook. Buy him new pans  or donate your old ones and one of your cookbooks. Don’t do it because he might reward you with a gourmet meal; do it because it will give him such joy to have the necessary tools to start cooking.$yes
 Plant some perennials in a cancer patient’s garden. Put them where he can see them blooming. Annuals die each year and must be replaced, but perennials return year after year. Your gesture is a small, unspoken statement of your hope$yes
 Boycott unregulated foreign products. These companies can have harsh regimes. In particular do not support products coming from places where governments exploit their own people, force people to work in unsafe conditions, and sustain control of power through threats of violence or imprisonment.$no
@@ -160,14 +160,14 @@ Be thankful for the gift of your life. It’s nothing short of miraculous to be 
 Help someone out at the grocery store. Reach high to retrieve a grocery item for someone who wants it but can’t reach it. If neither of you can reach it, offer to get help.$yes
 Give up your seat on a bus. Whether it’s to an elderly person, a pregnant woman, a young mother with several children, a physically challenged person, or someone who simply looks weary, giving your seat up will help that person out and brighten his or her day.$yes
 Be punctual. Don’t make your friends wait. Show them that you respect their time. When you agree to meet for socializing, don’t be late. Chronic lateness suggests many negatives: you don’t care, you don’t know how to budget time, you are a procrastinator, or you are careless and do not pay attention to details (like knowing what time it is).$yes
-Don’t talk about stress; do something about it. Break the cycle of complaining about your high stress level. It’s giving mental energy to bringing more of it your way. Instead focus on how you can de-stress your life.$yes
+Don’t talk about stress; do something about it. Break the cycle of complaining about your high stress level. It’s giving mental energy to bringing more of it your way. Instead focus on how you can de-stress your life.$no
 Pay back any money that you owe, be it to a family member, a friend, or a business colleague. Make the effort to do the right thing, even if you can afford to make only small payments.$yes
 Stop being competitive. Let go of competition with your lover or spouse over who earns the most money. In the grand scheme of things it really doesn’t matter, does it? Just count your blessings that you both can contribute to your income.$yes
 Help someone change a flat tire, even if it’s raining. If you’ve ever had to change a flat tire on your own before, you know how much of a hassle it can be. So next time you see someone changing a tire on the side of the road, pull over and offer an extra hand—even if it’s just to hold an umbrella over someone’s head.$yes
 Pull all the way forward at the gas pump. This way the car following can use the pump behind you. Otherwise, that driver will have to wait until you finish pumping your gas, find another pump, or do tricky maneuvering to get into a position elsewhere at the station.$yes
 Forgive. Priests, psychologists, and doctors know that the act of forgiveness helps heal a person’s body as well as heart, mind, and soul. You may think forgiving helps the other person, but, in fact, it helps you both.$yes
 Be sincere. Be brave enough to speak openly from your heart to your friends when they seek your opinion. Don’t be duplicitous, telling them one thing to their face and something different behind their backs. Your friends will appreciate your sincerity, and you will begin to feel honor bound to tell the truth.$yes
-Empty your pantry for a young relative’s first house. Buying a home is a big step. Filling the kitchen cupboards with food is an additional expense at a$no
+Empty your pantry for a young relative’s first house. Buying a home is a big step. Filling the kitchen cupboards with food is an additional expense at a$yes
 time when it may seem to her that the cash register has been constantly ringing. Help a young relative by filling her cupboards for her.$yes
 Allow your friends to pay you back in other ways. If a friend is strapped for cash and you’ve loaned him some money, let him do something for you rather than actually paying you back. Instead of giving you money, he could cook dinner for you both or give you a ride to the airport.$yes
 Take a break from fast food. Be kind to your body and reacquaint yourself, your family, and friends with the pleasure of taking time to prepare a great meal from the freshest and highest-quality ingredients. You’ll be giving a gift to yourself as well as to others.$yes
@@ -177,7 +177,7 @@ Invite a neighbor’s children to the movies with yours. It’ll heighten your y
 Remember single friends during special times. Keep your friend who is single and without family in mind on his birthday and at other holiday times during the year. Invite him to celebratory dinners, send him birthday greetings (even if it is just an email card), and introduce$yes
 him to your other single friends. Your efforts of inclusion might mean his support network will grow.$no
 Make sure your mother and aunts get regular mammograms.$yes
-Early detection of breast cancer saves lives. See www.center4research.org for more information.$no
+Early detection of breast cancer saves lives. See www.center4research.org for more information.$yes
 Keep your promises. Follow through whenever you give your word. If you make a promise to someone and then forget about it ten minutes later, that lack of attention to follow through violates any trust you may have established. Remember what you promised to do and then do it.$yes
 Speak out against hateful comments. When you hear slurs or epithets hurled at someone, stand up for that person. Refuse to be complicit in the act by your inaction. Call law enforcement if the person is threatened or the situation deteriorates. Do something. Apathy is bad karma.$yes
 Cut the plastic rings of any six-pack beverage carrier. Those plastic holders make it into the ocean where they are harmful to dolphins and other sea life.$yes
@@ -188,7 +188,7 @@ Send a care package to your child in college. When your college-age daughter bec
 Give the gift of separation. Allow for some time apart from your loved one to appreciate your relationship. Love depends more on the quality of time spent together rather than the amount of time. Time apart can be healthy and good for a romantic relationship.$yes
 Volunteer to be a mentor to a child. Your commitment could have a positive$yes
 impact on the life of a young person.$yes
-Be responsible about your finances. Try not to spend money you don’t have. Keep track of your credit card debt and pay off the entire bill if you can every billing cycle.$yes
+Be responsible about your finances. Try not to spend money you don’t have. Keep track of your credit card debt and pay off the entire bill if you can every billing cycle.$no
 Help fix up a friend’s home before she sells it. You might pack boxes, wrap pictures and paintings in brown paper for shipping, put outdated documents through a shredder so they don’t have to be part of the move, clean out the garage so excess furniture can be put there when the new carpet goes in, or go through the house with spackle and a trowel to patch small nail holes in preparation for the painters.$yes
 Cook a meal for a relative with a new baby. After the birth of a baby, everyone’s so busy there’s hardly any time to eat. Help out the family by putting together a homemade dinner and delivering it to their home.$yes
 Learn cardiopulmonary resuscitation (CPR). Your knowledge and fast action could save someone’s life. Courses are offered through community colleges, parks and recreation departments, and local branches of the Red Cross. You can even learn CPR from a video that has been approved by the American Heart Association. Check out www.cpr-training-classes.com to sign up.$yes

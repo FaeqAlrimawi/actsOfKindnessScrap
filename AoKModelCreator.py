@@ -38,6 +38,7 @@ act_description, act_tech = df_train[description_column], df_train[classifier_co
 print("Creating model for file:", os.path.abspath(file_name))
 print("Sheet in the file:", sheet_name)
 print("Number of AoKs:", len(df_train.loc[df_train[classifier_column] == 'yes', description_column]))
+print("Number of NON-AoKs:", len(df_train.loc[df_train[classifier_column] == 'no', description_column]))
 
 documents = []
 
