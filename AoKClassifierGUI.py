@@ -74,6 +74,15 @@ def get_sentiment(aok):
     # print("sentiment: {}".format(sentiment_value))
 
 
+## load model
+model = pickle.load(open('AoK_classifier_model.pkl', 'rb'))
+
+features_file = pickle.load(open("AoK_features.pkl", "rb"))
+
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
+loaded_vec = CountVectorizer(decode_error="replace",vocabulary=features_file)
+
+
 # ----- Full layout -----
 import numpy as np
 
@@ -82,20 +91,17 @@ layout = [
     [
         sg.Text("Enter act:"),
         sg.InputText(size=(30, 1), enable_events=True, key="-ACT-"),
-        sg.Button("Check", key="-CHECK-")
+        sg.Button("Is an AoK?", key="-CHECK-")
     ],
     [
-        sg.Text("Is an AoK?", key="-RESULT-")
+        sg.Text("", font='bold', key="-RESULT-"),
+        sg.Text("", key="-RESULTExtra-")
+    ],
+
+    [
+        sg.Text("", key="-Sentiment-")
     ]
 ]
-
-## load model
-model = pickle.load(open('AoK_classifier_model.pkl', 'rb'))
-
-features_file = pickle.load(open("AoK_features.pkl", "rb"))
-
-from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
-loaded_vec = CountVectorizer(decode_error="replace",vocabulary=features_file)
 
 sg.theme("DarkBlue3")
 # sg.set_options(font=("Courier New", 13))
@@ -128,19 +134,26 @@ while True:
         sentiment_judgment_value = vader_analysis(sentiment_analysis['compound'])
         sentiment_analysis_text = "Sentiment: {}. Details: Positive [{}], Neutral [{}], Negative [{}]".format(sentiment_judgment_value, sentiment_analysis['pos'],
                                                                                                                      sentiment_analysis['neu'], sentiment_analysis['neg'])
-        print(sentiment_analysis_text, "compound [{}]".format(sentiment_analysis['compound']))
-        label = ""
+        # print(sentiment_analysis_text, "compound [{}]".format(sentiment_analysis['compound']))
+        isAok = ""
+        label_result = ""
+        label_result_extra = ""
 
         if yes_result < lower_threshold:
             # print(lemmatize(pos_tag())))
-            label += "Is an AoK? Not Really! (Confidence in [not AoK] " + str(y_pred[0][0]*100)+ "%)"
+            label_result = " Not Really! "
+            label_result_extra = "(Confidence in [not AoK] " + "{:.1f}".format(y_pred[0][0]*100)+ "%)"
 
         elif lower_threshold <= yes_result <= upper_threshold:
-            label += "Is an AoK? Hmmm maybe?! (Confidence in [an AoK] " + str(y_pred[0][1] * 100) + "%)"
+            label_result = "Hmmm maybe?!"
+            label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1] * 100) + "%)"
         else:
-            label += "Is an AoK? Yep! (Confidence in [an AoK] " + str(y_pred[0][1]*100)+ "%)"
+            label_result += "Yep!"
+            label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1]*100)+ "%)"
 
-        label += "\n"+sentiment_analysis_text
-        window["-RESULT-"].update(label)
+
+        window["-RESULT-"].update(label_result)
+        window["-RESULTExtra-"].update(label_result_extra)
+        window["-Sentiment-"].update(sentiment_analysis_text)
 
 window.close()
