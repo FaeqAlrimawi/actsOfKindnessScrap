@@ -1,4 +1,6 @@
 import os
+from builtins import print
+
 import tweepy as tw
 import pandas as pd
 
@@ -69,13 +71,8 @@ import pandas as pd
 # response = requests.request("GET", url, headers=headers)
 # res_json = response.json()
 # print(res_json)
-#
-# next_token = print(res_json["meta"]["next_token"])
-#
-# headers = {"Authorization": "Bearer {}".format(bearer_token)}
-# response = requests.request("GET", url, headers=headers)
-# res_json = response.json()
-# print(res_json)
+
+
 
 # For sending GET requests from the API
 import requests
@@ -94,11 +91,11 @@ import unicodedata
 #To add wait time between requests
 import time
 
-# os.environ['TOKEN'] = 'AAAAAAAAAAAAAAAAAAAAAPnuZAEAAAAACQaG7SsZlhKKV%2BkMXQhbkGlpteg%3DtNee2itBr9NyLly1R9qgY7w1yFm2icgbLBIAV4LILZ63JgLIln'
+os.environ['TOKEN'] = 'AAAAAAAAAAAAAAAAAAAAAPnuZAEAAAAACQaG7SsZlhKKV%2BkMXQhbkGlpteg%3DtNee2itBr9NyLly1R9qgY7w1yFm2icgbLBIAV4LILZ63JgLIln'
 
 
 def auth():
-    return 'AAAAAAAAAAAAAAAAAAAAAPnuZAEAAAAACQaG7SsZlhKKV%2BkMXQhbkGlpteg%3DtNee2itBr9NyLly1R9qgY7w1yFm2icgbLBIAV4LILZ63JgLIln'
+    return os.environ['TOKEN']
 
 
 def create_headers(bearer_token):
@@ -107,12 +104,13 @@ def create_headers(bearer_token):
 
 
 def create_url(keyword, start_date, end_date, max_results=10):
-    search_url = "https://api.twitter.com/2/tweets/search/all"  # Change to the endpoint you want to collect data from
+
+    search_url = "https://api.twitter.com/2/tweets/search/recent/"  # Change to the endpoint you want to collect data from
 
     # change params based on the endpoint you are using
     query_params = {'query': keyword,
-                    'start_time': start_date,
-                    'end_time': end_date,
+                    # 'start_time': start_date,
+                    # 'end_time': end_date,
                     'max_results': max_results,
                     'expansions': 'author_id,in_reply_to_user_id,geo.place_id',
                     'tweet.fields': 'id,text,author_id,in_reply_to_user_id,geo,conversation_id,created_at,lang,public_metrics,referenced_tweets,reply_settings,source',
@@ -124,7 +122,7 @@ def create_url(keyword, start_date, end_date, max_results=10):
 
 def connect_to_endpoint(url, headers, params, next_token = None):
     params['next_token'] = next_token   #params object received from create_url function
-    response = requests.request("GET", url, headers = headers, params = params)
+    response = requests.request("GET", url, headers = headers, params=params)
     print("Endpoint Response Code: " + str(response.status_code))
     if response.status_code != 200:
         raise Exception(response.status_code, response.text)
@@ -132,16 +130,18 @@ def connect_to_endpoint(url, headers, params, next_token = None):
 
 
 
-#Inputs for the request
+##Inputs for the request
 bearer_token = auth()
 headers = create_headers(bearer_token)
-keyword = "xbox lang:en"
+keyword = "#kindness"
 start_time = "2021-03-01T00:00:00.000Z"
 end_time = "2021-03-31T00:00:00.000Z"
-max_results = 15
+max_results = 20
 
 url = create_url(keyword, start_time,end_time, max_results)
 
+print(url)
+print(headers)
 json_response = connect_to_endpoint(url[0], headers, url[1])
 
 print(json.dumps(json_response, indent=4, sort_keys=True))
