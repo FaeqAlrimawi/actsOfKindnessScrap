@@ -125,6 +125,10 @@ while True:
         y_pred = model.predict_proba(text)
 
         yes_result = y_pred[0][1]
+
+        # % that it is AOK
+        label_result_extra = "(AoK% = " + "{:.1f}".format(y_pred[0][1]*100)+ "%)"
+
         lower_threshold = 0.4
         upper_threshold = 0.6
 
@@ -137,20 +141,22 @@ while True:
         # print(sentiment_analysis_text, "compound [{}]".format(sentiment_analysis['compound']))
         isAok = ""
         label_result = ""
-        label_result_extra = ""
+        # label_result_extra = ""
 
         if yes_result < lower_threshold:
             # print(lemmatize(pos_tag())))
             label_result = " Not Really! "
-            label_result_extra = "(Confidence in [not AoK] " + "{:.1f}".format(y_pred[0][0]*100)+ "%)"
+
+            # label_result_extra = "(AOK% " + "{:.1f}".format(y_pred[0][0]*100)+ "%)"
 
         elif lower_threshold <= yes_result <= upper_threshold:
             label_result = "Hmmm maybe?!"
-            label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1] * 100) + "%)"
+            # window["-RESULT-"].update(label_result, text_color='yellow')
+            # label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1] * 100) + "%)"
         else:
             label_result += "Yep!"
-            label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1]*100)+ "%)"
-
+            # window["-RESULT-"].update(label_result, text_color = 'green')
+            # label_result_extra = "(Confidence in [an AoK] " + "{:.1f}".format(y_pred[0][1]*100)+ "%)"
 
         window["-RESULT-"].update(label_result)
         window["-RESULTExtra-"].update(label_result_extra)
