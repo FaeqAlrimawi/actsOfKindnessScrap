@@ -1,7 +1,7 @@
 ### pages of the website
 import pandas as pd
 from flask import Blueprint, render_template
-
+import os
 
 views = Blueprint("views", __name__)
 
@@ -20,10 +20,11 @@ def guessAoK():
 
 @views.route('/listofAoK')
 def listofAoK():
-    file_name = '/static/actsOfKindness.xlsx'
-    sheet_name = 'Adams Media'
+    file_name = './website/static/actsOfKindness.xlsx'
+    # file_name = 'actsOfKindness.xlsx'
+    sheet_name = 'All_AoKs'
     description_column = 'Description'
 
     df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
-    # return render_template("listofAoK.html")
-    return df.to_html()
+    return render_template("listofAoK.html", tableHtml=df.to_html())
+    # return df.to_html()
