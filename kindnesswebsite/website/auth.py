@@ -1,12 +1,15 @@
 ### pages of the website
-from flask import Blueprint
+from math import fabs
+from flask import Blueprint, render_template
+from sqlalchemy import false, true
 
 auth = Blueprint("auth", __name__)
 
 
 @auth.route('/login')
 def login():
-    return "<p> Login </p>"
+    # add variables (as many as you want)
+    return render_template("login.html", text="Testing", usr="Peter", isTrue=True)
 
 
 @auth.route('/logout')
@@ -16,7 +19,7 @@ def logout():
 
 @auth.route('/sign-up')
 def sign_up():
-    return "<p> Sign Up </p>"
+    return render_template("sing_up.html")
 
 
 

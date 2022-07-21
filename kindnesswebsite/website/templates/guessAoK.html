@@ -1,0 +1,22 @@
+{% extends 'base.html' %} 
+{% block title %}Guess if AoK{% endblock%}
+
+
+{% block content%}
+
+<form method="POST">
+<h3 align="center">Is my Act an Act of Kindness (AoK)?</h3>
+
+<div class="form-group">
+    <label for="act">Enter Act</label>
+    <input type="text" class="form-control" id="act" name="act" placeholder="Enter Act Description"/>
+</div>
+
+
+
+<br/>
+
+<button type="submit" class="btn btn-primary">Guess</button>
+
+</form>
+{% endblock%}
