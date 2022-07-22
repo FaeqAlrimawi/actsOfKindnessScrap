@@ -1,5 +1,28 @@
 {% extends 'base.html' %} 
 {% block title %}HOME{% endblock%}
 {% block content%}
-<h1> This is the home page</h1>
+
+<br/>
+<h1>Add Acts of Kindness</h1>
+
+<form method='POST'>
+<textarea name="note" id='note' class='form-control'></textarea>
+<br/>
+<div align='center'>
+<button type="submit" class="btn btn-primary"> Add AoK</button>
+</div>
+</form>
+
+<br/>
+<br/>
+<ul class="list-group list-group-flush" id="notes">
+    {% for note in user.notes %} 
+    <li class="list-group-item">{{note.data}}
+        <button type="button" class="close" onClick="delete_note({{note.id}})">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </li>
+    {% endfor%}
+
+
 {% endblock%}
