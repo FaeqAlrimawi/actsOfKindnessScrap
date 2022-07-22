@@ -1,11 +1,14 @@
 ### pages of the website
+from operator import methodcaller
 import pandas as pd
-from flask import Blueprint, flash, jsonify, render_template, request
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for
 import os
 from flask_login import login_required, current_user
 from . import db
 from .models import Note
 import json
+from .control import checkIfAoK
+
 
 views = Blueprint("views", __name__)
 
@@ -27,9 +30,21 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/guessAoK')
+@views.route('/guessAoK', methods=['POST', 'GET'])
 def guessAoK():
-    return render_template("guessAoK.html", user=current_user)
+
+    if request.method == 'POST':
+        act = request.form.get('act')
+        
+        if act:
+           probability = checkIfAoK(act)
+               
+           return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
+        else:
+            flash("Please enter an act", category='error')
+
+            
+    return render_template("guessAoK.html", user=current_user, prob=-1, act="")
 
 
 
@@ -51,10 +66,9 @@ def delete_note():
     noteId = note['noteId']      
     
     note = Note.query.get(noteId)
-    print("&&&& is user?")
     if note.user_id == current_user.id:
-        print("&&&& Nuser is the same")
         db.session().delete(note)
         db.session.commit()
         
     return jsonify({})
+

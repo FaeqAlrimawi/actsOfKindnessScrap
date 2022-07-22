@@ -5,19 +5,29 @@
 {% block content%}
 
 <br/>
+
 <form method="POST">
-<h3 align="center">Is my Act an Act of Kindness (AoK)?</h3>
+<h3 align>Is my Act an Act of Kindness (AoK)?</h3>
 
-<div class="form-group">
-    <label for="act">Enter Act</label>
-    <input type="text" class="form-control" id="act" name="act" placeholder="Enter Act Description"/>
-</div>
-
-
+<input type="text" class="form-control" id="act" name="act" placeholder="Enter Act Description" value="{{act}}"/>
 
 <br/>
 
 <button type="submit" class="btn btn-primary">Guess</button>
 
+
 </form>
+
+<br/>
+<div>
+    <label for="prob">
+
+        {% if prob >= 0 %}
+        
+        <h3>Probability: {{"{:.2f}".format(prob) + "%"}}</h3>
+
+        {% endif %}
+    </label>
+</div>
+
 {% endblock%}
