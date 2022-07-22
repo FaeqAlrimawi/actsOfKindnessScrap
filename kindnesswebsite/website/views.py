@@ -12,6 +12,11 @@ from .control import checkIfAoK
 
 views = Blueprint("views", __name__)
 
+file_name = './website/static/actsOfKindness.xlsx'
+# file_name = 'actsOfKindness.xlsx'
+sheet_name = 'All_AoKs'
+description_column = 'Description'
+
 
 # the route of our website
 @views.route('/', methods=['GET', 'POST'])
@@ -69,13 +74,9 @@ def editAoK():
 
 @views.route('/listofAoK')
 def listofAoK():
-    file_name = './website/static/actsOfKindness.xlsx'
-    # file_name = 'actsOfKindness.xlsx'
-    sheet_name = 'All_AoKs'
-    description_column = 'Description'
-
+ 
     df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
-    return render_template("listofAoK.html", tableHtml=df.to_html(), user=current_user)
+    return render_template("listofAoK.html", acts=df.values, user=current_user)
     # return df.to_html()
     
     
@@ -91,3 +92,9 @@ def delete_AoK():
         
     return jsonify({})
 
+
+# @views.route('/api/data')
+# def data():
+#     print(" #### im heererer")
+#     df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
+#     return {'data': df.values}
