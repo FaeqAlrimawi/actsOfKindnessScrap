@@ -37,11 +37,13 @@
         <div class="navbar-nav">
           {% if user.is_authenticated %} 
           <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="guessAoK" href="/guessAoK">Guess if AoK</a>
-          <a class="nav-item nav-link" id="listofAoK" href="/listofAoK">List of AoKs</a>
+          <a class="nav-item nav-link" id="guessAoK" href="/guessAoK">Guess</a>
+          <a class="nav-item nav-link" id="listofAoK" href="/listofAoK">List</a>
+          <a class="nav-item nav-link" id="edit" href="/edit">Edit</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
-          <a class="nav-item nav-link" id="guessAoK" href="/guessAoK">Guess if AoK</a>
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="guessAoK" href="/guessAoK">Guess</a>
             <a class="nav-item nav-link" id="login" href="/login">Login</a>
             <!-- <a class="nav-item nav-link" id="sign-out" href="/sign-up">Sign Up</a>-->
           {% endif %}

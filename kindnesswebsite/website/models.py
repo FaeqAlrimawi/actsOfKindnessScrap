@@ -17,3 +17,13 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note') # link a user to their notes (need to capitalise the name of the calss)
+    acts = db.relationship('AoK')
+    
+    
+class AoK(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    act = db.Column(db.String(1000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    

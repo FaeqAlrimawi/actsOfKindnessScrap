@@ -5,7 +5,7 @@ from flask import Blueprint, flash, jsonify, render_template, request, redirect,
 import os
 from flask_login import login_required, current_user
 from . import db
-from .models import Note
+from .models import AoK
 import json
 from .control import checkIfAoK
 
@@ -15,18 +15,18 @@ views = Blueprint("views", __name__)
 
 # the route of our website
 @views.route('/', methods=['GET', 'POST'])
-@login_required
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
+    
+    # if request.method == 'POST':
+    #     aok = request.form.get('aok')
         
-        if len(note)<1:
-            flash("Act too short!", category='error')
-        else:
-            new_note  =Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash("Act added successfully", category='success')
+    #     if len(aok)<1:
+    #         flash("Act too short!", category='error')
+    #     else:
+    #         new_aok = AoK(act=aok, user_id=current_user.id)
+    #         db.session.add(new_aok)
+    #         db.session.commit()
+    #         flash("Act added successfully", category='success')
     return render_template("home.html", user=current_user)
 
 
@@ -47,6 +47,25 @@ def guessAoK():
     return render_template("guessAoK.html", user=current_user, prob=-1, act="")
 
 
+@views.route('/edit', methods=['GET', 'POST'])
+def editAoK():
+    
+    if request.method == 'POST':
+        aok = request.form.get('aok')
+        
+        if len(aok)<1:
+            flash("Act too short!", category='error')
+            
+        else:
+            new_aok = AoK(act=aok, user_id=current_user.id)
+            db.session.add(new_aok)
+            db.session.commit()
+            
+            flash("Act added successfully", category='success')
+            
+    return render_template("editAoK.html", user=current_user)
+
+
 
 @views.route('/listofAoK')
 def listofAoK():
@@ -60,14 +79,14 @@ def listofAoK():
     # return df.to_html()
     
     
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']      
+@views.route('/delete-AoK', methods=['POST'])
+def delete_AoK():
+    aok = json.loads(request.data)
+    aokId = aok['aokId']      
     
-    note = Note.query.get(noteId)
-    if note.user_id == current_user.id:
-        db.session().delete(note)
+    aok = AoK.query.get(aokId)
+    if aok.user_id == current_user.id:
+        db.session().delete(aok)
         db.session.commit()
         
     return jsonify({})
