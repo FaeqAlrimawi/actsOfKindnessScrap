@@ -74,7 +74,3 @@ def sign_up():
     
     return render_template("sing_up.html", user=current_user)
 
-
-
-
-

@@ -93,8 +93,58 @@ def delete_AoK():
     return jsonify({})
 
 
-# @views.route('/api/data')
+# @views.route("/api/data")
 # def data():
-#     print(" #### im heererer")
-#     df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
-#     return {'data': df.values}
+    # # query = request.query_string
+    
+    # df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])[0:100]
+    # # print("#### ",query)
+
+    # # # search filter
+    # search = request.args.get('search[value]')
+    # if search:
+    #     df = df.apply(lambda row: row.astype(str).str.contains(f'%{search}').any(), axis=1)
+    
+    # total_filtered = df.count()
+    # # print("#### ", df)
+    # # total_filtered = query.count()
+
+    # # # sorting
+    # # order = []
+    # # i = 0
+    # # while True:
+    # #     col_index = request.args.get(f'order[{i}][column]')
+    # #     if col_index is None:
+    # #         break
+    # #     col_name = request.args.get(f'columns[{col_index}][data]')
+    # #     if col_name not in ['Description']:
+    # #         col_name = 'Description'
+    # #     descending = request.args.get(f'order[{i}][dir]') == 'desc'
+    # #     col = getattr(df, col_name)
+    # #     if descending:
+    # #         col = col.desc()
+    # #     order.append(col)
+    # #     i += 1
+    # # if order:
+    # #     query = query.order_by(*order)
+
+    # # # pagination
+    # # start = request.args.get('start', type=int)
+    # # length = request.args.get('length', type=int)
+    # # query = df.offset(start).limit(length)
+    
+    
+    # # print(df.values)
+    # # response
+    # return {
+    #     # 'data': [user.to_dict() for user in query],
+    #     'recordsFiltered': total_filtered,
+    #     # 'recordsTotal': query.count(),
+    #     # 'draw': request.args.get('draw', type=int),
+    #     'data' : [df.to_json()],
+    # }
+
+
+
+
+
