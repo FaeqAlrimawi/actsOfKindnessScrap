@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}AoK Scrapper{% endblock  %}
+
+{% block  content %}
+
+<br/>
+<form method="POST">
+
+<input type="text" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
+
+<br/>
+
+<button type="submit" class="btn btn-primary">Scrap</button>
+
+</form>
+
+<br/>
+<br/>
+<table id="aoks" class="table table-striped">
+    <thead>
+        <tr>
+        <th>Description</th>
+        </tr>
+    </thead>
+    <tbody> 
+    
+    {% for act in acts %}
+    <tr>
+        <td>{{act[0]}}</td>
+    </tr>
+    {% endfor %}
+    
+    </tbody>
+    </table>
+
+    
+{% endblock  %}
+
+
+{% block scripts %}
+
+<script>
+    $(document).ready(function(){
+        $('#aoks').DataTable({
+
+        });
+    });
+</script>
+{% endblock %}
+

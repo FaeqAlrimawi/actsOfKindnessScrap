@@ -43,8 +43,10 @@ def guessAoK():
         
         if act:
            probability = checkIfAoK(act)
-               
-           return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
+           d =  jsonify(prob=probability) 
+           print("wwwww ", d.data)
+           return d   
+        #    return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
         else:
             flash("Please enter an act", category='error')
 
@@ -91,6 +93,17 @@ def delete_AoK():
         db.session.commit()
         
     return jsonify({})
+
+
+@views.route("/aok-scrapper", methods=["POST", "GET"])
+def scrapWebsite():
+    
+    if request.method == 'POST':
+        return
+    
+    return render_template("scrapper.html", user=current_user)
+
+
 
 
 # @views.route("/api/data")

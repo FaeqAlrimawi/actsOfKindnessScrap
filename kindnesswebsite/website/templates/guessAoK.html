@@ -6,7 +6,7 @@
 
 <br/>
 
-<form method="POST">
+<form method="POST" name="aok-form">
 <h3 align>Is my Act an Act of Kindness (AoK)?</h3>
 
 <input type="text" class="form-control" id="act" name="act" placeholder="Enter Act Description" value="{{act}}"/>
@@ -15,8 +15,33 @@
 
 <button type="submit" class="btn btn-primary">Guess</button>
 
-
 </form>
+
+<script type="text/javascript">
+    (uri => {
+      // Register a listener for submit events.
+      const form = document.querySelector('form[name="aok-form"]');
+      form.addEventListener('submit', evt => {
+        // Suppress the default behavior of the form.
+        evt.preventDefault();
+        // Submit the form data.
+        fetch(uri, {
+          method: 'post',
+          body: new FormData(evt.target)
+        }).then(resp => resp.json())
+          .then(prob => {
+            console.log("#######" + prob);
+            // Handle response here.
+            var prob2 = prob
+            // const prob = JSON.parse(data)
+            //console.log("prooob: " + prob)
+            
+          });
+        // Reset the form.
+        //evt.target.reset();
+      });
+    })({{ url_for('views.guessAoK') | tojson }});
+  </script>
 
 <br/>
 <div>
