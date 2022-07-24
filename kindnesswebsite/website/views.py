@@ -7,7 +7,8 @@ from flask_login import login_required, current_user
 from . import db
 from .models import AoK
 import json
-from .control import checkIfAoK
+from .control import checkIfAoK, scrapWebsite
+import website
 
 
 views = Blueprint("views", __name__)
@@ -43,10 +44,10 @@ def guessAoK():
         
         if act:
            probability = checkIfAoK(act)
-           d =  jsonify(prob=probability) 
-           print("wwwww ", d.data)
-           return d   
-        #    return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
+        #    d =  jsonify(prob=probability) 
+           print("wwwww ", probability)
+        #    return d   
+           return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
         else:
             flash("Please enter an act", category='error')
 
@@ -96,10 +97,12 @@ def delete_AoK():
 
 
 @views.route("/aok-scrapper", methods=["POST", "GET"])
-def scrapWebsite():
+def aokScrapper():
     
     if request.method == 'POST':
-        return
+        websiteURL = request.form.get('websiteURL')
+        scrapWebsite(websiteURL)
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL)
     
     return render_template("scrapper.html", user=current_user)
 

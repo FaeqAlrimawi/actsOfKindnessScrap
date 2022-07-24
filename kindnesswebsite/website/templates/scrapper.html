@@ -7,7 +7,7 @@
 <br/>
 <form method="POST">
 
-<input type="text" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
+<input type="url" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
 
 <br/>
 
@@ -17,6 +17,17 @@
 
 <br/>
 <br/>
+
+<div >
+    {% if  websiteURL %}
+    <h3>
+      
+        Scrapping: <a href="{{websiteURL}}" target="_blank">{{websiteURL}}</a>
+       
+    </h3>
+    
+<br/><br/>
+
 <table id="aoks" class="table table-striped">
     <thead>
         <tr>
@@ -33,7 +44,8 @@
     
     </tbody>
     </table>
-
+    {% endif %}
+</div>
     
 {% endblock  %}
 

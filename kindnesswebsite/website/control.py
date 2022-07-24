@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from bs4 import BeautifulSoup as bs
 import requests
 import re
-
+import nltk
 
 model = None
 
@@ -39,9 +39,25 @@ def checkIfAoK(act):
     return prob
 
 
-def scrapWebiste(websiteURL):
+def scrapWebsite(websiteURL):
     page = requests.get(websiteURL)
-    soup = bs(page.content)
-    
-    return soup.getText()
+    soup = bs(page.content, features="html.parser")
+     
+    processWebsiteScrapText(soup.getText())
+    # return soup.getText()
+
+
+def processWebsiteScrapText(text):
+    # returns the set of sentences in the given text
+   
+    sentences = nltk.sent_tokenize(text)
+    new_sents = []
+    for sent in sentences:
+        sent = ' '.join(sent.split())
+        if sent:
+            print(sent)
+            new_sents.append(sent)
+            
+            
+    # print(new_sents)
     
