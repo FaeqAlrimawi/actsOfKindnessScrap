@@ -1,4 +1,5 @@
 import pickle
+from sre_constants import FAILURE, SUCCESS
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from bs4 import BeautifulSoup as bs
 import requests
@@ -8,6 +9,9 @@ import trafilatura
 import json
 import numpy as np
 from requests.models import MissingSchema
+from .models import AoK
+from . import db
+from flask_login import current_user
 
 model = None
 
@@ -16,6 +20,17 @@ features_file = None
 loaded_vec = None
 
 
+def addAoK(aok):
+    if len(aok)<1:
+        return False
+    
+    else:
+        new_aok = AoK(act=aok, user_id=current_user.id)
+        db.session.add(new_aok)
+        db.session.commit()
+        return True
+    
+    
 def checkIfAoK(act):
     global model
     global features_file
@@ -46,9 +61,10 @@ def checkIfAoK(act):
 def scrapWebsite(websiteURL):
     page = requests.get(websiteURL)
     soup = bs(page.content, features="html.parser")
-    text = soup.find_all(text=True)
-    processWebsiteScrapText(text)
-    return soup.getText()
+    # text = soup.find_all("<li>")
+    sents = soup.find_all(text=True)
+    sents = processWebsiteScrapText(sents)
+    return sents
     # text = extract_text_from_single_web_page(websiteURL)
     # print(text)
 
@@ -85,10 +101,10 @@ def processWebsiteScrapText(text):
     for sent in sentences:
         sent = ' '.join(sent.split())
         if sent:
-            print(sent)
+            # print(sent)
             new_sents.append(sent)
             
-            
+    return new_sents        
     # print(new_sents)
     
     

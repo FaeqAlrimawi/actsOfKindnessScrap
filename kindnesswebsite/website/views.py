@@ -1,5 +1,6 @@
 ### pages of the website
 from operator import methodcaller
+from numpy import result_type
 import pandas as pd
 from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for
 import os
@@ -7,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import AoK
 import json
-from .control import checkIfAoK, scrapWebsite
+from .control import checkIfAoK, scrapWebsite, addAoK
 import website
 
 
@@ -96,13 +97,39 @@ def delete_AoK():
     return jsonify({})
 
 
+@views.route('/add-AoK', methods=['POST'])
+def add_AoK():
+    # print("##### in add aok")
+    aok = json.loads(request.data)
+    aok_str = aok['aok']    
+    
+    if type(aok_str) != str:
+        aok_str = str(aok_str)
+          
+    # print("### adding ", aok_str)
+   
+    # aok = AoK.query.get(aokId)
+    result = addAoK(aok_str)
+        
+    # print("##### ", result)    
+    return jsonify(result)
+
+
 @views.route("/aok-scrapper", methods=["POST", "GET"])
 def aokScrapper():
     
     if request.method == 'POST':
         websiteURL = request.form.get('websiteURL')
-        scrapWebsite(websiteURL)
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL)
+        sentences = scrapWebsite(websiteURL)
+        act_probs = []
+        
+        if sentences:
+            for sent in sentences:
+                prob = checkIfAoK(sent)
+                pair = (sent, prob)
+                act_probs.append(pair)
+            
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs)
     
     return render_template("scrapper.html", user=current_user)
 

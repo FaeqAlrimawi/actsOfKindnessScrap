@@ -1,11 +1,15 @@
+
+
 function delete_AoK(aokId){
     fetch('/delete-AoK', {
         method: 'POST',
         body: JSON.stringify({aokId: aokId})
     }).then((_res) => {
-        window.location.href="/";
+        window.location.href="/edit";
     });
 }
+
+
 
 
 $('#aok-form').click(function(event){

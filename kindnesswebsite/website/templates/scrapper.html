@@ -32,13 +32,28 @@
     <thead>
         <tr>
         <th>Description</th>
+        <th>Prob (%)</th>
+        <th>Add</th>
         </tr>
     </thead>
     <tbody> 
     
-    {% for act in acts %}
+    {% for act_prob in act_probs %}
     <tr>
-        <td>{{act[0]}}</td>
+        <td>
+            {{act_prob[0]}}
+        </td>
+
+        <td>
+            {{"{:.2f}".format(act_prob[1])}}
+        </td>
+        
+        <td >
+            <button type="button" class="close" id="btn-{{act_prob[0]}}" onClick="add_AoK('{{act_prob[0]}}')">
+                <span aria-hidden="true" id="span1">&plus;</span>
+            </button>
+
+        </td>
     </tr>
     {% endfor %}
     
@@ -51,6 +66,17 @@
 
 
 {% block scripts %}
+
+<script type="text/javascript">
+    function add_AoK(act){
+        fetch('/add-AoK', {
+            method: 'POST',
+            body: JSON.stringify({aok: act})
+        }).then((_res) => {
+            
+        });
+    }
+</script>
 
 <script>
     $(document).ready(function(){
