@@ -42,6 +42,7 @@
     <tr>
         <td>
             {{act_prob[0]}}
+            
         </td>
 
         <td>
@@ -49,8 +50,8 @@
         </td>
         
         <td >
-            <button type="button" class="close" id="btn-{{act_prob[0]}}" onClick="add_AoK('{{act_prob[0]}}')">
-                <span aria-hidden="true" id="span1">&plus;</span>
+            <button type="button" class="close" id="btn-{{loop.index}}" onClick="add_AoK('{{act_prob[0]}}', {{loop.index}})">
+                <span aria-hidden="true" >&plus;</span>
             </button>
 
         </td>
@@ -68,12 +69,13 @@
 {% block scripts %}
 
 <script type="text/javascript">
-    function add_AoK(act){
+    function add_AoK(act, row){
         fetch('/add-AoK', {
             method: 'POST',
-            body: JSON.stringify({aok: act})
-        }).then((_res) => {
-            
+            body: JSON.stringify({aok: act, row:row})
+        }).then((response) => {
+             $('#btn-'+row).find('span').html('&#10004;');
+             $('#btn-'+row).attr('disabled', 'disabled');
         });
     }
 </script>

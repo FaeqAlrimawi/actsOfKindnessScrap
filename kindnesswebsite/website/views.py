@@ -102,6 +102,9 @@ def add_AoK():
     # print("##### in add aok")
     aok = json.loads(request.data)
     aok_str = aok['aok']    
+    row = aok['row']
+    
+    print("##### ", row)
     
     if type(aok_str) != str:
         aok_str = str(aok_str)
