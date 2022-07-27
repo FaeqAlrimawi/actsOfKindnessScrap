@@ -77,7 +77,9 @@
             body: JSON.stringify({aok: act, row:row})
         }).then((response) => {
              $('#btn-'+row).find('span').html('&#10004;');
+             //$('#btn-'+row).removeClass("btn btn-outline-dark").addClass("btn btn-success"); 
              $('#btn-'+row).attr('disabled', 'disabled');
+             
             
         });
     }
@@ -85,21 +87,35 @@
 
 
 <script type="text/javascript">
+    var global_row = -1;
+    var global_act = "";
     function update_AoK(act, row){
 
-        $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
-            '<textarea  name="act"  id="txtarea-"'+row+ '" style="width:100%; height:100%;">'+act+'</textarea>' +
-            '<button type="button"  class="btn btn-secondary" onClick="updateAct(){'+
-            $('#td-'+row) + '.html("'+act+'");' +
-            '}">update</button>' +
-            '</div>');
-        
-        $('#td-'+row).attr("onclick", "").unbind("click")
+        if(global_row != -1) {
+            $('#td-'+global_row).html(global_act);
+            
+            $('#td-'+global_row).attr("onclick", 'update_AoK("'+global_act+'",'+global_row+')').bind("click");
+        }
+
+
+            $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
+                '<textarea  name="act"  id="txtarea-"'+row+ '" style="width:100%; height:100%;">'+act+'</textarea>' +
+                '<button type="button"  class="btn btn-secondary" onClick="updateAct(){'+
+                $('#td-'+row) + '.html("'+act+'");' +
+                '}">update</button>' +
+                '</div>');
+            
+            $('#td-'+row).attr("onclick", "").unbind("click");
+
+            global_row = row;
+            global_act = act;
+       
     }
 </script>
 
 
 <script>
+
     $(document).ready(function(){
         $('#aoks').DataTable({
 
