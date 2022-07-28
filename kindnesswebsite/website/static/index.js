@@ -1,4 +1,7 @@
 
+var global_row = -1;
+var global_act = "";
+
 
 function delete_AoK(aokId){
     fetch('/delete-AoK', {
@@ -10,19 +13,78 @@ function delete_AoK(aokId){
 }
 
 
+function add_AoK(row){
+
+    var act = $('#td-'+row).text();
+    
+    fetch('/add-AoK', {
+        method: 'POST',
+        body: JSON.stringify({aok: act, row:row})
+    }).then((response) => {
+         $('#btn-'+row).find('span').html('&#10004;');
+         //$('#btn-'+row).removeClass("btn btn-outline-dark").addClass("btn btn-success"); 
+         $('#btn-'+row).attr('disabled', 'disabled');
+         
+        
+    });
+}
+
+function updateAoKText(row){
+
+    var act = $('#txtarea-'+row).val();
+
+    //alert(act);
+    $('#td-'+row).html(act);
+   
+   $('#td-'+row).bind("click", function (){ update_AoK('+row+'); }); 
+
+   global_act = act;
+}
 
 
-$('#aok-form').click(function(event){
-    // Prevent redirection with AJAX for contact form
-    var form = $('#aok-form');
-    var form_id = 'aok-form';
-    var url = form.prop('action');
-    var type = form.prop('method');
-    var formData = getContactFormData(form_id);
+function cancelAoKUpdate(act, row){
 
-    // submit form via AJAX
-    send_form(form, form_id, url, type, modular_ajax, formData);
-});
+   
+    $('#td-'+row).html(act);
+
+    
+    $('#td-'+row).bind("click", function (){ update_AoK('+row+'); });
+
+}
+
+
+function update_AoK(row){
+
+    var act = $('#td-'+row).text().trim();
+
+    if(global_row != -1) {
+        $('#td-'+global_row).html(global_act);
+        
+        $('#td-'+global_row).attr("onclick", 'update_AoK('+global_row+')').bind("click");
+        
+    }
+
+
+        $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
+            '<textarea  name="act"  id="txtarea-'+row+ '" style="width:100%">'+act+'</textarea>' +
+            
+            '<button type="button"  class="btn btn-secondary" onClick="updateAoKText('+ row +')">Update</button>' +
+
+            '&nbsp;&nbsp;' +
+            
+            '<button type="button"  class="btn btn-secondary" onClick="cancelAoKUpdate(\''+act+'\',' + row +')">Cancel</button>' +
+            
+            '</div>');
+        
+        $('#td-'+row).attr("onclick", "").unbind("click");
+
+        global_row = row;
+        global_act = act;
+   
+}
+
+
+
 
 function getContactFormData(form) {
     // creates a FormData object and adds chips text
