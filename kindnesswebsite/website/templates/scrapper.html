@@ -4,10 +4,13 @@
 
 {% block  content %}
 
+
 <br/>
+<h3>Website</h3>
+
 <form method="POST">
 
-<input type="url" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
+<input type="url" onblur="checkURL(this)" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
 
 <br/>
 

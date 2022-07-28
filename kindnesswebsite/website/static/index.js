@@ -50,8 +50,21 @@ function cancelAoKUpdate(act, row){
     
     $('#td-'+row).bind("click", function (){ update_AoK('+row+'); });
 
+    
 }
 
+function cancelAoKUpdateESC(e, act, row){
+
+    e = e || window.event;
+    var code = e.keyCode;
+
+    if(code == 27) {
+        cancelAoKUpdate(act, row);
+    }
+
+ 
+
+}
 
 function update_AoK(row){
 
@@ -66,7 +79,7 @@ function update_AoK(row){
 
 
         $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
-            '<textarea  name="act"  id="txtarea-'+row+ '" style="width:100%">'+act+'</textarea>' +
+            '<textarea  name="act"  id="txtarea-'+row+ '" onKeyDown="cancelAoKUpdateESC(event, \''+act+'\',' + row +')" style="width:100%">'+act+'</textarea>' +
             
             '<button type="button"  class="btn btn-secondary" onClick="updateAoKText('+ row +')">Update</button>' +
 
@@ -78,12 +91,22 @@ function update_AoK(row){
         
         $('#td-'+row).attr("onclick", "").unbind("click");
 
+        $('#txtarea-'+row).focus();
+        
         global_row = row;
         global_act = act;
    
 }
 
 
+function checkURL (abc) {
+    var string = abc.value;
+    if (!~string.indexOf("http")) {
+      string = "http://" + string;
+    }
+    abc.value = string;
+    return abc
+  }
 
 
 function getContactFormData(form) {
