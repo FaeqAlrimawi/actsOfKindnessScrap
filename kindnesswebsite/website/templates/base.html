@@ -1,6 +1,11 @@
+
+
+{% from "macros/svgs.html" import moon, sun %}
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" class="{{ 'dark-mode' if session.get('theme') == 'dark' }}">
 
 <head>
      <meta charset="utf-8" />
@@ -21,7 +26,11 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+
+
     <!--
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
@@ -55,11 +64,10 @@
             <a class="nav-item nav-link" id="sign-out" href="/sign-up">Sign Up</a>
             <!-- <a class="nav-item nav-link" id="sign-out" href="/sign-up">Sign Up</a>-->
           {% endif %}
-           
-            
-            
+          
         </div>
     </div>
+
 </nav>
 
 {% with messages = get_flashed_messages(with_categories=true) %}

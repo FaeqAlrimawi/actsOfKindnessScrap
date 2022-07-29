@@ -2,7 +2,7 @@
 from operator import methodcaller
 from numpy import result_type
 import pandas as pd
-from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for, Markup
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for, Markup, session
 import os
 from flask_login import login_required, current_user
 from . import db
@@ -148,6 +148,16 @@ def aokScrapper():
     return render_template("scrapper.html", user=current_user)
 
 
+
+@views.get("/toggle-theme")
+def toggle_theme():
+    current_theme = session.get("theme")
+    if current_theme == "dark":
+        session["theme"] = "light"
+    else:
+        session["theme"] = "dark"
+
+    return redirect(request.args.get("current_page"))
 
 
 # @views.route("/api/data")
