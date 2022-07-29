@@ -23,7 +23,8 @@ function add_AoK(row){
     }).then((response) => {
          $('#btn-'+row).find('span').html('&#10004;');
          //$('#btn-'+row).removeClass("btn btn-outline-dark").addClass("btn btn-success"); 
-         $('#btn-'+row).attr('disabled', 'disabled');
+         $('#btn-'+row).css("cursor", "default");
+        //  style= "cursor:pointer"
          
         
     });

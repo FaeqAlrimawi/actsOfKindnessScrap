@@ -2,7 +2,7 @@
 from operator import methodcaller
 from numpy import result_type
 import pandas as pd
-from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for, Markup
 import os
 from flask_login import login_required, current_user
 from . import db
@@ -137,8 +137,13 @@ def aokScrapper():
         
             
         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
-    
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs, canScrap=canScrap(websiteURL)) 
+        isPer = canScrap(websiteURL)
+        
+        if( not isPer):
+           robotUrl = getRobotsURL(websiteURL)
+           flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
+            
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs) 
     
     return render_template("scrapper.html", user=current_user)
 
