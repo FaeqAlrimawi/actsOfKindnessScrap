@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import AoK
 import json
-from .control import checkIfAoK, scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, getRobotsURL, scrapWebsite, addAoK
 import website
 
 
@@ -123,6 +123,8 @@ def aokScrapper():
     
     if request.method == 'POST':
         websiteURL = request.form.get('websiteURL')
+        
+
         sentences = scrapWebsite(websiteURL)
         act_probs = []
         
@@ -132,7 +134,9 @@ def aokScrapper():
                 pair = (sent, prob)
                 act_probs.append(pair)
             
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs)
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
+        # else:
+        #     return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=None, canScrap=False) 
     
     return render_template("scrapper.html", user=current_user)
 

@@ -6,7 +6,7 @@
 
 
 <br/>
-<h3>Website</h3>
+<h3>Website Page</h3>
 
 <form method="POST">
 
@@ -31,6 +31,7 @@
     
 <br/><br/>
 
+<!--{% if  canScrap %}-->
 <table id="aoks" class="table table-striped">
     <thead>
         <tr>
@@ -65,6 +66,9 @@
     
     </tbody>
     </table>
+    <!--{% else %}
+    <p> <b style="color:red;">PERMISSION DENIED</b>: Cannot scrap the webpage according to its permissions stated in their robots.txt. See: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a><p>
+    {% endif %}-->
     {% endif %}
 </div>
     
