@@ -124,7 +124,8 @@ def aokScrapper():
     if request.method == 'POST':
         websiteURL = request.form.get('websiteURL')
         
-
+        
+            
         sentences = scrapWebsite(websiteURL)
         act_probs = []
         
@@ -133,10 +134,11 @@ def aokScrapper():
                 prob = checkIfAoK(sent)
                 pair = (sent, prob)
                 act_probs.append(pair)
+        
             
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
-        # else:
-        #     return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=None, canScrap=False) 
+        # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
+    
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs, canScrap=canScrap(websiteURL)) 
     
     return render_template("scrapper.html", user=current_user)
 

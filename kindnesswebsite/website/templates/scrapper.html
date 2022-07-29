@@ -31,7 +31,15 @@
     
 <br/><br/>
 
-<!--{% if  canScrap %}-->
+{% if canScrap == False %}
+<div class="w3-panel w3-pale-yellow w3-border">
+<h3>Warning</h3>
+<p>Scraping may not be permissible on this webpage per the website's permissions. See: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a><p>
+   </div>
+{% endif %}
+
+<br/>
+
 <table id="aoks" class="table table-striped">
     <thead>
         <tr>
@@ -66,9 +74,7 @@
     
     </tbody>
     </table>
-    <!--{% else %}
-    <p> <b style="color:red;">PERMISSION DENIED</b>: Cannot scrap the webpage according to its permissions stated in their robots.txt. See: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a><p>
-    {% endif %}-->
+
     {% endif %}
 </div>
     

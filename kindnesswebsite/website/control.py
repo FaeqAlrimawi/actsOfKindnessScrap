@@ -137,10 +137,10 @@ def canScrap(url):
     
     path = parsedURL.path  
    
-    if rp.can_fetch("*", path):
-        True
-    else:
-        False 
+   ## almost always this returrns false
+    print("######## ", url, " ", rp.can_fetch("*", url))
+    return rp.can_fetch("*", url)
+      
         
     
 def getBaseURL(url):
