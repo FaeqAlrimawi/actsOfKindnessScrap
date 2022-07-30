@@ -115,7 +115,7 @@ def add_AoK():
     
     if inDB:
         result = jsonify({'message':'exists'})
-        print(result.data)
+        # print(result.data)
         return result
     else: 
         result = addAoK(aok_str) 
