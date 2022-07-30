@@ -1,3 +1,5 @@
+from genericpath import exists
+from multiprocessing.dummy import active_children
 import pickle
 from sre_constants import FAILURE, SUCCESS
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
@@ -5,7 +7,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 import re
 import nltk
-from sqlalchemy import true
+from sqlalchemy import true, exists
 import trafilatura
 import json
 import numpy as np
@@ -138,7 +140,7 @@ def canScrap(url):
     path = parsedURL.path  
    
    ## almost always this returrns false
-    print("######## ", url, " ", rp.can_fetch("*", url))
+    # print("######## ", url, " ", rp.can_fetch("*", url))
     return rp.can_fetch("*", url)
       
         
@@ -154,4 +156,11 @@ def getRobotsURL(url):
     
     return getBaseURL(url) + "/robots.txt"
     
+
+def doesAoKExist(aokDescription):
     
+   res = db.session.query(exists().where(AoK.act==aokDescription)).scalar()  
+   
+#    if aokDescription.contains("RAK"):
+   print("### res checking ", aokDescription, ": ", res)  
+   return res

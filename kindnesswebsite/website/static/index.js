@@ -19,15 +19,40 @@ function add_AoK(row){
     
     fetch('/add-AoK', {
         method: 'POST',
-        body: JSON.stringify({aok: act, row:row})
+        body: JSON.stringify({aok: act, row:row}),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
     }).then((response) => {
-         $('#btn-'+row).find('span').html('&#10004;');
-         //$('#btn-'+row).removeClass("btn btn-outline-dark").addClass("btn btn-success"); 
-         $('#btn-'+row).css("cursor", "default");
-        //  style= "cursor:pointer"
-         
+
+        return response.json();        
+    }).then((data) => {
         
-    });
+        console.log(data);
+
+        message = data['message'];
+
+        if(message == 'exists') {
+            console.log('act already exists in the database');
+             $('#btn-'+row).find('span').html('&#10004;'); 
+             $('#btn-'+row).css("cursor", "default");
+             
+        } else if (message == 'added'){
+            //$('#btn-'+row).html("test"+result);
+            $('#btn-'+row).find('span').html('&#10004;');
+            //$('#btn-'+row).removeClass("btn btn-outline-dark").addClass("btn btn-success"); 
+            $('#btn-'+row).css("cursor", "default");
+            //  style= "cursor:pointer"
+        } else if (message == 'error') {
+           console.log('error adding the act');     
+        }
+
+        
+        
+    }
+
+    ).catch(err => console.log(err));
 }
 
 function updateAoKText(row){

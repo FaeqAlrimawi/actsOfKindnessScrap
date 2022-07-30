@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import AoK
 import json
-from .control import canScrap, checkIfAoK, getRobotsURL, scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getRobotsURL, scrapWebsite, addAoK
 import website
 
 
@@ -104,18 +104,26 @@ def add_AoK():
     aok_str = aok['aok']    
     row = aok['row']
     
-    print("##### ", row)
+    # print("##### ", row)
     
     if type(aok_str) != str:
         aok_str = str(aok_str)
           
-    # print("### adding ", aok_str)
-   
-    # aok = AoK.query.get(aokId)
-    result = addAoK(aok_str)
-        
-    # print("##### ", result)    
-    return jsonify(result)
+                    
+    # check if already exists in the database
+    inDB = doesAoKExist(aok_str)
+    
+    if inDB:
+        result = jsonify({'message':'exists'})
+        print(result.data)
+        return result
+    else: 
+        result = addAoK(aok_str) 
+        if result:
+             
+            return jsonify({'message':'added'})
+        else:
+            return jsonify({'message':'error'})
 
 
 @views.route("/aok-scrapper", methods=["POST", "GET"])
@@ -131,6 +139,7 @@ def aokScrapper():
         
         if sentences:
             for sent in sentences:
+
                 prob = checkIfAoK(sent)
                 pair = (sent, prob)
                 act_probs.append(pair)
