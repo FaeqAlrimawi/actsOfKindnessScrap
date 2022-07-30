@@ -78,6 +78,7 @@ function updateAoKText(row, old_act){
     // if(spanValue === '&#10004;'){
         btnSpan.html('&plus;'); 
         btnRow.css("cursor", "pointer");
+        btnRow.attr("onclick", "").unbind("click");
         btnRow.bind("click", function (){ add_AoK(row); });
         console.log("changing the add button to ADD");
     // } 
