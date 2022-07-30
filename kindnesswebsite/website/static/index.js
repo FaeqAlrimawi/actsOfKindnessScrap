@@ -17,7 +17,7 @@ function add_AoK(row){
 
     
     var act = $('#td-'+row).text();
-    console.log("row: "+row +" act: " + act);
+    // console.log("row: "+row +" act: " + act);
     
     fetch('/add-AoK', {
         method: 'POST',
@@ -36,7 +36,7 @@ function add_AoK(row){
         message = data['message'];
 
         if(message == 'exists') {
-            console.log('act already exists in the database');
+            // console.log('act already exists in the database');
              btn.find('span').html('&#10004;'); 
              btn.css("cursor", "default");
              btn.attr("onclick", "").unbind("click");
@@ -45,6 +45,7 @@ function add_AoK(row){
             btn.find('span').html('&#10004;'); 
             btn.css("cursor", "default");
             btn.attr("onclick", "").unbind("click");
+
         } else if (message == 'error') {
            console.log('error adding the act');     
         }
@@ -72,17 +73,34 @@ function updateAoKText(row, old_act){
 
    if(act !== old_act) {
     let btnSpan = btnRow.find('span');
-    let spanValue = btnSpan.text();
-    console.log("checking if need to update button, span: " + spanValue);
+    // let spanValue = btnSpan.text();
+    
      //if already added
     // if(spanValue === '&#10004;'){
         btnSpan.html('&plus;'); 
         btnRow.css("cursor", "pointer");
         btnRow.attr("onclick", "").unbind("click");
         btnRow.bind("click", function (){ add_AoK(row); });
-        console.log("changing the add button to ADD");
+        
     // } 
-   }
+    fetch('/update-prob', {
+        method: 'POST',
+        body: JSON.stringify({aok: act}),
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    }).then((response) => {
+        return response.json();
+   }).then((data) => {
+        prob = data['prob'];
+        // console.log("ooooo "+prob);
+        var rounded = Math.round(prob * 100) / 100;
+        $('#td-prob-'+row).html(rounded);
+       
+   });
+
+}
 
    
 }

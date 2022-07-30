@@ -43,10 +43,11 @@ def guessAoK():
     if request.method == 'POST':
         act = request.form.get('act')
         
+        print("#### ", act)
         if act:
            probability = checkIfAoK(act)
         #    d =  jsonify(prob=probability) 
-           print("wwwww ", probability)
+        #    print("wwwww ", probability)
         #    return d   
            return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
         else:
@@ -101,10 +102,7 @@ def delete_AoK():
 def add_AoK():
     # print("##### in add aok")
     aok = json.loads(request.data)
-    aok_str = aok['aok']    
-    row = aok['row']
-    
-    # print("##### ", row)
+    aok_str = aok['aok']   
     
     if type(aok_str) != str:
         aok_str = str(aok_str)
@@ -120,12 +118,28 @@ def add_AoK():
     else: 
         result = addAoK(aok_str) 
         if result:
-             
-            return jsonify({'message':'added'})
+            
+            res = {'message':'added'} 
+            return jsonify(res)
         else:
             return jsonify({'message':'error'})
 
 
+@views.route('/update-prob', methods=['POST'])
+def update_prob():
+     aok = json.loads(request.data)
+     aok_str = aok['aok']
+     
+     if type(aok_str) != str:
+        aok_str = str(aok_str)
+        
+     prob = checkIfAoK(aok_str)  
+     
+     return jsonify({'prob':prob}) 
+        
+        
+    
+    
 @views.route("/aok-scrapper", methods=["POST", "GET"])
 def aokScrapper():
     
