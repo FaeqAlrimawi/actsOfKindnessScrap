@@ -3,6 +3,40 @@ var global_row = -1;
 var global_act = "";
 
 
+function scrapAoKs(){
+    var url = $("#websiteURL").val();
+    console.log("### " + url);
+    fetch('/aok-scrapper', {
+        method: 'POST',
+        body: JSON.stringify({websiteURL: url})
+    }).then((response) => {
+        return response.json();
+    }).then((data)=> {
+        res = data['result'];
+        console.log(res);
+        acts = data.acts;
+        // acts.forEach(function(element)  {
+        //     console.log(element.act);
+
+        // });
+        // console.log(acts[0]);
+        // for (var key in data.acts) {
+        //     console.log(data.acts[key]);
+        //     break;
+        // }
+
+        // $.each(data.acts, function(index, element) {
+        //     console.log(element.act + " " + element.prob); 
+            
+        // });
+
+        // for (var act in data.acts) {
+        //         console.log(data.acts[act]);
+        //         break;
+        // }
+    });
+}
+
 function delete_AoK(aokId){
     fetch('/delete-AoK', {
         method: 'POST',

@@ -144,10 +144,8 @@ def update_prob():
 def aokScrapper():
     
     if request.method == 'POST':
-        websiteURL = request.form.get('websiteURL')
-        
-        
-            
+        data = json.loads(request.data)
+        websiteURL = data['websiteURL']         
         sentences = scrapWebsite(websiteURL)
         act_probs = []
         
@@ -155,7 +153,7 @@ def aokScrapper():
             for sent in sentences:
 
                 prob = checkIfAoK(sent)
-                pair = (sent, prob)
+                pair = {'act':sent, 'prob':prob}
                 act_probs.append(pair)
         
             
@@ -165,8 +163,28 @@ def aokScrapper():
         if( not isPer):
            robotUrl = getRobotsURL(websiteURL)
            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
+        # print(json.dumps(act_probs))
+        return jsonify({"result":"success", "acts":json.dumps(act_probs)});    
+        # websiteURL = request.form.get('websiteURL')         
+        # sentences = scrapWebsite(websiteURL)
+        # act_probs = []
+        
+        # if sentences:
+        #     for sent in sentences:
+
+        #         prob = checkIfAoK(sent)
+        #         pair = (sent, prob)
+        #         act_probs.append(pair)
+        
             
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs) 
+        # # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
+        # isPer = canScrap(websiteURL)
+        
+        # if( not isPer):
+        #    robotUrl = getRobotsURL(websiteURL)
+        #    flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
+            
+        # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs) 
     
     return render_template("scrapper.html", user=current_user)
 
