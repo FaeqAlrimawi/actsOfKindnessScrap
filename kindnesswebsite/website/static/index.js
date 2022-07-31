@@ -1,7 +1,7 @@
 
 var global_row = -1;
 var global_act = "";
-
+var initialized = false;
 
 function scrapAoKs(){
     var url = $("#websiteURL").val();
@@ -14,26 +14,29 @@ function scrapAoKs(){
     }).then((data)=> {
         res = data['result'];
         console.log(res);
-        acts = data.acts;
-        // acts.forEach(function(element)  {
-        //     console.log(element.act);
+        acts = JSON.parse(data.acts);
+        // console.log(acts[0]['act']);
+        
+        table = $('#aoks');
+        // rowIndex = 0;
+        $('#aoks > tbody').empty();
+        acts.forEach(function(element)  {
+            table.append('<tr>' +
+            '<td>'+element.act+'</td>'+
+            '<td>'+element.prob+'</td>' +
+            '<td>add</td>'+
+            '</tr>');        
+        });
 
+    //    if(!initialized){
+        // $('#aoks').DataTable({
+    
         // });
-        // console.log(acts[0]);
-        // for (var key in data.acts) {
-        //     console.log(data.acts[key]);
-        //     break;
-        // }
-
-        // $.each(data.acts, function(index, element) {
-        //     console.log(element.act + " " + element.prob); 
+        // initialized = true;
+    //    }
             
-        // });
-
-        // for (var act in data.acts) {
-        //         console.log(data.acts[act]);
-        //         break;
-        // }
+      
+        
     });
 }
 
