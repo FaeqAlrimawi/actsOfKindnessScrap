@@ -6,7 +6,7 @@ from flask import Blueprint, flash, jsonify, render_template, request, redirect,
 import os
 from flask_login import login_required, current_user
 from . import db
-from .models import AoK
+from .models import Aok
 import json
 from .control import canScrap, checkIfAoK, doesAoKExist, getRobotsURL, scrapWebsite, addAoK
 import website
@@ -67,7 +67,7 @@ def editAoK():
             flash("Act too short!", category='error')
             
         else:
-            new_aok = AoK(act=aok, user_id=current_user.id)
+            new_aok = Aok(act=aok, user_id=current_user.id)
             db.session.add(new_aok)
             db.session.commit()
             
@@ -90,7 +90,7 @@ def delete_AoK():
     aok = json.loads(request.data)
     aokId = aok['aokId']      
     
-    aok = AoK.query.get(aokId)
+    aok = Aok.query.get(aokId)
     if aok.user_id == current_user.id:
         db.session().delete(aok)
         db.session.commit()

@@ -12,7 +12,7 @@ import trafilatura
 import json
 import numpy as np
 from requests.models import MissingSchema
-from .models import AoK
+from .models import Aok
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -31,7 +31,7 @@ def addAoK(aok):
         return False
     
     else:
-        new_aok = AoK(act=aok, user_id=current_user.id)
+        new_aok = Aok(act=aok, user_id=current_user.id)
         db.session.add(new_aok)
         db.session.commit()
         return True
@@ -159,7 +159,7 @@ def getRobotsURL(url):
 
 def doesAoKExist(aokDescription):
     
-   res = db.session.query(exists().where(AoK.act==aokDescription)).scalar()  
+   res = db.session.query(exists().where(Aok.act==aokDescription)).scalar()  
    
 #    if aokDescription.contains("RAK"):
    print("### res checking ", aokDescription, ": ", res)  
