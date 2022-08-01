@@ -26,7 +26,7 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.home')) # redirect to home
             else:
-                flash("Incorrect passowrd", category='error')
+                flash("Incorrect password", category='error')
         else:
             flash("Email does not exist", category='error')    
         
@@ -42,7 +42,7 @@ def logout():
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
-    
+        
     if request.method == 'POST':
         email = request.form.get("email")
         firstName = request.form.get("firstName")
@@ -62,7 +62,7 @@ def sign_up():
         elif len(password1) < 7:
             flash("password should be greater than 7 chars", category='error')
         elif password1 != password2:
-            flash("passowrds do not match", category='error')
+            flash("passwords do not match", category='error')
         else:
             #add user to databse
             new_user = User(email=email, first_name=firstName, password=generate_password_hash(password1, method='sha256'))

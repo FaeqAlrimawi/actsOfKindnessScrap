@@ -41,7 +41,7 @@ function add_AoK(row){
              btn.find('span').html('&#79;'); 
              btn.css("cursor", "default");
              btn.attr("onclick", "").unbind("click");
-             btn.attr("title", "Already added");
+             btn.attr("title", "Already exists");
              
         } else if (message == 'added'){
             btn.find('span').html('&#10004;'); 
