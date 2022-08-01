@@ -1,44 +1,8 @@
 
 var global_row = -1;
 var global_act = "";
-var initialized = false;
+// var initialized = false;
 
-function scrapAoKs(){
-    var url = $("#websiteURL").val();
-    console.log("### " + url);
-    fetch('/aok-scrapper', {
-        method: 'POST',
-        body: JSON.stringify({websiteURL: url})
-    }).then((response) => {
-        return response.json();
-    }).then((data)=> {
-        res = data['result'];
-        console.log(res);
-        acts = JSON.parse(data.acts);
-        // console.log(acts[0]['act']);
-        
-        table = $('#aoks');
-        // rowIndex = 0;
-        $('#aoks > tbody').empty();
-        acts.forEach(function(element)  {
-            table.append('<tr>' +
-            '<td>'+element.act+'</td>'+
-            '<td>'+element.prob+'</td>' +
-            '<td>add</td>'+
-            '</tr>');        
-        });
-
-    //    if(!initialized){
-        // $('#aoks').DataTable({
-    
-        // });
-        // initialized = true;
-    //    }
-            
-      
-        
-    });
-}
 
 function delete_AoK(aokId){
     fetch('/delete-AoK', {
@@ -74,17 +38,19 @@ function add_AoK(row){
 
         if(message == 'exists') {
             // console.log('act already exists in the database');
-             btn.find('span').html('&#10004;'); 
+             btn.find('span').html('&#79;'); 
              btn.css("cursor", "default");
              btn.attr("onclick", "").unbind("click");
+             btn.attr("title", "Already added");
              
         } else if (message == 'added'){
             btn.find('span').html('&#10004;'); 
             btn.css("cursor", "default");
             btn.attr("onclick", "").unbind("click");
+            btn.attr("title", "Added successfully");
 
         } else if (message == 'error') {
-           console.log('error adding the act');     
+        //    console.log('error adding the act');     
         }
 
         
@@ -216,3 +182,41 @@ function getContactFormData(form) {
 //    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
     return formData
 }
+
+
+// function scrapAoKs(){
+//     var url = $("#websiteURL").val();
+//     console.log("### " + url);
+//     fetch('/aok-scrapper', {
+//         method: 'POST',
+//         body: JSON.stringify({websiteURL: url})
+//     }).then((response) => {
+//         return response.json();
+//     }).then((data)=> {
+//         res = data['result'];
+//         console.log(res);
+//         acts = JSON.parse(data.acts);
+//         // console.log(acts[0]['act']);
+        
+//         table = $('#aoks');
+//         // rowIndex = 0;
+//         $('#aoks > tbody').empty();
+//         acts.forEach(function(element)  {
+//             table.append('<tr>' +
+//             '<td>'+element.act+'</td>'+
+//             '<td>'+element.prob+'</td>' +
+//             '<td>add</td>'+
+//             '</tr>');        
+//         });
+
+//     //    if(!initialized){
+//         // $('#aoks').DataTable({
+    
+//         // });
+//         // initialized = true;
+//     //    }
+            
+      
+        
+//     });
+// }

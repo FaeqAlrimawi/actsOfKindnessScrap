@@ -190,6 +190,12 @@ def aokScrapper():
 
 
 
+@views.route("/aok-model", methods=["POST", "GET"])
+def AoKModel():
+    return render_template("AoKModel.html", user=current_user)
+  
+  
+    
 @views.get("/toggle-theme")
 def toggle_theme():
     current_theme = session.get("theme")
