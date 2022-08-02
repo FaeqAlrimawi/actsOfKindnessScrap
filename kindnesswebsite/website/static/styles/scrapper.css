@@ -52,3 +52,10 @@
     color: #da5f9e;
     
     }
+
+   
+
+    li:hover *{
+      text-decoration: underline;
+      color: #da5f9e;
+    }
