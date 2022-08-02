@@ -20,7 +20,7 @@ import urllib.robotparser as urobot
 from urllib.parse import urlparse
 import urllib.request
 import ssl
-
+import string
 
 model = None
 
@@ -73,6 +73,7 @@ def scrapWebsite(websiteURL):
     # text = soup.find_all("<li>")
     sents = soup.find_all(text=True)
     sents = processWebsiteScrapText(sents)
+    sents = removeJunkSentences(sents)
     return sents
     # text = extract_text_from_single_web_page(websiteURL)
     # print(text)
@@ -92,7 +93,8 @@ def processWebsiteScrapText(text):
         'head', 
         'input',
         'script',
-        'style',]
+        'style',
+        'div',]
     
     # Then we will loop over every item in the extract text and make sure that the beautifulsoup4 tag
     # is NOT in the blacklist
@@ -116,7 +118,28 @@ def processWebsiteScrapText(text):
     return new_sents        
     
 
-
+def removeJunkSentences(sentences):
+    ### removes all sentences that are
+    ## duplicates
+    ## only numbers
+    ## contain specific wording 
+    
+    # new_sents = []
+    
+    
+    # new_sents = [i for i in sentences if not i.translate(str.maketrans('', '', string.punctuation)).isnumeric()]
+     
+    new_sents2 = [] 
+    
+    for sent in sentences:
+        
+        # not duplicate
+        if not sent.translate(str.maketrans('', '', string.punctuation)).isnumeric() and not sent in new_sents2:
+            new_sents2.append(sent)
+            
+    return new_sents2
+        
+    
 def getSiteMaps(url):
     rp = urobot.RobotFileParser()
     baseURL = getBaseURL(url)
