@@ -17,6 +17,8 @@ from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
 from urllib.parse import urlparse
+import urllib.request
+import ssl
 
 
 model = None
@@ -129,20 +131,28 @@ def getSiteMaps(url):
     # robotsURL = baseURL + "/robots.txt"
     xmlDict = {}
     
-    if sitemaps:
-        for sitemap in sitemaps: 
+    if not sitemaps:
+        #try sitemap.xml with base url
+        sitemaps = [baseURL + "/sitemap.xml"]
+        
 
-            r = requests.get(sitemap)
-            xml = r.text
+    for sitemap in sitemaps: 
 
-            # print(xml)
-            soup = bs(xml, features='xml')
-            sitemapTags = soup.find_all("Sitemap")
+        print("sitemap: ", sitemap)
+        
+        # This restores the same behavior as before.
+        # context = ssl._create_unverified_context()
+        r = urllib.request.urlopen(url)
+        # xml = r.text
 
-            print ("The number of sitemaps are {0}".format(len(sitemapTags)))
+        # print(xml)
+        soup = bs(r, features= 'lxml-xml', from_encoding=r.info().get_param('charset'))
+        sitemapTags = soup.find_all("sitemap")
 
-            for sitemap in sitemapTags:
-                xmlDict[sitemap.findNext("loc").text] = sitemap.findNext("lastmod").text
+        print ("The number of sitemaps are {0}".format(len(sitemapTags)))
+
+        for sitemap in sitemapTags:
+            xmlDict[sitemap.findNext("loc").text] = sitemap.findNext("lastmod").text
             
     print(xmlDict) 
    
