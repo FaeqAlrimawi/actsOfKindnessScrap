@@ -2,6 +2,8 @@
 
 {% block title %}AoK Scrapper{% endblock  %}
 
+{% block header  %}<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/scrapper.css')}}">{% endblock  %}
+
 {% block  content %}
 
 
@@ -24,12 +26,22 @@
 <div id="div-table">
   
     {% if  websiteURL %}
-    <h3>
+    <div class="collapsible" id="div-sitemap" >
       
-        Scrapping: <a href="{{websiteURL}}" target="_blank">{{websiteURL}}</a>
+        Scrapping: <a href="{{websiteURL}}" target="_blank"><b>{{websiteURL}}</b></a>
        
-    </h3>
-    
+    </div>
+
+    {% if sitemap %}
+    <div class="content" id="div-sitemap-content">
+        content
+    </div>
+
+    {% else  %}
+    <p class="content" id="div-sitemap=empty">
+        Could not retrieve sitemaps. Check: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a>
+    </p>
+    {% endif %}
 <br/>
 
 <!--
@@ -87,8 +99,26 @@
 
 {% block scripts %}
 
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
 
 <script>
+
+  
 
     $(document).ready(function(){
         $('#aoks').DataTable({
@@ -97,5 +127,7 @@
     });
 
 </script>
+
 {% endblock %}
+
 

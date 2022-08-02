@@ -115,13 +115,37 @@ def processWebsiteScrapText(text):
     
 
 
-def getSiteMap(url):
+def getSiteMaps(url):
     rp = urobot.RobotFileParser()
     baseURL = getBaseURL(url)
     
     rp.set_url(baseURL + "/robots.txt")
+    print(baseURL + "/robots.txt")
     rp.read()
-    return rp.site_maps()
+    sitemaps = rp.site_maps()
+    
+    #  baseURL = getBaseURL(url)
+     
+    # robotsURL = baseURL + "/robots.txt"
+    xmlDict = {}
+    
+    if sitemaps:
+        for sitemap in sitemaps: 
+
+            r = requests.get(sitemap)
+            xml = r.text
+
+            # print(xml)
+            soup = bs(xml, features='xml')
+            sitemapTags = soup.find_all("Sitemap")
+
+            print ("The number of sitemaps are {0}".format(len(sitemapTags)))
+
+            for sitemap in sitemapTags:
+                xmlDict[sitemap.findNext("loc").text] = sitemap.findNext("lastmod").text
+            
+    print(xmlDict) 
+   
     
     
 def canScrap(url):
@@ -135,13 +159,14 @@ def canScrap(url):
     
     rp.read()
     
-    parsedURL = urlparse(url)
+    # parsedURL = urlparse(url)
     
-    path = parsedURL.path  
+    # path = parsedURL.path  
    
    ## almost always this returrns false
     # print("######## ", url, " ", rp.can_fetch("*", url))
     return rp.can_fetch("*", url)
+
       
         
     
