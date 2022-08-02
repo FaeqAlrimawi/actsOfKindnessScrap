@@ -10,7 +10,7 @@
 <br/>
 <h3>Website Page</h3>
 
-<form method="POST">
+<form method="POST" id="scrapForm">
 
 <input type="url" onblur="checkURL(this)" class="form-control" id="websiteURL" name="websiteURL" placeholder="Enter website URL" value="{{websiteURL}}"/>
 
@@ -34,7 +34,24 @@
 
     {% if sitemap %}
     <div class="content" id="div-sitemap-content">
-        content
+        Potential URLs (click to scrap)
+        {% for  sitemapURL in sitemap %}
+        {% set outer_loop = loop %}
+            <ul >
+                <li style="padding-bottom:1em"><a href="{{sitemapURL}}" target="_blank">{{sitemapURL}}</a></li>
+                <ul>
+                {% for potentialURL in sitemap[sitemapURL] %}
+                {% if  potentialURL[0] != websiteURL %} 
+                <li style="padding-bottom:1em"><a href="{{potentialURL[0]}}" target="_blank">{{potentialURL[0]}}</a>
+                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL[0]}}')">
+                        <span aria-hidden="true" >&plus;</span>
+                    </button>
+                </li>
+                {% endif %}
+                {% endfor %}
+                <ul>
+            </ul>
+        {% endfor %}
     </div>
 
     {% else  %}

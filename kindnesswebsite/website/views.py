@@ -178,8 +178,9 @@ def aokScrapper():
             
         
         #get sitemap
-        # sitemap = getSiteMaps(websiteURL)
+        sitemap = getSiteMaps(websiteURL)
         
+        # print(sitemap)
         # print("sitemap: ", sitemap)    
         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
         isPer = canScrap(websiteURL)
@@ -188,7 +189,7 @@ def aokScrapper():
            robotUrl = getRobotsURL(websiteURL)
            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
             
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs, sitemap=None) 
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), act_probs=act_probs, sitemap=sitemap) 
     
     return render_template("scrapper.html", user=current_user)
 

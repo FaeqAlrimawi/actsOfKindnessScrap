@@ -184,7 +184,13 @@ function getContactFormData(form) {
 }
 
 
+function scrap(websiteURL) {
 
+    // console.log("@@@ " + websiteURL);
+    $('#websiteURL').val(websiteURL);
+ 
+    $('#scrapForm').trigger('submit');
+}
 // function scrapAoKs(){
 //     var url = $("#websiteURL").val();
 //     console.log("### " + url);

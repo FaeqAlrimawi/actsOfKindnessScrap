@@ -2,6 +2,7 @@ from genericpath import exists
 from multiprocessing.dummy import active_children
 import pickle
 from sre_constants import FAILURE, SUCCESS
+from xmlrpc.client import Boolean
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from bs4 import BeautifulSoup as bs
 import requests
@@ -113,7 +114,6 @@ def processWebsiteScrapText(text):
             new_sents.append(sent)
             
     return new_sents        
-    # print(new_sents)
     
 
 
@@ -122,42 +122,148 @@ def getSiteMaps(url):
     baseURL = getBaseURL(url)
     
     rp.set_url(baseURL + "/robots.txt")
-    print(baseURL + "/robots.txt")
+    # print(baseURL + "/robots.txt")
     rp.read()
-    sitemaps = rp.site_maps()
+    
+    all_sitemaps = []
+    
+    all_sitemaps = rp.site_maps()
     
     #  baseURL = getBaseURL(url)
      
     # robotsURL = baseURL + "/robots.txt"
-    xmlDict = {}
-    
-    if not sitemaps:
+    # xmlDict = {}
+  
+    if not all_sitemaps:
         #try sitemap.xml with base url
-        sitemaps = [baseURL + "/sitemap.xml"]
+        all_sitemaps = [baseURL + "/sitemap.xml"]
+       
+    # more_sitemaps = []  
+    #does it have more sitemaps in the basic sitemap.xml
+    for sitemap in all_sitemaps:
+        more_sitemaps = check_has_more_sitemaps(sitemap)
         
-
-    for sitemap in sitemaps: 
-
-        print("sitemap: ", sitemap)
+     
+    if more_sitemaps:
+        all_sitemaps = more_sitemaps
         
-        # This restores the same behavior as before.
-        # context = ssl._create_unverified_context()
-        r = urllib.request.urlopen(url)
-        # xml = r.text
-
-        # print(xml)
-        soup = bs(r, features= 'lxml-xml', from_encoding=r.info().get_param('charset'))
-        sitemapTags = soup.find_all("sitemap")
-
-        print ("The number of sitemaps are {0}".format(len(sitemapTags)))
-
-        for sitemap in sitemapTags:
-            xmlDict[sitemap.findNext("loc").text] = sitemap.findNext("lastmod").text
-            
-    print(xmlDict) 
+    # if all_sitemaps:
+    #     sitemaps = all_sitemaps
+       
+        
+    urls = {}
+    for sitemap in all_sitemaps:
+        # print("sitemap: ", sitemap)
+        out = parse_sitemap(sitemap)
+        
+        if out:
+            urls[sitemap] = out
+        
+    # print(urls)    
+    return urls
    
     
+ 
+def parse_sitemap(sitemapURL):
+
+    resp = requests.get(sitemapURL)
+
+    # we didn't get a valid response, bail
+    if 200 != resp.status_code:
+        return False
+
+    # BeautifulStoneSoup to parse the document
+    soup = bs(resp.content, features='xml')
+
+
+    # find all the <url> tags in the document
+    urls = soup.findAll('url')
+
+    # no urls? bail
+    if not urls:
+        return False
+
+    # storage for later...
+    out = []
+
+    #extract what we need from the url
+    for u in urls:
+        loc = u.find('loc').string if u.find('loc') else None
+
+        # skips url if its path is not potentially one that has kindness acts
+        if not loc or not is_potentially_kindness_url(loc):
+            continue
+            
+        prio =  u.find('priority').string if u.find('priority') else None 
+        change = u.find('changefreq').string if u.find('changefreq') else None
+        last = u.find('lastmod').string if u.find('lastmod') else None
+        out.append([loc, prio, change, last])
+        
+    return out
+
+
+def check_has_more_sitemaps(sitemap):
     
+    resp = requests.get(sitemap)
+
+    # we didn't get a valid response, bail
+    if 200 != resp.status_code:
+        return False
+
+    # BeautifulStoneSoup to parse the document
+    soup = bs(resp.content, features='xml')
+
+
+    # find all the <url> tags in the document
+    urls = soup.findAll('sitemap')
+    
+     # no urls? bail
+    if not urls:
+        return False
+
+    # storage for later...
+    out = []
+
+    #extract what we need from the url
+    for u in urls:
+        loc = u.find('loc').string if u.find('loc') else None
+        out.append(loc)
+        
+    return out
+
+    return
+    
+def get_kindness_urls(urls):
+    ### processes the given urls to return the top most related to kindness
+    ### that be: onces that mention acts of kindness (preferrably as a whole unit) or just kindness in the path (not the base)
+    
+    filteredURLs = []
+    
+    for url in urls:
+        if is_potentially_kindness_url(url):
+            filteredURLs.append(url)
+            
+    return filteredURLs
+   
+    
+def is_potentially_kindness_url(url): 
+    ### checks if the given url is potentially good to look for aoks
+    ### criteria: onces that mention acts of kindness (preferrably as a whole unit) or just kindness in the path (not the base)
+    parsedURL = urlparse(url)
+    
+    path = str(parsedURL.path)
+    
+    matches =["kindness", "kind-", "kind_", "aok","act-of-kindness","act_of_kindness", "acts-of-kindness", "acts_of_kindness", "kindness-acts", "kindness_acts", "kindness-act", "kindness_act"]
+    
+    if path:
+       # contains kindness word
+       if any(x in path for x in matches):
+           return True
+    
+    return False  
+ 
+ 
+            
 def canScrap(url):
     rp = urobot.RobotFileParser()
     
