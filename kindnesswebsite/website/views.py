@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Aok
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getRobotsURL, getSiteMaps, scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, scrapWebsite, addAoK, testModelTable
 import website
 
 
@@ -34,7 +34,7 @@ def home():
     #         db.session.add(new_aok)
     #         db.session.commit()
     #         flash("Act added successfully", category='success')
-    # testModelTable()
+    testModelTable()
     
     return render_template("home.html", user=current_user)
 
@@ -45,7 +45,7 @@ def guessAoK():
     if request.method == 'POST':
         act = request.form.get('act')
         
-        print("#### ", act)
+        # print("#### ", act)
         if act:
            probability = checkIfAoK(act)
         #    d =  jsonify(prob=probability) 
@@ -82,8 +82,10 @@ def editAoK():
 @views.route('/listofAoK')
 def listofAoK():
  
-    df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
-    return render_template("listofAoK.html", acts=df.values, user=current_user)
+    # df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
+    aoks = Aok.query.all()
+ 
+    return render_template("listofAoK.html", acts=aoks, user=current_user)
     # return df.to_html()
     
     
@@ -199,7 +201,10 @@ def aokScrapper():
 
 @views.route("/aok-model", methods=["POST", "GET"])
 def AoKModel():
-    return render_template("AoKModel.html", user=current_user)
+    
+    info = getModelsInfo()
+    
+    return render_template("AoKModel.html", user=current_user, models=info)
   
   
     

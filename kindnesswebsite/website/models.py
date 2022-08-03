@@ -23,9 +23,11 @@ class Aok(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     act = db.Column(db.String(1000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+    source = db.Column(db.String(1000))
     categories = db.relationship('AokCategories', cascade = 'all, delete-orphan', lazy = 'dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     nlp_models = db.relationship('ModelAok', cascade = 'all, delete-orphan', lazy = 'dynamic')
+    
     
     
 

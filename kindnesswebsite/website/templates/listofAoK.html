@@ -4,20 +4,26 @@
 
 {% block content%}
 
+<br/>
 
-<h3 align="center"> List of Acts of Kindness (AoK)</h3>
+<h2 align="center"> List of Acts of Kindness (AoK)</h2>
+<br/>
 
 <table id="aoks" class="table table-striped">
 <thead>
     <tr>
     <th>Description</th>
+    <th>Source</th>
+    <th>Date Added</th>
     </tr>
 </thead>
 <tbody> 
 
-{% for act in acts %}
+{% for aok in acts %}
 <tr>
-    <td>{{act[0]}}</td>
+    <td>{{aok.act}}</td>
+    <td>{{aok.source}}</td>
+    <td>{{aok.date}}</td>
 </tr>
 {% endfor %}
 

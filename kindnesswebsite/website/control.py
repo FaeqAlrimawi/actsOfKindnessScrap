@@ -14,7 +14,7 @@ import trafilatura
 import json
 import numpy as np
 from requests.models import MissingSchema
-from .models import Aok, NLPModel
+from .models import Aok, ModelAok, ModelNonAok, NLPModel
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -340,7 +340,7 @@ def doesAoKExist(aokDescription):
    return res
 
 
-# def testModelTable():
+def testModelTable():
     # global model
     # global features_file
     
@@ -357,9 +357,42 @@ def doesAoKExist(aokDescription):
     #     print(res)
     # else:
     #     print("problem creating a new model")  
-    # models = NLPModel.query.all()
+        
+    newAok = Aok(act="testing")
+    db.session.add(newAok)
+    db.session.commit()
     
-    # for model in models:
-    #     print(model.features)    
+    models = NLPModel.query.all()
+    
+    for model in models:
+        newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
+        db.session.add(newModelAok)
+        db.session.commit()
+        print(str(model.model))   
+         
+    
+def getModelsInfo():
+      ### info: name, # of aok, # of non-aok
+      models = NLPModel.query.all()
+      
+      modelsInfo = []
+      for model in models:
+          name = str(model.model)
+          print("###: ", model.aoks)
+          numOfAoK = len(ModelAok.query.filter_by(model_id=model.id).all())
+          numOfNonAoK = len(ModelNonAok.query.filter_by(model_id=model.id).all())
+          record = [name, numOfAoK, numOfNonAoK]
+          modelsInfo.append(record)
+          print(record)
+          
+      return modelsInfo
+  
+  
+def populateDatabase():
+    return      
+          
+          
+      
+        
         
      
