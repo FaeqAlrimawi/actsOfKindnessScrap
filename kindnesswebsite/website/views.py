@@ -16,11 +16,11 @@ from flask_login import login_user
 
 views = Blueprint("views", __name__)
 
-file_name = './website/static/actsOfKindness.xlsx'
-# file_name = 'actsOfKindness.xlsx'
-sheet_name = 'All_AoKs'
-description_column = 'Description'
-
+# file_name = './website/static/actsOfKindness.xlsx'
+# # file_name = 'actsOfKindness.xlsx'
+# sheet_name = 'All_AoKs'
+# description_column = 'Description'
+websiteURL = ""
 
 # the route of our website
 @views.route('/', methods=['GET', 'POST'])
@@ -126,7 +126,7 @@ def add_AoK():
         # print(result.data)
         return result
     else: 
-        result = addAoK(aok_str) 
+        result = addAoK(aok_str, websiteURL) 
         if result:
             
             res = {'message':'added'} 
@@ -152,6 +152,7 @@ def update_prob():
     
 @views.route("/aok-scrapper", methods=["POST", "GET"])
 def aokScrapper():
+    global websiteURL
     
     if request.method == 'POST':
         # data = json.loads(request.data)

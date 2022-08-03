@@ -25,7 +25,8 @@ from urllib.parse import urlparse
 # import ssl
 import string
 import pandas as pd
-
+# from .views import websiteURL
+ 
 model = None
 
 features_file = None
@@ -44,13 +45,13 @@ def load_Model_and_Features():
        features_file = pickle.load(open("./website/static/AoK_features.pkl", "rb"))
 
 
-def addAoK(aok):
+def addAoK(aok, websiteURL):
     
     if len(aok)<1:
         return False
     
     else:
-        new_aok = Aok(act=aok, user_id=current_user.id)
+        new_aok = Aok(act=aok, user_id=current_user.id, source=websiteURL)
         db.session.add(new_aok)
         db.session.commit()
         return True
@@ -339,7 +340,7 @@ def doesAoKExist(aokDescription):
    res = db.session.query(exists().where(Aok.act==aokDescription)).scalar()  
    
 #    if aokDescription.contains("RAK"):
-   print("### res checking ", aokDescription, ": ", res)  
+#    print("### res checking ", aokDescription, ": ", res)  
    return res
 
 
@@ -350,14 +351,14 @@ def populateModelTable():
     if not model:
         load_Model_and_Features()
     
-        print(model)
-            
-        new_model = NLPModel(model=model, features=features_file)
+   
+    if len(NLPModel.query.all()) ==0 : 
+        print("###  creating a new model")       
+        new_model = NLPModel(model=str(model), features=features_file)
         
         if new_model:
             db.session.add(new_model)
             res = db.session.commit()  
-            print(res)
         else:
             print("problem creating a new model")  
         
@@ -381,12 +382,13 @@ def getModelsInfo():
       modelsInfo = []
       for model in models:
           name = str(model.model)
-          print("###: ", model.aoks)
-          numOfAoK = len(ModelAok.query.filter_by(model_id=model.id).all())
-          numOfNonAoK = len(ModelNonAok.query.filter_by(model_id=model.id).all())
+        #   print("###: ", model.aoks)
+        #   numOfAoK = len(ModelAok.query.filter_by(model_id=model.id).all())
+          numOfAoK = model.aoks.count()
+          numOfNonAoK = model.non_aoks.count()
           record = [name, numOfAoK, numOfNonAoK]
           modelsInfo.append(record)
-          print(record)
+          print("## rec: ", record)
           
       return modelsInfo
   
