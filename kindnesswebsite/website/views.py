@@ -1,15 +1,15 @@
 ### pages of the website
-from operator import methodcaller
-from numpy import result_type
-import pandas as pd
-from flask import Blueprint, flash, jsonify, render_template, request, redirect, url_for, Markup, session
-import os
+# from operator import methodcaller
+# from numpy import result_type
+# import pandas as pd
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session
+# import os
 from flask_login import login_required, current_user
 from . import db
 from .models import Aok
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, scrapWebsite, addAoK, testModelTable
-import website
+from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabase, scrapWebsite, addAoK, testModelTable
+# import website
 
 
 views = Blueprint("views", __name__)
@@ -24,17 +24,6 @@ description_column = 'Description'
 @views.route('/', methods=['GET', 'POST'])
 def home():
     
-    # if request.method == 'POST':
-    #     aok = request.form.get('aok')
-        
-    #     if len(aok)<1:
-    #         flash("Act too short!", category='error')
-    #     else:
-    #         new_aok = AoK(act=aok, user_id=current_user.id)
-    #         db.session.add(new_aok)
-    #         db.session.commit()
-    #         flash("Act added successfully", category='success')
-    testModelTable()
     
     return render_template("home.html", user=current_user)
 
@@ -82,6 +71,10 @@ def editAoK():
 @views.route('/listofAoK')
 def listofAoK():
  
+    # testModelTable()
+    # populateDatabase()
+    
+    
     # df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
     aoks = Aok.query.all()
  

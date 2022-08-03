@@ -1,27 +1,30 @@
-from genericpath import exists
-from glob import glob
-from multiprocessing.dummy import active_children
+# from fileinput import filename
+# from genericpath import exists
+# from glob import glob
+# from multiprocessing.dummy import active_children
 import pickle
-from sre_constants import FAILURE, SUCCESS
-from xmlrpc.client import Boolean
+# from sre_constants import FAILURE, SUCCESS
+# from xmlrpc.client import Boolean
+# from flask import url_for
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from bs4 import BeautifulSoup as bs
 import requests
-import re
+# import re
 import nltk
-from sqlalchemy import true, exists
-import trafilatura
-import json
-import numpy as np
-from requests.models import MissingSchema
+from sqlalchemy import exists
+# import trafilatura
+# import json
+# import numpy as np
+# from requests.models import MissingSchema
 from .models import Aok, ModelAok, ModelNonAok, NLPModel
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
 from urllib.parse import urlparse
-import urllib.request
-import ssl
+# import urllib.request
+# import ssl
 import string
+import pandas as pd
 
 model = None
 
@@ -341,34 +344,34 @@ def doesAoKExist(aokDescription):
 
 
 def testModelTable():
-    # global model
-    # global features_file
+    global model
+    global features_file
     
-    # if not model:
-    #     load_Model_and_Features()
+    if not model:
+        load_Model_and_Features()
     
-    # print(model)
+        print(model)
+            
+        new_model = NLPModel(model=model, features=features_file)
         
-    # new_model = NLPModel(model=model, features=features_file)
-    
-    # if new_model:
-    #     db.session.add(new_model)
-    #     res = db.session.commit()  
-    #     print(res)
-    # else:
-    #     print("problem creating a new model")  
+        if new_model:
+            db.session.add(new_model)
+            res = db.session.commit()  
+            print(res)
+        else:
+            print("problem creating a new model")  
         
-    newAok = Aok(act="testing")
-    db.session.add(newAok)
-    db.session.commit()
+    # newAok = Aok(act="testing")
+    # db.session.add(newAok)
+    # db.session.commit()
     
-    models = NLPModel.query.all()
+    # models = NLPModel.query.all()
     
-    for model in models:
-        newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
-        db.session.add(newModelAok)
-        db.session.commit()
-        print(str(model.model))   
+    # for model in models:
+    #     newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
+    #     db.session.add(newModelAok)
+    #     db.session.commit()
+    #     print(str(model.model))   
          
     
 def getModelsInfo():
@@ -389,6 +392,35 @@ def getModelsInfo():
   
   
 def populateDatabase():
+    
+    # file_name = url_for('website/static', filename='actsOfKindness.xlsx')
+    file_name = './website/static/actsOfKindness.xlsx'
+    sheet_name = 'All_AoKs'
+    description_column = 'Description'
+    trained_col = 'trained'
+    df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, trained_col])
+    
+    model = NLPModel.query.first()
+    
+    newAoks = []
+    for element in df.values:
+    
+        if len(element) >0 :
+            newAok = Aok(act=element[0])
+            if newAok:
+                newAoks.append(newAok)
+                # print(newAok.act)
+
+                isTrained = element[1]
+                if isTrained == 'yes':        
+                    newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
+                    db.session.add(newModelAok)
+                    db.session.commit()
+                    
+    if len(newAoks) > 0:
+        db.session.add_all(newAoks)
+        db.session.commit()    
+        
     return      
           
           
