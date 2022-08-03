@@ -49,7 +49,7 @@
                 </li>
                 {% endif %}
                 {% endfor %}
-                <ul>
+            </ul>
             </ul>
         {% endfor %}
     </div>
@@ -73,8 +73,9 @@
 <br/><br/>
 
 <table id="aoks" class="table table-striped">
-    <thead>
+    <thead >
         <tr>
+        <th>#</th>
         <th>Description</th>
         <th>Prob (%)</th>
         <th>Add</th>
@@ -84,6 +85,8 @@
     
     {% for act_prob in act_probs %}
     <tr>
+
+        <th scope="row">{{ loop.index }}</th>
         <td id="td-{{loop.index}}" onClick="update_AoK({{loop.index}})">
             {{act_prob[0]}}
             

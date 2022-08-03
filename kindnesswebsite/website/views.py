@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Aok, User
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateModelTable,  scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
 from werkzeug.security import generate_password_hash
 from flask_login import login_user
@@ -36,6 +36,7 @@ def home():
     
     populateModelTable()
     populateDatabaseWithAoKs()
+    populateDatabaseWithNonAoKs()
     
                 
     return render_template("home.html", user=current_user)

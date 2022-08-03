@@ -16,7 +16,7 @@ from sqlalchemy import exists
 # import json
 # import numpy as np
 # from requests.models import MissingSchema
-from .models import Aok, ModelAok, ModelNonAok, NLPModel
+from .models import Aok, ModelAok, ModelNonAok, NLPModel, NonAok
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -408,6 +408,9 @@ def populateDatabaseWithAoKs():
     
     model = NLPModel.query.first()
     
+    if model is None:
+        return 
+    
     newAoks = []
     newModelAoKs = []
     for element in df.values:
@@ -419,7 +422,7 @@ def populateDatabaseWithAoKs():
                 # print(newAok.act)
 
                 isTrained = element[1]
-                if isTrained == 'yes' and model:        
+                if isTrained == 'yes':        
                     newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
                     newModelAoKs.append(newModelAok)
                     
@@ -434,7 +437,50 @@ def populateDatabaseWithAoKs():
         
     return      
           
-          
+
+def populateDatabaseWithNonAoKs():
+    
+    # already loaded
+    if NonAok.query.first() is not None:
+        return
+    
+    # file_name = url_for('website/static', filename='actsOfKindness.xlsx')
+    file_name = './website/static/actsOfKindness.xlsx'
+    sheet_name = 'All_NonAoks'
+    description_column = 'Description'
+    trained_col = 'trained'
+    df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column, trained_col])
+    
+    model = NLPModel.query.first()
+    
+    if model is None:
+        return
+    
+    newNonAoks = []
+    newModelNonAoKs = []
+    for element in df.values:
+    
+        if len(element) >0 :
+            newNonAok = NonAok(act=element[0])
+            if newNonAok:
+                newNonAoks.append(newNonAok)
+                # print(newAok.act)
+
+                isTrained = element[1]
+                if isTrained == 'yes':        
+                    newModelNonAok = ModelNonAok(model_id=model.id, non_aok_id=newNonAok.id)
+                    newModelNonAoKs.append(newModelNonAok)
+                    
+                    
+    if len(newNonAoks) > 0:
+        db.session.add_all(newNonAoks)
+        db.session.commit()    
+        
+    if len(newModelNonAoKs) >0:
+        db.session.add_all(newModelNonAoKs)
+        db.session.commit()    
+        
+    return                
       
         
         

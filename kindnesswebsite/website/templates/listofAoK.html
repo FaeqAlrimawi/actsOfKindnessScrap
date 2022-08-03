@@ -1,17 +1,31 @@
 {% extends 'base.html' %} 
 {% block title %}Acts of Kindness{% endblock%}
 
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/listofAoK.css')}}">
+{% endblock %}
+
 
 {% block content%}
 
 <br/>
 
-<h2 align="center"> List of Acts of Kindness (AoK)</h2>
+<h2 align="center">Database Acts</h2>
 <br/>
 
+<div class="collapsible" id="div-kindness" >
+      
+    <b>Acts of Kindness</b>
+   
+</div>
+
+
+<div class="content">
+<br/>
 <table id="aoks" class="table table-striped">
 <thead>
     <tr>
+    <th>#</th>
     <th>Description</th>
     <th>Source</th>
     <th>Date Added</th>
@@ -21,6 +35,7 @@
 
 {% for aok in acts %}
 <tr>
+    <th scope="row">{{ loop.index }}</th>
     <td>{{aok.act}}</td>
     <td>{{aok.source}}</td>
     <td>{{aok.date}}</td>
@@ -29,12 +44,67 @@
 
 </tbody>
 </table>
+</div>
+
+<br/><br/>
+
+<div class="collapsible" id="div-nonkindness" >
+      
+    <b>Non-Kindness Acts</b>
+   
+</div>
+
+
+<div class="content">
+<br/>
+<table id="nonaoks" class="table table-striped">
+<thead>
+    <tr>
+    <th>#</th>
+    <th>Description</th>
+    <th>Source</th>
+    <th>Date Added</th>
+    </tr>
+</thead>
+<tbody> 
+
+{% for nonaok in nonaoks %}
+<tr>
+    <th scope="row">{{ loop.index }}</th>
+    <td>{{nonaok.act}}</td>
+    <td>{{nonaok.source}}</td>
+    <td>{{nonaok.date}}</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
 
 {% endblock%}
 
 
 {% block scripts %}
 
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
+
+    
 <script>
     $(document).ready(function(){
         $('#aoks').DataTable({
