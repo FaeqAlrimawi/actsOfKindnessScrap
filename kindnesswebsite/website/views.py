@@ -6,10 +6,12 @@ from flask import Blueprint, flash, jsonify, render_template, request, redirect,
 # import os
 from flask_login import login_required, current_user
 from . import db
-from .models import Aok
+from .models import Aok, User
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabase, scrapWebsite, addAoK, testModelTable
+from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
+from werkzeug.security import generate_password_hash
+from flask_login import login_user
 
 
 views = Blueprint("views", __name__)
@@ -24,7 +26,18 @@ description_column = 'Description'
 @views.route('/', methods=['GET', 'POST'])
 def home():
     
+    myEmail="faeq.rimawi@gmail.com"
+     #add user to databse
+    if User.query.filter_by(email=myEmail).first() is None: 
+        new_user = User(email=myEmail, first_name="faeq", password=generate_password_hash("asd12345", method='sha256'))
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user, remember=True)
     
+    populateModelTable()
+    populateDatabaseWithAoKs()
+    
+                
     return render_template("home.html", user=current_user)
 
 

@@ -343,7 +343,7 @@ def doesAoKExist(aokDescription):
    return res
 
 
-def testModelTable():
+def populateModelTable():
     global model
     global features_file
     
@@ -391,7 +391,11 @@ def getModelsInfo():
       return modelsInfo
   
   
-def populateDatabase():
+def populateDatabaseWithAoKs():
+    
+    # already loaded
+    if Aok.query.first() is not None:
+        return
     
     # file_name = url_for('website/static', filename='actsOfKindness.xlsx')
     file_name = './website/static/actsOfKindness.xlsx'
@@ -403,6 +407,7 @@ def populateDatabase():
     model = NLPModel.query.first()
     
     newAoks = []
+    newModelAoKs = []
     for element in df.values:
     
         if len(element) >0 :
@@ -412,13 +417,17 @@ def populateDatabase():
                 # print(newAok.act)
 
                 isTrained = element[1]
-                if isTrained == 'yes':        
+                if isTrained == 'yes' and model:        
                     newModelAok = ModelAok(model_id=model.id, aok_id=newAok.id)
-                    db.session.add(newModelAok)
-                    db.session.commit()
+                    newModelAoKs.append(newModelAok)
+                    
                     
     if len(newAoks) > 0:
         db.session.add_all(newAoks)
+        db.session.commit()    
+        
+    if len(newModelAoKs) >0:
+        db.session.add_all(newModelAoKs)
         db.session.commit()    
         
     return      
