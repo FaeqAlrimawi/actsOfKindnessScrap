@@ -1,4 +1,5 @@
 from genericpath import exists
+from glob import glob
 from multiprocessing.dummy import active_children
 import pickle
 from sre_constants import FAILURE, SUCCESS
@@ -13,7 +14,7 @@ import trafilatura
 import json
 import numpy as np
 from requests.models import MissingSchema
-from .models import Aok
+from .models import Aok, NLPModel
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -29,7 +30,19 @@ features_file = None
 loaded_vec = None
 
 
+def load_Model_and_Features():
+    global model
+    global features_file
+    
+    if not model:
+        model = pickle.load(open('./website/static/AoK_classifier_model.pkl', 'rb'))
+      
+    if not features_file:
+       features_file = pickle.load(open("./website/static/AoK_features.pkl", "rb"))
+
+
 def addAoK(aok):
+    
     if len(aok)<1:
         return False
     
@@ -46,10 +59,7 @@ def checkIfAoK(act):
     global loaded_vec
     
     if not model:
-        model = pickle.load(open('./website/static/AoK_classifier_model.pkl', 'rb'))
-      
-    if not features_file:
-       features_file = pickle.load(open("./website/static/AoK_features.pkl", "rb"))
+       load_Model_and_Features()
 
     if not loaded_vec:
         loaded_vec = CountVectorizer(decode_error="replace",vocabulary=features_file)
@@ -328,3 +338,28 @@ def doesAoKExist(aokDescription):
 #    if aokDescription.contains("RAK"):
    print("### res checking ", aokDescription, ": ", res)  
    return res
+
+
+# def testModelTable():
+    # global model
+    # global features_file
+    
+    # if not model:
+    #     load_Model_and_Features()
+    
+    # print(model)
+        
+    # new_model = NLPModel(model=model, features=features_file)
+    
+    # if new_model:
+    #     db.session.add(new_model)
+    #     res = db.session.commit()  
+    #     print(res)
+    # else:
+    #     print("problem creating a new model")  
+    # models = NLPModel.query.all()
+    
+    # for model in models:
+    #     print(model.features)    
+        
+     

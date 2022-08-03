@@ -34,6 +34,8 @@ def home():
     #         db.session.add(new_aok)
     #         db.session.commit()
     #         flash("Act added successfully", category='success')
+    # testModelTable()
+    
     return render_template("home.html", user=current_user)
 
 
