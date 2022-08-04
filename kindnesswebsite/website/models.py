@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     acts = db.relationship('Aok') # link a user to their aoks (need to capitalise the name of the calss)
     non_aok_acts = db.relationship('NonAok')
+    websites_scrapped = db.relationship('WebsiteScrapper')
     
     
     
@@ -34,7 +35,7 @@ class Aok(db.Model):
         return {
             'act': self.act,
             'date': self.date,
-            'source': self.source,
+            'source': self.source
         }
     
     
@@ -47,12 +48,25 @@ class NonAok(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     nlp_models = db.relationship('ModelNonAok', cascade = 'all, delete-orphan', lazy = 'dynamic')
     
+    def to_dict(self):
+        return {
+            'act': self.act,
+            'date': self.date,
+            'type': self.type
+        }
+        
+    
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1000), unique=True)
     acts = db.relationship('AokCategories', cascade = 'all, delete-orphan', lazy = 'dynamic')
     
+    def to_dict(self):
+        return {
+            'name': self.name
+        }
+        
 
 ## association table between categories and aok showing which aoks belong to which categories      
 class AokCategories(db.Model):
@@ -82,6 +96,27 @@ class ModelNonAok(db.Model):
     non_aok_id =  db.Column(db.Integer, db.ForeignKey('non_aok.id'))
     model_id = db.Column(db.Integer, db.ForeignKey('nlp_model.id'))
         
+        
+class WebsiteScrapper(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  
+    url = db.Column(db.String(1000), unique=True)
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    sentences = db.relationship('ScrapperSentence', cascade = 'all, delete-orphan', lazy = 'dynamic')  
+    
+    
+class ScrapperSentence(db.Model):
+     id = db.Column(db.Integer, primary_key=True) 
+     text = db.Column(db.String(1000))
+     prob_aok =   db.Column(db.Float)
+     website = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
+        
+     def to_dict(self):
+        return {
+            'text': self.text,
+            'prob_aok': self.prob_aok
+        }
+                
     
      
     

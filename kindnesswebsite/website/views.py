@@ -20,7 +20,7 @@ views = Blueprint("views", __name__)
 # # file_name = 'actsOfKindness.xlsx'
 # sheet_name = 'All_AoKs'
 # description_column = 'Description'
-websiteURL = ""
+# websiteURL = ""
 
 # the route of our website
 @views.route('/', methods=['GET', 'POST'])
