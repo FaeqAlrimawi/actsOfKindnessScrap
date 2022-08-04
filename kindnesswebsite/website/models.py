@@ -141,12 +141,12 @@ class Sitemap(db.Model):
       def to_dict(self):
         return {
             'url': self.url,
-            'sites': Site.query.with_entities(Site.url).filter_by(self.id).all()
+            'sites': [str(site.url) for site in Site.query.with_entities(Site.url).filter_by(sitemap_id=self.id).all()]
         }
         
       def get_sitemaps(baseURL):
         sitemaps = db.session.query(Sitemap).filter(Sitemap.url.like(f'{str(baseURL)}%')).all()
-        return
+        return sitemaps
         
     
 class Site(db.Model):

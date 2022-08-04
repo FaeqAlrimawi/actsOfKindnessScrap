@@ -213,50 +213,50 @@ def getSiteMaps(url):
         
     return jsonSites
  
-def parse_sitemap(sitemapURL):
+# def parse_sitemap(sitemapURL):
 
-    if sitemapURL is None:
-        return
+#     if sitemapURL is None:
+#         return
     
-    sitemapStr = str(sitemapURL.url)
+#     sitemapStr = str(sitemapURL.url)
     
-    resp = requests.get(sitemapStr)
+#     resp = requests.get(sitemapStr)
 
-    # we didn't get a valid response, bail
-    if 200 != resp.status_code:
-        return False
+#     # we didn't get a valid response, bail
+#     if 200 != resp.status_code:
+#         return False
 
-    # BeautifulStoneSoup to parse the document
-    soup = bs(resp.content, features='xml')
+#     # BeautifulStoneSoup to parse the document
+#     soup = bs(resp.content, features='xml')
 
-    # find all the <url> tags in the document
-    urls = soup.findAll('url')
+#     # find all the <url> tags in the document
+#     urls = soup.findAll('url')
 
-    # no urls? bail
-    if not urls:
-        return False
+#     # no urls? bail
+#     if not urls:
+#         return False
 
-    # storage for later...
-    sites = []
+#     # storage for later...
+#     sites = []
 
-    #extract what we need from the url
-    for u in urls:
-        loc = u.find('loc').string if u.find('loc') else None
+#     #extract what we need from the url
+#     for u in urls:
+#         loc = u.find('loc').string if u.find('loc') else None
 
-        # skips url if its path is not potentially one that has kindness acts
-        if not loc or not is_potentially_kindness_url(loc):
-            continue
+#         # skips url if its path is not potentially one that has kindness acts
+#         if not loc or not is_potentially_kindness_url(loc):
+#             continue
             
-        prio =  u.find('priority').string if u.find('priority') else None 
-        change = u.find('changefreq').string if u.find('changefreq') else None
-        last = u.find('lastmod').string if u.find('lastmod') else None
+#         prio =  u.find('priority').string if u.find('priority') else None 
+#         change = u.find('changefreq').string if u.find('changefreq') else None
+#         last = u.find('lastmod').string if u.find('lastmod') else None
         
-        newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=last, sitemap_id=sitemapURL.id)
+#         newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=last, sitemap_id=sitemapURL.id)
         
-        sites.append(newSite)
+#         sites.append(newSite)
     
-    db.session.add_all(sites)
-    return db.session.commit()
+#     db.session.add_all(sites)
+#     return db.session.commit()
         
     # return sites
 
@@ -268,7 +268,9 @@ def saveSiteMaps(url):
     # urlObj = Site.query.filter_by(url=url).first()
     sitemaps = Sitemap.get_sitemaps(baseURL)
     
-    if sitemaps is not None:
+    if len(sitemaps) != 0:
+        print("### there are site maps for ", url)
+        print(sitemaps)
         return sitemaps
     
     
@@ -306,6 +308,7 @@ def saveSiteMaps(url):
     # if all_sitemaps:
     #     sitemaps = all_sitemaps
        
+    print("####: ", all_sitemaps)
         
     sitemapsArray = []
     for sitemap in all_sitemaps:
@@ -362,7 +365,7 @@ def parse_sitemap(sitemapURL):
         change = u.find('changefreq').string if u.find('changefreq') else None
         last = u.find('lastmod').string if u.find('lastmod') else None
         
-        newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=datetime.strptime(last, '%d/%m/%y'), sitemap_id=sitemapURL.id)
+        newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=last, sitemap_id=sitemapURL.id)
         
         sites.append(newSite)
     
