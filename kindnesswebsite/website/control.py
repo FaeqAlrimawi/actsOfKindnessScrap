@@ -2,7 +2,9 @@
 # from genericpath import exists
 # from glob import glob
 # from multiprocessing.dummy import active_children
+from datetime import datetime
 import pickle
+from urllib.request import urlopen
 from sklearn.cluster import dbscan
 # from sre_constants import FAILURE, SUCCESS
 # from xmlrpc.client import Boolean
@@ -17,7 +19,7 @@ from sqlalchemy import exists
 # import json
 # import numpy as np
 # from requests.models import MissingSchema
-from .models import Aok, ModelAok, ModelNonAok, NLPModel, NonAok, ScrapperSentence, WebsiteScrapper
+from .models import Aok, ModelAok, ModelNonAok, NLPModel, NonAok, ScrapperSentence, Site, Sitemap, WebsiteScrapper
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -87,44 +89,56 @@ def scrapWebsite(websiteURL):
     ### need to check url states (but already check by the client side)
     
     # check in the db if the website already scrapped before
-    site = WebsiteScrapper.query.filter_by(url=str(websiteURL)).first()
+    site = scrapeAndSave(websiteURL)
     
-    # has not been scrapped before:
     if site is None:
-        page = requests.get(websiteURL)
-        soup = bs(page.content, features="html.parser")
-        # text = soup.find_all("<li>")
-        sents = soup.find_all(text=True)
-        sents = processWebsiteScrapText(sents)
-        sents = removeJunkSentences(sents)
-        
-        if sents is not None:
-            #add to db
-            # print("###: adding to dB")
-            newSite = WebsiteScrapper(url=str(websiteURL))
-            db.session.add(newSite)
-            db.session.commit()
-            
-            # could do this in multi-threading (later!)
-            dbSents = []
-            for sent in sents:
-                newSent = ScrapperSentence(text=str(sent),website_id=newSite.id)
-                dbSents.append(newSent)
-                
-            db.session.add_all(dbSents)
-            db.session.commit()    
-        
-    #already scrapped
-    else:
-        # print("###: returning from db")
-        sents =  [ str(sent) for sent in ScrapperSentence.query.with_entities(ScrapperSentence.text).filter_by(website_id=int(site.id)).all()]
-        # print(sents)
-      
-        
+        return 
+    
+    # print("###: returning from db")
+    sents =  [sent.to_dict() for sent in ScrapperSentence.query.filter_by(website_id=int(site.id)).all()]
+    # print(sents)
+   
     return sents
 
 
+def scrapeAndSave(websiteURL):
+    
+    
+    if websiteURL is None:
+        return
+    
+    site = WebsiteScrapper.query.filter_by(url=str(websiteURL)).first()
 
+    if site is not None:
+        return site
+    
+    
+    page = requests.get(websiteURL)
+    soup = bs(page.content, features="html.parser")
+    # text = soup.find_all("<li>")
+    sents = soup.find_all(text=True)
+    sents = processWebsiteScrapText(sents)
+    sents = removeJunkSentences(sents)
+       
+    #add to db
+    # print("###: adding to dB")
+    site = WebsiteScrapper(url=str(websiteURL))
+    db.session.add(site)
+    db.session.commit()
+    
+    # could do this in multi-threading (later!)
+    dbSents = []
+    for sent in sents:
+        prob = checkIfAoK(sent)
+        newSent = ScrapperSentence(text=str(sent),website_id=site.id, prob_aok=prob)
+        dbSents.append(newSent)
+        
+    db.session.add_all(dbSents)
+    db.session.commit()    
+            
+    return site    
+    
+    
 def processWebsiteScrapText(text):
     # returns the set of sentences in the given text
    
@@ -187,8 +201,81 @@ def removeJunkSentences(sentences):
         
     
 def getSiteMaps(url):
-    rp = urobot.RobotFileParser()
+    
+    sitemaps = saveSiteMaps(url)
+    
+    jsonSites = []
+    
+    # [sent.to_dict() for sent in ScrapperSentence.query.filter_by(website_id=int(site.id)).all()]
+    
+    for sitemap in sitemaps:
+       jsonSites.append(sitemap.to_dict()) 
+        
+    return jsonSites
+ 
+def parse_sitemap(sitemapURL):
+
+    if sitemapURL is None:
+        return
+    
+    sitemapStr = str(sitemapURL.url)
+    
+    resp = requests.get(sitemapStr)
+
+    # we didn't get a valid response, bail
+    if 200 != resp.status_code:
+        return False
+
+    # BeautifulStoneSoup to parse the document
+    soup = bs(resp.content, features='xml')
+
+    # find all the <url> tags in the document
+    urls = soup.findAll('url')
+
+    # no urls? bail
+    if not urls:
+        return False
+
+    # storage for later...
+    sites = []
+
+    #extract what we need from the url
+    for u in urls:
+        loc = u.find('loc').string if u.find('loc') else None
+
+        # skips url if its path is not potentially one that has kindness acts
+        if not loc or not is_potentially_kindness_url(loc):
+            continue
+            
+        prio =  u.find('priority').string if u.find('priority') else None 
+        change = u.find('changefreq').string if u.find('changefreq') else None
+        last = u.find('lastmod').string if u.find('lastmod') else None
+        
+        newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=last, sitemap_id=sitemapURL.id)
+        
+        sites.append(newSite)
+    
+    db.session.add_all(sites)
+    return db.session.commit()
+        
+    # return sites
+
+
+def saveSiteMaps(url):
+    
+    ## check if already in db
     baseURL = getBaseURL(url)
+    # urlObj = Site.query.filter_by(url=url).first()
+    sitemaps = Sitemap.get_sitemaps(baseURL)
+    
+    if sitemaps is not None:
+        return sitemaps
+    
+    
+    rp = urobot.RobotFileParser()
+    
+    
+    # websiteObj = WebsiteScrapper.query.filter_by(url=str(url)).first()
     
     rp.set_url(baseURL + "/robots.txt")
     # print(baseURL + "/robots.txt")
@@ -220,22 +307,31 @@ def getSiteMaps(url):
     #     sitemaps = all_sitemaps
        
         
-    urls = {}
+    sitemapsArray = []
     for sitemap in all_sitemaps:
         # print("sitemap: ", sitemap)
-        out = parse_sitemap(sitemap)
+        # if websiteObj is not None:
+        newSiteMap = Sitemap(url=sitemap)
+        db.session.add(newSiteMap)
+        db.session.commit()
+        parse_sitemap(newSiteMap)
         
-        if out:
-            urls[sitemap] = out
+        # if sites is not None:
+        sitemapsArray.append(newSiteMap)
         
     # print(urls)    
-    return urls
+    return sitemapsArray
    
     
  
 def parse_sitemap(sitemapURL):
 
-    resp = requests.get(sitemapURL)
+    if sitemapURL is None:
+        return
+    
+    sitemapStr = str(sitemapURL.url)
+    
+    resp = requests.get(sitemapStr)
 
     # we didn't get a valid response, bail
     if 200 != resp.status_code:
@@ -243,7 +339,6 @@ def parse_sitemap(sitemapURL):
 
     # BeautifulStoneSoup to parse the document
     soup = bs(resp.content, features='xml')
-
 
     # find all the <url> tags in the document
     urls = soup.findAll('url')
@@ -253,7 +348,7 @@ def parse_sitemap(sitemapURL):
         return False
 
     # storage for later...
-    out = []
+    sites = []
 
     #extract what we need from the url
     for u in urls:
@@ -266,9 +361,15 @@ def parse_sitemap(sitemapURL):
         prio =  u.find('priority').string if u.find('priority') else None 
         change = u.find('changefreq').string if u.find('changefreq') else None
         last = u.find('lastmod').string if u.find('lastmod') else None
-        out.append([loc, prio, change, last])
         
-    return out
+        newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=datetime.strptime(last, '%d/%m/%y'), sitemap_id=sitemapURL.id)
+        
+        sites.append(newSite)
+    
+    db.session.add_all(sites)
+    return db.session.commit()
+        
+    # return sites
 
 
 def check_has_more_sitemaps(sitemap):

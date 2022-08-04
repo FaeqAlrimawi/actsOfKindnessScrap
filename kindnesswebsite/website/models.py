@@ -111,7 +111,11 @@ class WebsiteScrapper(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     sentences = db.relationship('ScrapperSentence', cascade = 'all, delete-orphan', lazy = 'dynamic') 
-    sitemaps = db.relationship('Sitemap')   
+    # sitemaps = db.relationship('Sitemap')   
+    
+    
+    # def get_sitemaps(self):
+    #     return Sitemap.query.with_entities(Sitemap.url).filter_by(self.id).all()
     
     
 class ScrapperSentence(db.Model):
@@ -125,20 +129,38 @@ class ScrapperSentence(db.Model):
             'text': self.text,
             'prob_aok': self.prob_aok
         }
+            
            
                 
 class Sitemap(db.Model):
       id = db.Column(db.Integer, primary_key=True) 
       url = db.Column(db.String(1000), unique=True)
       sites = db.relationship('Site', cascade = 'all, delete-orphan', lazy = 'dynamic') 
-      website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
-    
+    #   website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
+        
+      def to_dict(self):
+        return {
+            'url': self.url,
+            'sites': Site.query.with_entities(Site.url).filter_by(self.id).all()
+        }
+        
+      def get_sitemaps(baseURL):
+        sitemaps = db.session.query(Sitemap).filter(Sitemap.url.like(f'{str(baseURL)}%')).all()
+        return
+        
     
 class Site(db.Model):
       id = db.Column(db.Integer, primary_key=True) 
       url = db.Column(db.String(1000), unique=True)
       level_aok =   db.Column(db.Enum(Level))
+      priority = db.Column(db.String(1000))
+      change_frequency = db.Column(db.String(1000))
+      last_modified = db.Column(db.String(1000))
       sitemap_id = db.Column(db.Integer, db.ForeignKey('sitemap.id'))
+      
+      
+      def get_sitemap(self):
+          return Sitemap.query.filter_by(id=self.sitemap_id).first()
       
 
       

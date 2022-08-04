@@ -35,15 +35,15 @@
     {% if sitemap %}
     <div class="content" id="div-sitemap-content">
         Potential URLs (click to scrap)
-        {% for  sitemapURL in sitemap %}
+        {% for  sitemapURL in sitemap['sitemap'] %}
         {% set outer_loop = loop %}
             <ul >
-                <li style="padding-bottom:1em"><a href="{{sitemapURL}}" target="_blank">{{sitemapURL}}</a></li>
+                <li style="padding-bottom:1em"><a href="{{sitemapURL['url']}}" target="_blank">{{sitemapURL['url']}}</a></li>
                 <ul>
-                {% for potentialURL in sitemap[sitemapURL] %}
-                {% if  potentialURL[0] != websiteURL %} 
-                <li style="padding-bottom:1em"><a href="{{potentialURL[0]}}" target="_blank">{{potentialURL[0]}}</a>
-                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL[0]}}')">
+                {% for potentialURL in sitemapURL['sites'] %}
+                {% if  potentialURL != websiteURL %} 
+                <li style="padding-bottom:1em"><a href="{{potentialURL}}" target="_blank">{{potentialURL}}</a>
+                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL}}')">
                         <span aria-hidden="true" >&plus;</span>
                     </button>
                 </li>
@@ -83,19 +83,19 @@
     </thead>
     <tbody> 
     
-    {% for act_prob in act_probs %}
+    {% for act_and_prob in acts_and_probs['data'] %}
     <tr>
 
         <th scope="row">{{ loop.index }}</th>
         <td id="td-{{loop.index}}" onClick="update_AoK({{loop.index}})">
-            {{act_prob[0]}}
+            {{act_and_prob['text']}}
             
         </td>
 
   
 
         <td id="td-prob-{{loop.index}}">
-            {{"{:.2f}".format(act_prob[1])}}
+            {{"{:.2f}".format(act_and_prob['prob_aok'])}}
         </td>
         
         <td >
