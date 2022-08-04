@@ -214,7 +214,6 @@ def update_prob():
     
 @views.route("/aok-scrapper", methods=["POST", "GET"])
 def aokScrapper():
-    global websiteURL
     
     if request.method == 'POST':
         # data = json.loads(request.data)
@@ -238,7 +237,8 @@ def aokScrapper():
         #    flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
         # # print(json.dumps(act_probs))
         # return jsonify({"result":"success", "acts":json.dumps(act_probs)});    
-        websiteURL = request.form.get('websiteURL')         
+        websiteURL = request.form.get('websiteURL')  
+               
         sentences = scrapWebsite(websiteURL)
         act_probs = []
         

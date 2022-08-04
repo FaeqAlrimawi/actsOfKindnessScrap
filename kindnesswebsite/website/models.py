@@ -118,7 +118,7 @@ class ScrapperSentence(db.Model):
      id = db.Column(db.Integer, primary_key=True) 
      text = db.Column(db.String(1000))
      prob_aok =   db.Column(db.Float)
-     website = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
+     website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
         
      def to_dict(self):
         return {
@@ -131,14 +131,14 @@ class Sitemap(db.Model):
       id = db.Column(db.Integer, primary_key=True) 
       url = db.Column(db.String(1000), unique=True)
       sites = db.relationship('Site', cascade = 'all, delete-orphan', lazy = 'dynamic') 
-      website = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
+      website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
     
     
 class Site(db.Model):
       id = db.Column(db.Integer, primary_key=True) 
       url = db.Column(db.String(1000), unique=True)
       level_aok =   db.Column(db.Enum(Level))
-      sitemap = db.Column(db.Integer, db.ForeignKey('sitemap.id'))
+      sitemap_id = db.Column(db.Integer, db.ForeignKey('sitemap.id'))
       
 
       

@@ -3,6 +3,7 @@
 # from glob import glob
 # from multiprocessing.dummy import active_children
 import pickle
+from sklearn.cluster import dbscan
 # from sre_constants import FAILURE, SUCCESS
 # from xmlrpc.client import Boolean
 # from flask import url_for
@@ -16,7 +17,7 @@ from sqlalchemy import exists
 # import json
 # import numpy as np
 # from requests.models import MissingSchema
-from .models import Aok, ModelAok, ModelNonAok, NLPModel, NonAok
+from .models import Aok, ModelAok, ModelNonAok, NLPModel, NonAok, ScrapperSentence, WebsiteScrapper
 from . import db
 from flask_login import current_user
 import urllib.robotparser as urobot
@@ -82,15 +83,46 @@ def checkIfAoK(act):
 
 
 def scrapWebsite(websiteURL):
-    page = requests.get(websiteURL)
-    soup = bs(page.content, features="html.parser")
-    # text = soup.find_all("<li>")
-    sents = soup.find_all(text=True)
-    sents = processWebsiteScrapText(sents)
-    sents = removeJunkSentences(sents)
+    
+    ### need to check url states (but already check by the client side)
+    
+    # check in the db if the website already scrapped before
+    site = WebsiteScrapper.query.filter_by(url=str(websiteURL)).first()
+    
+    # has not been scrapped before:
+    if site is None:
+        page = requests.get(websiteURL)
+        soup = bs(page.content, features="html.parser")
+        # text = soup.find_all("<li>")
+        sents = soup.find_all(text=True)
+        sents = processWebsiteScrapText(sents)
+        sents = removeJunkSentences(sents)
+        
+        if sents is not None:
+            #add to db
+            # print("###: adding to dB")
+            newSite = WebsiteScrapper(url=str(websiteURL))
+            db.session.add(newSite)
+            db.session.commit()
+            
+            # could do this in multi-threading (later!)
+            dbSents = []
+            for sent in sents:
+                newSent = ScrapperSentence(text=str(sent),website_id=newSite.id)
+                dbSents.append(newSent)
+                
+            db.session.add_all(dbSents)
+            db.session.commit()    
+        
+    #already scrapped
+    else:
+        # print("###: returning from db")
+        sents =  [ str(sent) for sent in ScrapperSentence.query.with_entities(ScrapperSentence.text).filter_by(website_id=int(site.id)).all()]
+        # print(sents)
+      
+        
     return sents
-    # text = extract_text_from_single_web_page(websiteURL)
-    # print(text)
+
 
 
 def processWebsiteScrapText(text):
