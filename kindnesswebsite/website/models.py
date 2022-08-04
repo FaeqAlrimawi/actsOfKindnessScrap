@@ -19,6 +19,8 @@ class User(db.Model, UserMixin):
     non_aok_acts = db.relationship('NonAok')
     
     
+    
+    
 class Aok(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     act = db.Column(db.String(1000))
@@ -28,6 +30,12 @@ class Aok(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     nlp_models = db.relationship('ModelAok', cascade = 'all, delete-orphan', lazy = 'dynamic')
     
+    def to_dict(self):
+        return {
+            'act': self.act,
+            'date': self.date,
+            'source': self.source,
+        }
     
     
 

@@ -442,6 +442,7 @@ def populateDatabaseWithNonAoKs():
     
     # already loaded
     if NonAok.query.first() is not None:
+        # print("already added non-aoks")
         return
     
     # file_name = url_for('website/static', filename='actsOfKindness.xlsx')

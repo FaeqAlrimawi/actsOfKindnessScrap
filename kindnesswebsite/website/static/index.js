@@ -14,7 +14,7 @@ function delete_AoK(aokId){
 }
 
 
-function add_AoK(row){
+function add_AoK(row, websiteURL){
 
     
     var act = $('#td-'+row).text();
@@ -22,7 +22,7 @@ function add_AoK(row){
     
     fetch('/add-AoK', {
         method: 'POST',
-        body: JSON.stringify({aok: act, row:row}),
+        body: JSON.stringify({aok: act, row:row, websiteURL:websiteURL}),
         cache: "no-cache",
         headers: new Headers({
             "content-type": "application/json"

@@ -6,7 +6,7 @@ from flask import Blueprint, flash, jsonify, render_template, request, redirect,
 # import os
 from flask_login import login_required, current_user
 from . import db
-from .models import Aok, User
+from .models import Aok, NonAok, User
 import json
 from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
@@ -91,11 +91,71 @@ def listofAoK():
     
     # df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])
     aoks = Aok.query.all()
- 
-    return render_template("listofAoK.html", acts=aoks, user=current_user)
+    nonaoks = NonAok.query.all()
+    return render_template("listofAoK.html", aoks=aoks, nonaoks=nonaoks, user=current_user)
     # return df.to_html()
+ 
+@views.route('/api/data')
+def data():
+    #  return {'data': [aok.to_dict() for aok in Aok.query]}
+    query = Aok.query
+
+
+ # search filter
+    search = request.args.get('search[value]')
+    if search:
+        query = query.filter(db.or_(
+            Aok.act.like(f'%{search}%'),
+            Aok.source.like(f'%{search}%')
+        ))
+    total_filtered = query.count()
+
+ # sorting
+    order = []
+    i = 0
+    while True:
+        
+        col_index = request.args.get(f'order[{i}][column]')
+        if col_index is None:
+            break
+        col_name = request.args.get(f'columns[{col_index}][data]')
+        if col_name not in ['act', 'source', 'date']:
+            col_name = 'act'
+        descending = request.args.get(f'order[{i}][dir]') == 'desc'
+        col = getattr(Aok, col_name)
+        
+        print(f"ordering: {col_name} descending: {descending}")
+        if descending:
+            col = col.desc()
+        # else:
+        #     col = col.asc()
+            
+        order.append(col)
+        i += 1
+    if order:
+        query = query.order_by(*order)
+
+
+    # pagination
+    start = request.args.get('start', type=int)
+    length = request.args.get('length', type=int)
+    query = query.offset(start).limit(length)
     
-    
+    # pagination
+    start = request.args.get('start', type=int)
+    length = request.args.get('length', type=int)
+    query = query.offset(start).limit(length)
+
+    # response
+    return {
+        'data': [aok.to_dict() for aok in query],
+        'recordsFiltered': total_filtered,
+        'recordsTotal': Aok.query.count(),
+        'draw': request.args.get('draw', type=int),
+    }
+       
+       
+           
 @views.route('/delete-AoK', methods=['POST'])
 def delete_AoK():
     aok = json.loads(request.data)
@@ -114,6 +174,7 @@ def add_AoK():
     # print("##### in add aok")
     aok = json.loads(request.data)
     aok_str = aok['aok']   
+    websiteURL = aok['websiteURL']
     
     if type(aok_str) != str:
         aok_str = str(aok_str)

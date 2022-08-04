@@ -25,7 +25,6 @@
 <table id="aoks" class="table table-striped">
 <thead>
     <tr>
-    <th>#</th>
     <th>Description</th>
     <th>Source</th>
     <th>Date Added</th>
@@ -33,14 +32,14 @@
 </thead>
 <tbody> 
 
-{% for aok in acts %}
+<!--{% for aok in aoks %}
 <tr>
     <th scope="row">{{ loop.index }}</th>
     <td>{{aok.act}}</td>
     <td>{{aok.source}}</td>
     <td>{{aok.date}}</td>
 </tr>
-{% endfor %}
+{% endfor %} -->
 
 </tbody>
 </table>
@@ -94,6 +93,24 @@
     for (i = 0; i < coll.length; i++) {
       coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
+        var col2 = document.getElementsByClassName("collapsible");
+
+        /*for(var j=0;j<col2.length;j++) {
+            if(col2[j] != this) {
+                if(col2[j] != this && col2[j].classList.contains("active")) {
+                    col2[j].classList.toggle("active");
+                    let content = col2[j].nextElementSibling;
+                    if (content.style.maxHeight){
+                      content.style.maxHeight = null;
+                    } else {
+                      content.style.maxHeight = content.scrollHeight + "px";
+                    } 
+                    
+                }
+                
+            }
+        }*/
+
         var content = this.nextElementSibling;
         if (content.style.maxHeight){
           content.style.maxHeight = null;
@@ -107,7 +124,25 @@
     
 <script>
     $(document).ready(function(){
-        $('#aoks').DataTable({
+
+              $('#aoks').DataTable({
+                ajax: '/api/data',
+                serverSide: true,
+                columns: [
+                  {data: 'act'},
+                  {data: 'source'},
+                  {data: 'date'}
+                  //{data: 'phone', orderable: false},
+                //  {data: 'email'}
+                ],
+              });
+           
+
+       // $('#aoks').DataTable({
+
+        //});
+
+        $('#nonaoks').DataTable({
 
         });
     });
