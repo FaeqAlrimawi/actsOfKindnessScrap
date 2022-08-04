@@ -9,6 +9,14 @@ class ActType(enum.Enum):
         NORMAL= "Normal Act"
         ANTI_SOCIAL = "Anit-Social Act"
             
+            
+class Level(enum.Enum):
+    Very_High = "Very High"
+    High= "High"
+    Medium = "Medium"
+    Low = "Low"
+    Very_Low = "Very Low"            
+    
     
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -102,7 +110,8 @@ class WebsiteScrapper(db.Model):
     url = db.Column(db.String(1000), unique=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    sentences = db.relationship('ScrapperSentence', cascade = 'all, delete-orphan', lazy = 'dynamic')  
+    sentences = db.relationship('ScrapperSentence', cascade = 'all, delete-orphan', lazy = 'dynamic') 
+    sitemaps = db.relationship('Sitemap')   
     
     
 class ScrapperSentence(db.Model):
@@ -116,8 +125,23 @@ class ScrapperSentence(db.Model):
             'text': self.text,
             'prob_aok': self.prob_aok
         }
+           
                 
+class Sitemap(db.Model):
+      id = db.Column(db.Integer, primary_key=True) 
+      url = db.Column(db.String(1000), unique=True)
+      sites = db.relationship('Site', cascade = 'all, delete-orphan', lazy = 'dynamic') 
+      website = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
     
+    
+class Site(db.Model):
+      id = db.Column(db.Integer, primary_key=True) 
+      url = db.Column(db.String(1000), unique=True)
+      level_aok =   db.Column(db.Enum(Level))
+      sitemap = db.Column(db.Integer, db.ForeignKey('sitemap.id'))
+      
+
+      
      
     
     

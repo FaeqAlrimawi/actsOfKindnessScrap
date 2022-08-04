@@ -124,7 +124,7 @@ def data():
         descending = request.args.get(f'order[{i}][dir]') == 'desc'
         col = getattr(Aok, col_name)
         
-        print(f"ordering: {col_name} descending: {descending}")
+        # print(f"ordering: {col_name} descending: {descending}")
         if descending:
             col = col.desc()
         # else:
