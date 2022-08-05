@@ -303,8 +303,8 @@ def saveSiteMaps(url):
             db.session.commit() 
             sitemapsArray.append(newSiteMap)
         else:
-            db.session.remove(newSiteMap)    
-            db.sesson.commit()
+            WebsiteScrapper.query.filter_by(id=newSiteMap.id).delete(synchronize_session=False)
+            db.session.commit()
        
                    
     return sitemapsArray
