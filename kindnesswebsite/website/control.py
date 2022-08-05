@@ -102,7 +102,13 @@ def scrapWebsite(websiteURL):
 
 
 def scrapeAndSave(websiteURL):
+    '''
+    finds all possible sentences in the given url, filters them (removes repetitions, tags, etc), 
+    and saves them to database (including the URL)  
     
+    paramter: website url as a string
+    returns a WebsiteScrapper object or None if failed
+    ''' 
     
     if websiteURL is None:
         return
@@ -117,14 +123,19 @@ def scrapeAndSave(websiteURL):
     soup = bs(page.content, features="html.parser")
     # text = soup.find_all("<li>")
     sents = soup.find_all(text=True)
+    
+    if len(sents) == 0:
+        return
+    
     sents = processWebsiteScrapText(sents)
     sents = removeJunkSentences(sents)
        
     #add to db
     # print("###: adding to dB")
     site = WebsiteScrapper(url=str(websiteURL))
-    db.session.add(site)
-    db.session.commit()
+   
+    db.session.add(site)     
+    db.session.commit()  
     
     # could do this in multi-threading (later!)
     dbSents = []
@@ -132,9 +143,10 @@ def scrapeAndSave(websiteURL):
         prob = checkIfAoK(sent)
         newSent = ScrapperSentence(text=str(sent),website_id=site.id, prob_aok=prob)
         dbSents.append(newSent)
-        
+     
     db.session.add_all(dbSents)
     db.session.commit()    
+            
             
     return site    
     
@@ -206,62 +218,25 @@ def getSiteMaps(url):
     
     jsonSites = []
     
-    # [sent.to_dict() for sent in ScrapperSentence.query.filter_by(website_id=int(site.id)).all()]
-    
     for sitemap in sitemaps:
        jsonSites.append(sitemap.to_dict()) 
         
     return jsonSites
  
-# def parse_sitemap(sitemapURL):
-
-#     if sitemapURL is None:
-#         return
-    
-#     sitemapStr = str(sitemapURL.url)
-    
-#     resp = requests.get(sitemapStr)
-
-#     # we didn't get a valid response, bail
-#     if 200 != resp.status_code:
-#         return False
-
-#     # BeautifulStoneSoup to parse the document
-#     soup = bs(resp.content, features='xml')
-
-#     # find all the <url> tags in the document
-#     urls = soup.findAll('url')
-
-#     # no urls? bail
-#     if not urls:
-#         return False
-
-#     # storage for later...
-#     sites = []
-
-#     #extract what we need from the url
-#     for u in urls:
-#         loc = u.find('loc').string if u.find('loc') else None
-
-#         # skips url if its path is not potentially one that has kindness acts
-#         if not loc or not is_potentially_kindness_url(loc):
-#             continue
-            
-#         prio =  u.find('priority').string if u.find('priority') else None 
-#         change = u.find('changefreq').string if u.find('changefreq') else None
-#         last = u.find('lastmod').string if u.find('lastmod') else None
-        
-#         newSite = Site(url=loc, priority=prio,change_frequency=change,last_modified=last, sitemap_id=sitemapURL.id)
-        
-#         sites.append(newSite)
-    
-#     db.session.add_all(sites)
-#     return db.session.commit()
-        
-    # return sites
 
 
 def saveSiteMaps(url):
+    '''
+    1- finds all sitemaps in using the given url
+    2- loops over the sites found in each sitemap
+    3- if a site has one of the keywords (e.g., aok or acts of kindness) then they will be added, otherwise removed (This can be should be updated to include levels of potentially containing aoks)
+    
+    parameters: url as string
+    returns: a list of Sitemap objects
+    '''
+    
+    if url is None:
+        return
     
     ## check if already in db
     baseURL = getBaseURL(url)
@@ -311,26 +286,41 @@ def saveSiteMaps(url):
     print("####: ", all_sitemaps)
         
     sitemapsArray = []
+    allSites = []
+    
     for sitemap in all_sitemaps:
         # print("sitemap: ", sitemap)
         # if websiteObj is not None:
-        newSiteMap = Sitemap(url=sitemap)
+        newSiteMap = Sitemap(url=sitemap)  
         db.session.add(newSiteMap)
         db.session.commit()
-        parse_sitemap(newSiteMap)
         
-        # if sites is not None:
-        sitemapsArray.append(newSiteMap)
+        sites = parse_sitemap(newSiteMap)
         
-    # print(urls)    
+        
+        if sites and sites is not None and len(sites) >0:
+            db.session.add_all(sites)
+            db.session.commit() 
+            sitemapsArray.append(newSiteMap)
+        else:
+            db.session.remove(newSiteMap)    
+            db.sesson.commit()
+       
+                   
     return sitemapsArray
    
     
  
 def parse_sitemap(sitemapURL):
 
+    '''
+    returns all  sites found in the sitemap
+      
+    parameters: sitemapURL: is a database object of table Sitemap
+    returns: list of Site objects
+    '''
     if sitemapURL is None:
-        return
+        return False
     
     sitemapStr = str(sitemapURL.url)
     
@@ -339,14 +329,15 @@ def parse_sitemap(sitemapURL):
     # we didn't get a valid response, bail
     if 200 != resp.status_code:
         return False
-
+    
+    
     # BeautifulStoneSoup to parse the document
     soup = bs(resp.content, features='xml')
 
     # find all the <url> tags in the document
     urls = soup.findAll('url')
 
-    # no urls? bail
+    # no urls? fail
     if not urls:
         return False
 
@@ -369,8 +360,7 @@ def parse_sitemap(sitemapURL):
         
         sites.append(newSite)
     
-    db.session.add_all(sites)
-    return db.session.commit()
+    return sites
         
     # return sites
 

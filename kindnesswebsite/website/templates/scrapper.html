@@ -34,7 +34,8 @@
 
     {% if sitemap['sitemap'] %}
     <div class="content" id="div-sitemap-content">
-        Potential URLs (click to scrap)
+        <br/>
+        <p style="font-size:120%;"> Potential URLs (click &#8631; to scrap)</p>
         {% for  sitemapURL in sitemap['sitemap'] %}
         {% set outer_loop = loop %}
             <ul >
@@ -44,7 +45,7 @@
                 {% if  potentialURL != websiteURL %} 
                 <li style="padding-bottom:1em"><a href="{{potentialURL}}" target="_blank">{{potentialURL}}</a>
                     <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL}}')">
-                        <span aria-hidden="true" >&plus;</span>
+                        <span aria-hidden="true" >&#8631;</span>
                     </button>
                 </li>
                 {% endif %}
