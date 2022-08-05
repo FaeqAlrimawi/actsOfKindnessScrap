@@ -1,3 +1,4 @@
+from email.policy import default
 from sqlalchemy import PrimaryKeyConstraint
 from . import db
 from flask_login import UserMixin
@@ -141,7 +142,7 @@ class Sitemap(db.Model):
       def to_dict(self):
         return {
             'url': self.url,
-            'sites': [str(site.url) for site in Site.query.with_entities(Site.url).filter_by(sitemap_id=self.id).all()]
+            'sites': [ {'url':str(site.url), 'scrapped':site.isScrapped()} for site in Site.query.filter_by(sitemap_id=self.id).all()]
         }
         
       def get_sitemaps(baseURL):
@@ -157,10 +158,19 @@ class Site(db.Model):
       change_frequency = db.Column(db.String(1000))
       last_modified = db.Column(db.String(1000))
       sitemap_id = db.Column(db.Integer, db.ForeignKey('sitemap.id'))
+      last_accessed = db.Column(db.DateTime(timezone=True), default=func.now())
       
       
       def get_sitemap(self):
           return Sitemap.query.filter_by(id=self.sitemap_id).first()
+      
+      def isScrapped(self):
+          scrap = WebsiteScrapper.query.filter_by(id=self.id).first()
+          
+          if scrap is None:
+              return False
+          
+          return True
       
 
       

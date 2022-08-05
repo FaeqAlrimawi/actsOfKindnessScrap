@@ -42,10 +42,13 @@
                 <li style="padding-bottom:1em"><a href="{{sitemapURL['url']}}" target="_blank">{{sitemapURL['url']}}</a></li>
                 <ul>
                 {% for potentialURL in sitemapURL['sites'] %}
-                {% if  potentialURL != websiteURL %} 
-                <li style="padding-bottom:1em"><a href="{{potentialURL}}" target="_blank">{{potentialURL}}</a>
-                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL}}')">
+                {% if  potentialURL['url'] != websiteURL %} 
+                <li style="padding-bottom:1em"><a href="{{potentialURL['url']}}" target="_blank">{{potentialURL['url']}}</a>
+                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL['url']}}')">
                         <span aria-hidden="true" >&#8631;</span>
+                        {% if potentialURL['scrapped'] == False %}
+                        <span aria-hidden="true" >&#8631;</span>
+                        {% endif %}
                     </button>
                 </li>
                 {% endif %}
