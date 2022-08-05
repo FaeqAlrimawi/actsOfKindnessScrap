@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 # import re
 import nltk
+# nltk.download()
 from sqlalchemy import exists
 # import trafilatura
 # import json
@@ -283,10 +284,10 @@ def saveSiteMaps(url):
     # if all_sitemaps:
     #     sitemaps = all_sitemaps
        
-    print("####: ", all_sitemaps)
+    # print("####: ", all_sitemaps)
         
     sitemapsArray = []
-    allSites = []
+    # allSites = []
     
     for sitemap in all_sitemaps:
         # print("sitemap: ", sitemap)

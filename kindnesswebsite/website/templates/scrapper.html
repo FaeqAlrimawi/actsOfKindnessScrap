@@ -45,17 +45,21 @@
                 {% if  potentialURL['url'] != websiteURL %} 
                 <li style="padding-bottom:1em"><a href="{{potentialURL['url']}}" target="_blank">{{potentialURL['url']}}</a>
                     <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL['url']}}')">
-                        <span aria-hidden="true" >&#8631;</span>
                         {% if potentialURL['scrapped'] == False %}
-                        <span aria-hidden="true" >&#8631;</span>
+                        <i class="fa-solid fa-splotch"></i>
                         {% endif %}
+                        <i class="fa-regular fa-file-lines"></i>
+                       
+                       
                     </button>
+                    
                 </li>
                 {% endif %}
                 {% endfor %}
             </ul>
             </ul>
         {% endfor %}
+       
     </div>
 
     {% else  %}

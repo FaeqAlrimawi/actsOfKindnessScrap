@@ -252,7 +252,7 @@ def aokScrapper():
         
         #get sitemap
         sitemap = {'sitemap':getSiteMaps(websiteURL)}
-        print(sitemap)
+        # print(sitemap)
         
         # print(sitemap)
         # print("sitemap: ", sitemap)    

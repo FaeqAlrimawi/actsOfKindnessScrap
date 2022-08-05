@@ -165,7 +165,7 @@ class Site(db.Model):
           return Sitemap.query.filter_by(id=self.sitemap_id).first()
       
       def isScrapped(self):
-          scrap = WebsiteScrapper.query.filter_by(id=self.id).first()
+          scrap = WebsiteScrapper.query.filter_by(url=self.url).first()
           
           if scrap is None:
               return False
