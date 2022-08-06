@@ -108,8 +108,25 @@
 
    
 <script>
-  createGridjsTable("aoks", "/api/aokdata");
-  createGridjsTable("nonaoks", "/api/nonaokdata");
+  
+  const editableCellAttributes = (data, row, col) => {
+    if (row) {
+      return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
+    }
+    else {
+      return {};
+    }
+};
+
+columns = [ 
+      { id: 'id', 'hidden': true },
+      { id: 'act', name: 'Description', 'attributes': editableCellAttributes },
+      { id: 'source', name: 'Source', 'attributes': editableCellAttributes },
+      { id: 'date', name: 'Date' },
+    ];
+
+  createGridjsTable("aoks", "/api/aokdata", columns);
+  createGridjsTable("nonaoks", "/api/nonaokdata", columns);
 </script>    
 
 <script>

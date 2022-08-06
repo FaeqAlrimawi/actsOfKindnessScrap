@@ -155,9 +155,38 @@
     }
     </script>
 
-<script>
 
+    <script>
   
+        const editableCellAttributes = (data, row, col) => {
+          if (row) {
+            return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
+          }
+          else {
+            return {};
+          }
+      };
+      
+      columns = [ 
+            { id: 'id', 'hidden': true },
+            { id: 'act', name: 'Description', 'attributes': editableCellAttributes },
+            { id: 'prob_aok', name: 'Prob (%)', 'attributes': editableCellAttributes },
+            {
+                id:'add',    
+                name: 'Add',
+                formatter: (_, row) =>
+                        gridjs.html(`<button class="btn btn-outline-dark" onclick="add_AoK(${row.cells[0].data});" target="_blank"><span aria-hidden="true" >&plus;</span></button>`)
+                
+                },
+            },
+          ];
+      
+        createGridjsTable("aoks", "/api/aokdata", columns);
+        createGridjsTable("nonaoks", "/api/nonaokdata", columns);
+      </script>    
+
+      
+<script>  
 
     $(document).ready(function(){
         $('#aoks').DataTable({

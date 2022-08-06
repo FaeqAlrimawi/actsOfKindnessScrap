@@ -192,30 +192,34 @@ function scrap(websiteURL) {
     $('#scrapForm').trigger('submit');
 }
 
-function createGridjsTable(tableID, serverURL) {
+function getContactFormData(form) {
+  // creates a FormData object and adds chips text
+  var formData = new FormData(document.getElementById(form));
+//    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
+  return formData
+}
+
+
+function scrap(websiteURL) {
+
+  // console.log("@@@ " + websiteURL);
+  $('#websiteURL').val(websiteURL);
+
+  $('#scrapForm').trigger('submit');
+}
+
+
+
+function createGridjsTable(tableID, serverURL, columnsDetails) {
 
   const tableDiv = document.getElementById(tableID);
 
   const updateUrl = (prev, query) => {
     return prev + (prev.indexOf('?') >= 0 ? '&' : '?') + new URLSearchParams(query).toString();
   };
-
-  const editableCellAttributes = (data, row, col) => {
-      if (row) {
-        return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
-      }
-      else {
-        return {};
-      }
-  };
-
+  
   new gridjs.Grid({
-    columns: [ 
-      { id: 'id', 'hidden': true },
-      { id: 'act', name: 'Description', 'attributes': editableCellAttributes },
-      { id: 'source', name: 'Source', 'attributes': editableCellAttributes },
-      { id: 'date', name: 'Date' },
-    ],
+    columns:columnsDetails,
     server: {
       url: serverURL,
       then: results => results.data,
@@ -234,7 +238,13 @@ function createGridjsTable(tableID, serverURL) {
       multiColumn: true,
       server: {
         url: (prev, columns) => {
-          const columnIds = ['id', 'act', 'source', 'date'];
+
+          let columnIds = [];//['id', 'act', 'source', 'date'];
+
+         for(let i=0;i<columnsDetails.length;i++) {
+           columnIds.push(columnsDetails[i]['id']);
+          }
+          // console.log("col: "+columnIds);
           const sort = columns.map(col => (col.direction === 1 ? '+' : '-') + columnIds[col.index]);
           return updateUrl(prev, {sort});
         },
@@ -289,119 +299,8 @@ function createGridjsTable(tableID, serverURL) {
 
 }
 
-function getContactFormData(form) {
-    // creates a FormData object and adds chips text
-    var formData = new FormData(document.getElementById(form));
-//    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
-    return formData
-}
 
 
-function scrap(websiteURL) {
-
-    // console.log("@@@ " + websiteURL);
-    $('#websiteURL').val(websiteURL);
- 
-    $('#scrapForm').trigger('submit');
-}
-
-
-function createNonAokTable(tableID) {
-
-  const tableDiv = document.getElementById(tableID);
-
-  const updateUrl = (prev, query) => {
-    return prev + (prev.indexOf('?') >= 0 ? '&' : '?') + new URLSearchParams(query).toString();
-  };
-
-  const editableCellAttributes = (data, row, col) => {
-      if (row) {
-        return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
-      }
-      else {
-        return {};
-      }
-  };
-
-  new gridjs.Grid({
-    columns: [ 
-      { id: 'id', 'hidden': true },
-      { id: 'act', name: 'Description', 'attributes': editableCellAttributes },
-      { id: 'source', name: 'Source', 'attributes': editableCellAttributes },
-      { id: 'date', name: 'Date' },
-    ],
-    server: {
-      url: '/api/aokdata',
-      then: results => results.data,
-      total: results => results.total,
-    },
-    search: {
-      enabled: true,
-      server: {
-        url: (prev, search) => {
-          return updateUrl(prev, {search});
-        },
-      },
-    },
-    sort: {
-      enabled: true,
-      multiColumn: true,
-      server: {
-        url: (prev, columns) => {
-          const columnIds = ['id', 'act', 'source', 'date'];
-          const sort = columns.map(col => (col.direction === 1 ? '+' : '-') + columnIds[col.index]);
-          return updateUrl(prev, {sort});
-        },
-      },
-    },
-    pagination: {
-      enabled: true,
-      server: {
-        url: (prev, page, limit) => {
-          return updateUrl(prev, {start: page * limit, length: limit});
-        },
-      },
-    },
-  }).render(tableDiv);
-
-  let savedValue;
-
-  tableDiv.addEventListener('focusin', ev => {
-    if (ev.target.tagName === 'TD') {
-      savedValue = ev.target.textContent;
-    }
-  });
-
-  tableDiv.addEventListener('focusout', ev => {
-    if (ev.target.tagName === 'TD') {
-      if (savedValue !== ev.target.textContent) {
-        fetch('/api/data', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            id: ev.target.dataset.elementId,
-            [ev.target.dataset.columnId]: ev.target.textContent
-          }),
-        });
-      }
-      savedValue = undefined;
-    }
-  });
-
-  tableDiv.addEventListener('keydown', ev => {
-    if (ev.target.tagName === 'TD') {
-      if (ev.key === 'Escape') {
-        ev.target.textContent = savedValue;
-        ev.target.blur();
-      }
-      else if (ev.key === 'Enter') {
-        ev.preventDefault();
-        ev.target.blur();
-      }
-    }
-  });
-
-}
 
 // function scrapAoKs(){
 //     var url = $("#websiteURL").val();

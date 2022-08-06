@@ -61,6 +61,7 @@ class NonAok(db.Model):
     act = db.Column(db.String(1000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     type = db.Column(db.Enum(ActType))
+    source = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     nlp_models = db.relationship('ModelNonAok', cascade = 'all, delete-orphan', lazy = 'dynamic')
     
@@ -69,7 +70,8 @@ class NonAok(db.Model):
             'id': self.id,
             'act': self.act,
             'date': self.date,
-            'type': self.type
+            'type': self.type,
+            'source': self.source
         }
         
     
