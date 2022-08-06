@@ -17,7 +17,7 @@
   }
   
   div.collapsible:after {
-    content: '\002BSiteMaps';
+    content: '\002BMore';
     color: white;
     font-weight: bold;
     float: right;
@@ -25,7 +25,7 @@
   }
   
   div.active:after {
-    content: "\2212SiteMaps";
+    content: "\2212More";
   }
   
   .content {
@@ -55,7 +55,13 @@
 
    
 
-    li:hover *{
-      text-decoration: underline;
-      color: #da5f9e;
+    li:hover  {
+      
+      background-color: #fbfafa;
+    }
+
+
+    li> div > span {
+      cursor: pointer;
+      align-items: flex-end;
     }

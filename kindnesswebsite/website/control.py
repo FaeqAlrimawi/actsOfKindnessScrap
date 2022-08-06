@@ -245,7 +245,7 @@ def saveSiteMaps(url):
     sitemaps = Sitemap.get_sitemaps(baseURL)
     
     if len(sitemaps) != 0:
-        print("### there are site maps for ", url)
+        # print("### there are site maps for ", url)
         print(sitemaps)
         return sitemaps
     
@@ -299,12 +299,12 @@ def saveSiteMaps(url):
         sites = parse_sitemap(newSiteMap)
         
         
-        if sites and sites is not None and len(sites) >0:
+        if sites is not None and len(sites) >0:
             db.session.add_all(sites)
             db.session.commit() 
             sitemapsArray.append(newSiteMap)
         else:
-            WebsiteScrapper.query.filter_by(id=newSiteMap.id).delete(synchronize_session=False)
+            Sitemap.query.filter_by(id=newSiteMap.id).delete(synchronize_session=False)
             db.session.commit()
        
                    
@@ -321,7 +321,7 @@ def parse_sitemap(sitemapURL):
     returns: list of Site objects
     '''
     if sitemapURL is None:
-        return False
+        return None
     
     sitemapStr = str(sitemapURL.url)
     
@@ -329,7 +329,7 @@ def parse_sitemap(sitemapURL):
 
     # we didn't get a valid response, bail
     if 200 != resp.status_code:
-        return False
+        return None
     
     
     # BeautifulStoneSoup to parse the document
@@ -340,7 +340,7 @@ def parse_sitemap(sitemapURL):
 
     # no urls? fail
     if not urls:
-        return False
+        return None
 
     # storage for later...
     sites = []

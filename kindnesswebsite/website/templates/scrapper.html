@@ -35,30 +35,40 @@
     {% if sitemap['sitemap'] %}
     <div class="content" id="div-sitemap-content">
         <br/>
-        <p style="font-size:120%;"> Potential URLs (click &#8631; to scrap)</p>
+        <p style="font-size:110%;"> More webpages from <b><a href="{{baseURL}}">{{baseURL}}</a></b> (click <i class="fa-regular fa-file-lines"></i> to scrap)</p>
+        
+        <ul >
         {% for  sitemapURL in sitemap['sitemap'] %}
         {% set outer_loop = loop %}
-            <ul >
+          <!--  <ul >
                 <li style="padding-bottom:1em"><a href="{{sitemapURL['url']}}" target="_blank">{{sitemapURL['url']}}</a></li>
-                <ul>
+                -->
+                
                 {% for potentialURL in sitemapURL['sites'] %}
                 {% if  potentialURL['url'] != websiteURL %} 
-                <li style="padding-bottom:1em"><a href="{{potentialURL['url']}}" target="_blank">{{potentialURL['url']}}</a>
-                    <button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL['url']}}')">
-                        {% if potentialURL['scrapped'] == False %}
-                        <i class="fa-solid fa-splotch"></i>
-                        {% endif %}
-                        <i class="fa-regular fa-file-lines"></i>
-                       
-                       
-                    </button>
+                <li style="padding-bottom:1em; display: block">
+                
+                    <a href="{{potentialURL['url']}}" target="_blank">{{potentialURL['url']}}</a>
                     
+                    <div class="pull-right">
+                       
+                    {% if potentialURL['scrapped'] == False %}
+                        <i align="right" class="fa-solid fa-splotch" data-toggle="tooltip" title="New"></i>
+                        {% endif %}
+                        
+                        <span align="right"  class="fa-regular fa-file-lines" data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL['url']}}')"></span>
+
+                    </div>
+                    <!--<button type="button" class="close"  data-toggle="tooltip" title="Scrap" onClick="scrap('{{potentialURL['url']}}')">
+                    </button>-->
+               
                 </li>
                 {% endif %}
                 {% endfor %}
-            </ul>
-            </ul>
+            
+           <!-- </ul>-->
         {% endfor %}
+    </ul>
        
     </div>
 
@@ -68,6 +78,7 @@
     </p>
     {% endif %}
 <br/>
+
 
 <!--
 {% if canScrap == False %}

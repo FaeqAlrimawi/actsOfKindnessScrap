@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Aok, NonAok, User
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
 from werkzeug.security import generate_password_hash
 from flask_login import login_user
@@ -259,11 +259,12 @@ def aokScrapper():
         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
         isPer = canScrap(websiteURL)
         
+        robotUrl = getRobotsURL(websiteURL)
+        baseURL = getBaseURL(websiteURL)
         if not isPer:
-           robotUrl = getRobotsURL(websiteURL)
            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
             
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=getRobotsURL(websiteURL), acts_and_probs=acts_and_probs, sitemap=sitemap) 
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, acts_and_probs=acts_and_probs, sitemap=sitemap) 
     
     return render_template("scrapper.html", user=current_user)
 
