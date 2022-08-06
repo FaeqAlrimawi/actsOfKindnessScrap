@@ -32,6 +32,9 @@ class User(db.Model, UserMixin):
     
     
 class Aok(db.Model):
+    
+    __name__="aok"
+    
     id = db.Column(db.Integer, primary_key=True)
     act = db.Column(db.String(1000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -42,6 +45,7 @@ class Aok(db.Model):
     
     def to_dict(self):
         return {
+            'id': self.id,
             'act': self.act,
             'date': self.date,
             'source': self.source
@@ -50,6 +54,9 @@ class Aok(db.Model):
     
 
 class NonAok(db.Model):
+    
+    __name__ = "nonaok"
+    
     id = db.Column(db.Integer, primary_key=True)
     act = db.Column(db.String(1000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -59,6 +66,7 @@ class NonAok(db.Model):
     
     def to_dict(self):
         return {
+            'id': self.id,
             'act': self.act,
             'date': self.date,
             'type': self.type

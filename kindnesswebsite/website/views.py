@@ -2,7 +2,7 @@
 # from operator import methodcaller
 # from numpy import result_type
 # import pandas as pd
-from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session
+from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session, abort
 # import os
 from flask_login import login_required, current_user
 from . import db
@@ -95,66 +95,126 @@ def listofAoK():
     return render_template("listofAoK.html", aoks=aoks, nonaoks=nonaoks, user=current_user)
     # return df.to_html()
  
-@views.route('/api/data')
-def data():
+ 
+@views.route('/api/aokdata')
+def aokdata():
+   
     #  return {'data': [aok.to_dict() for aok in Aok.query]}
     query = Aok.query
 
 
- # search filter
-    search = request.args.get('search[value]')
+   # search filter
+    search = request.args.get('search')
     if search:
         query = query.filter(db.or_(
             Aok.act.like(f'%{search}%'),
             Aok.source.like(f'%{search}%')
         ))
-    total_filtered = query.count()
+    total = query.count()
 
- # sorting
-    order = []
-    i = 0
-    while True:
-        
-        col_index = request.args.get(f'order[{i}][column]')
-        if col_index is None:
-            break
-        col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['act', 'source', 'date']:
-            col_name = 'act'
-        descending = request.args.get(f'order[{i}][dir]') == 'desc'
-        col = getattr(Aok, col_name)
-        
-        # print(f"ordering: {col_name} descending: {descending}")
-        if descending:
-            col = col.desc()
-        # else:
-        #     col = col.asc()
-            
-        order.append(col)
-        i += 1
-    if order:
-        query = query.order_by(*order)
+   # sorting
+    sort = request.args.get('sort')
+    if sort:
+        order = []
+        for s in sort.split(','):
+            direction = s[0]
+            name = s[1:]
+            if name not in ['act', 'source', 'date']:
+                name = 'act'
+            col = getattr(Aok, name)
+            if direction == '-':
+                col = col.desc()
+            order.append(col)
+        if order:
+            query = query.order_by(*order)
 
 
-    # pagination
-    start = request.args.get('start', type=int)
-    length = request.args.get('length', type=int)
-    query = query.offset(start).limit(length)
-    
-    # pagination
-    start = request.args.get('start', type=int)
-    length = request.args.get('length', type=int)
-    query = query.offset(start).limit(length)
+   # pagination
+    start = request.args.get('start', type=int, default=-1)
+    length = request.args.get('length', type=int, default=-1)
+    if start != -1 and length != -1:
+        query = query.offset(start).limit(length)
 
     # response
     return {
         'data': [aok.to_dict() for aok in query],
-        'recordsFiltered': total_filtered,
-        'recordsTotal': Aok.query.count(),
-        'draw': request.args.get('draw', type=int),
+        'total': total,
     }
        
        
+@views.route('/api/aokdata', methods=['POST'])
+def aokupdate():
+    data = request.get_json()
+    if 'id' not in data:
+        abort(400)
+        
+    aok = Aok.query.get(data['id'])
+    for field in ['act', 'source', 'date']:
+        if field in data:
+            setattr(aok, field, data[field])
+    db.session.commit()
+    return '', 204
+           
+@views.route('/api/nonaokdata')
+def nonaokdata():
+   
+    #  return {'data': [aok.to_dict() for aok in Aok.query]}
+    query = NonAok.query
+
+
+   # search filter
+    search = request.args.get('search')
+    if search:
+        query = query.filter(db.or_(
+            NonAok.act.like(f'%{search}%'),
+            NonAok.source.like(f'%{search}%')
+        ))
+    total = query.count()
+
+   # sorting
+    sort = request.args.get('sort')
+    if sort:
+        order = []
+        for s in sort.split(','):
+            direction = s[0]
+            name = s[1:]
+            if name not in ['act', 'source', 'date']:
+                name = 'act'
+            col = getattr(NonAok, name)
+            if direction == '-':
+                col = col.desc()
+            order.append(col)
+        if order:
+            query = query.order_by(*order)
+
+
+   # pagination
+    start = request.args.get('start', type=int, default=-1)
+    length = request.args.get('length', type=int, default=-1)
+    if start != -1 and length != -1:
+        query = query.offset(start).limit(length)
+
+    # response
+    return {
+        'data': [aok.to_dict() for aok in query],
+        'total': total,
+    }
+       
+       
+@views.route('/api/nonaokdata', methods=['POST'])
+def nonaokupdate():
+    data = request.get_json()
+    if 'id' not in data:
+        abort(400)
+        
+    nonaok = NonAok.query.get(data['id'])
+    for field in ['act', 'source', 'date']:
+        if field in data:
+            setattr(nonaok, field, data[field])
+    db.session.commit()
+    return '', 204
+
+           
            
 @views.route('/delete-AoK', methods=['POST'])
 def delete_AoK():

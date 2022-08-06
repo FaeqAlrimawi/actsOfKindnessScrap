@@ -20,9 +20,9 @@
 </div>
 
 
-<div class="content">
-<br/>
-<table id="aoks" class="table table-striped">
+<div class="content" id="aoks"></div>
+<!--<br/>
+<table id="aoks" >
 <thead>
     <tr>
     <th>Description</th>
@@ -32,20 +32,21 @@
 </thead>
 <tbody> 
 
-<!--{% for aok in aoks %}
+{% for aok in aoks %}
 <tr>
     <th scope="row">{{ loop.index }}</th>
     <td>{{aok.act}}</td>
     <td>{{aok.source}}</td>
     <td>{{aok.date}}</td>
 </tr>
-{% endfor %} -->
+{% endfor %} 
 
 </tbody>
-</table>
-</div>
+</table>-->
+
 
 <br/><br/>
+
 
 <div class="collapsible" id="div-nonkindness" >
       
@@ -54,8 +55,8 @@
 </div>
 
 
-<div class="content">
-<br/>
+<div class="content" id="nonaoks"></div>
+<!--<br/>
 <table id="nonaoks" class="table table-striped">
 <thead>
     <tr>
@@ -77,8 +78,8 @@
 {% endfor %}
 
 </tbody>
-</table>
-</div>
+</table>-->
+
 
 
 {% endblock%}
@@ -95,22 +96,6 @@
         this.classList.toggle("active");
         var col2 = document.getElementsByClassName("collapsible");
 
-        /*for(var j=0;j<col2.length;j++) {
-            if(col2[j] != this) {
-                if(col2[j] != this && col2[j].classList.contains("active")) {
-                    col2[j].classList.toggle("active");
-                    let content = col2[j].nextElementSibling;
-                    if (content.style.maxHeight){
-                      content.style.maxHeight = null;
-                    } else {
-                      content.style.maxHeight = content.scrollHeight + "px";
-                    } 
-                    
-                }
-                
-            }
-        }*/
-
         var content = this.nextElementSibling;
         if (content.style.maxHeight){
           content.style.maxHeight = null;
@@ -121,11 +106,16 @@
     }
     </script>
 
-    
+   
+<script>
+  createGridjsTable("aoks", "/api/aokdata");
+  createGridjsTable("nonaoks", "/api/nonaokdata");
+</script>    
+
 <script>
     $(document).ready(function(){
 
-              $('#aoks').DataTable({
+             /* $('#aoks').DataTable({
                 ajax: '/api/data',
                 serverSide: true,
                 columns: [
@@ -144,7 +134,7 @@
 
         $('#nonaoks').DataTable({
 
-        });
+        });*/
     });
 </script>
 {% endblock %}
