@@ -155,6 +155,7 @@ def aokupdate():
     db.session.commit()
     return '', 204
            
+           
 @views.route('/api/nonaokdata')
 def nonaokdata():
    
