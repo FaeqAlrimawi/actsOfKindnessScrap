@@ -49,16 +49,20 @@ def load_Model_and_Features():
        features_file = pickle.load(open("./website/static/AoK_features.pkl", "rb"))
 
 
-def addAoK(aok, websiteURL):
+def addAoK(aok):
     
     if len(aok)<1:
         return False
+
+    ## try to find it in the sentence table
+    scrapperSentence = ScrapperSentence.query.text.filter_by(text=aok).first()
+
+    websiteURL = scrapperSentence.get_website() if scrapperSentence is not None else ""
     
-    else:
-        new_aok = Aok(act=aok, user_id=current_user.id, source=websiteURL)
-        db.session.add(new_aok)
-        db.session.commit()
-        return True
+  
+    new_aok = Aok(act=aok, user_id=current_user.id, source=str(websiteURL))
+    db.session.add(new_aok)
+    return db.session.commit()
     
     
 def checkIfAoK(act):

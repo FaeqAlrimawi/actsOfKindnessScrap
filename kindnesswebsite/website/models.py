@@ -1,4 +1,5 @@
 from email.policy import default
+from email.quoprimime import unquote
 from sqlalchemy import PrimaryKeyConstraint
 from . import db
 from flask_login import UserMixin
@@ -131,15 +132,19 @@ class WebsiteScrapper(db.Model):
     
 class ScrapperSentence(db.Model):
      id = db.Column(db.Integer, primary_key=True) 
-     text = db.Column(db.String(1000))
+     text = db.Column(db.String(1000), unique=True)
      prob_aok =   db.Column(db.Float)
      website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
         
      def to_dict(self):
         return {
+            'id': self.id,
             'text': self.text,
-            'prob_aok': self.prob_aok
+            'prob_aok': round(float(self.prob_aok),1)
         }
+        
+     def get_website(self):
+         return scrapWebsite.query.url.filter_by(id=self.website_id).first()   
             
            
                 

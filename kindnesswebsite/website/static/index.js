@@ -14,50 +14,50 @@ function delete_AoK(aokId){
 }
 
 
-function add_AoK(row, websiteURL){
+function add_AoK(row){
 
-    
+   console.log("#### "+row) ;
     var act = $('#td-'+row).text();
     // console.log("row: "+row +" act: " + act);
     
-    fetch('/add-AoK', {
-        method: 'POST',
-        body: JSON.stringify({aok: act, row:row, websiteURL:websiteURL}),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    }).then((response) => {
+    // fetch('/add-AoK', {
+    //     method: 'POST',
+    //     body: JSON.stringify({aok: act, row:row, websiteURL:websiteURL}),
+    //     cache: "no-cache",
+    //     headers: new Headers({
+    //         "content-type": "application/json"
+    //     })
+    // }).then((response) => {
 
-        return response.json();        
-    }).then((data) => {
+    //     return response.json();        
+    // }).then((data) => {
         
        
-        let btn = $('#btn-'+row);
-        message = data['message'];
+    //     let btn = $('#btn-'+row);
+    //     message = data['message'];
 
-        if(message == 'exists') {
-            // console.log('act already exists in the database');
-             btn.find('span').html('&#79;'); 
-             btn.css("cursor", "default");
-             btn.attr("onclick", "").unbind("click");
-             btn.attr("title", "Already exists");
+    //     if(message == 'exists') {
+    //         // console.log('act already exists in the database');
+    //          btn.find('span').html('&#79;'); 
+    //          btn.css("cursor", "default");
+    //          btn.attr("onclick", "").unbind("click");
+    //          btn.attr("title", "Already exists");
              
-        } else if (message == 'added'){
-            btn.find('span').html('&#10004;'); 
-            btn.css("cursor", "default");
-            btn.attr("onclick", "").unbind("click");
-            btn.attr("title", "Added successfully");
+    //     } else if (message == 'added'){
+    //         btn.find('span').html('&#10004;'); 
+    //         btn.css("cursor", "default");
+    //         btn.attr("onclick", "").unbind("click");
+    //         btn.attr("title", "Added successfully");
 
-        } else if (message == 'error') {
-        //    console.log('error adding the act');     
-        }
+    //     } else if (message == 'error') {
+    //     //    console.log('error adding the act');     
+    //     }
 
         
         
-    }
+    // }
 
-    ).catch(err => console.log(err));
+    // ).catch(err => console.log(err));
 }
 
 function updateAoKText(row, old_act){

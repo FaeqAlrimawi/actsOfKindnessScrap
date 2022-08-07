@@ -6,7 +6,7 @@ from flask import Blueprint, flash, jsonify, render_template, request, redirect,
 # import os
 from flask_login import login_required, current_user
 from . import db
-from .models import Aok, NonAok, User
+from .models import Aok, NonAok, ScrapperSentence, User
 import json
 from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
@@ -215,6 +215,64 @@ def nonaokupdate():
     db.session.commit()
     return '', 204
 
+@views.route('/api/actdata')
+def actdata():
+   
+    #  return {'data': [aok.to_dict() for aok in Aok.query]}
+    query = ScrapperSentence.query
+
+
+   # search filter
+    search = request.args.get('search')
+    if search:
+        query = query.filter(db.or_(
+            ScrapperSentence.text.like(f'%{search}%')
+            # ScrapperSentence.s.like(f'%{search}%')
+        ))
+    total = query.count()
+
+   # sorting
+    sort = request.args.get('sort')
+    if sort:
+        order = []
+        for s in sort.split(','):
+            direction = s[0]
+            name = s[1:]
+            if name not in ['text']:
+                name = 'text'
+            col = getattr(ScrapperSentence, name)
+            if direction == '-':
+                col = col.desc()
+            order.append(col)
+        if order:
+            query = query.order_by(*order)
+
+
+   # pagination
+    start = request.args.get('start', type=int, default=-1)
+    length = request.args.get('length', type=int, default=-1)
+    if start != -1 and length != -1:
+        query = query.offset(start).limit(length)
+
+    # response
+    return {
+        'data': [sent.to_dict() for sent in query],
+        'total': total,
+    }
+       
+       
+@views.route('/api/actdata', methods=['POST'])
+def actdataupdate():
+    data = request.get_json()
+    if 'id' not in data:
+        abort(400)
+        
+    sent = ScrapperSentence.query.get(data['id'])
+    for field in ['text']:
+        if field in data:
+            setattr(sent, field, data[field])
+    db.session.commit()
+    return '', 204
            
            
 @views.route('/delete-AoK', methods=['POST'])
@@ -233,23 +291,23 @@ def delete_AoK():
 @views.route('/add-AoK', methods=['POST'])
 def add_AoK():
     # print("##### in add aok")
-    aok = json.loads(request.data)
-    aok_str = aok['aok']   
-    websiteURL = aok['websiteURL']
+    sent = json.loads(request.data)
+    sentStr = sent['aok']   
+    # websiteURL = aok['websiteURL']
     
-    if type(aok_str) != str:
-        aok_str = str(aok_str)
+    if type(sentStr) != str:
+        sentStr = str(sentStr)
           
-                    
+    print("@@@ ", sentStr)                
     # check if already exists in the database
-    inDB = doesAoKExist(aok_str)
+    inDB = doesAoKExist(sentStr)
     
     if inDB:
         result = jsonify({'message':'exists'})
         # print(result.data)
         return result
     else: 
-        result = addAoK(aok_str, websiteURL) 
+        result = addAoK(sentStr) 
         if result:
             
             res = {'message':'added'} 
