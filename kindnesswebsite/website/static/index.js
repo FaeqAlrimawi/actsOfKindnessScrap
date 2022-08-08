@@ -45,9 +45,9 @@ function createActsGrid() {
 
     // each entry here represents one column
     columnDefs: [
-      { field: "id" }, //checkboxSelection: true
-      { field: "text", editable: true, minWidth: 700},
-      { field: "prob_aok" },
+      { field: "id", hide:true }, //checkboxSelection: true
+      { field: "text", editable: true, minWidth: 1000, checkboxSelection: true},
+      { field: "prob_aok", maxWidth: 120},
       
     ],
 
@@ -87,11 +87,24 @@ function createActsGrid() {
 }
 
 
-function add_AoK(actID, btn){
+function add_Aoks() {
 
-   if (btn) {
-    span = btn.childNodes[0]
-   }
+  var selectedNodes = gridOptions.api.getSelectedNodes()
+  var selectedData = selectedNodes.map( function(node) { return node.data })
+
+  for(let i=0;i<selectedData.length;i++) {
+    actID = selectedData[i].id;
+
+    add_AoK(actID);
+  }
+
+}
+
+function add_AoK(actID){
+
+  //  if (btn) {
+  //   span = btn.childNodes[0]
+  //  }
 
    // var act = $('#td-'+row).text();
     // console.log("row: "+row +" act: " + act);
@@ -110,22 +123,22 @@ function add_AoK(actID, btn){
         
         message = data['message'];
 
-        console.log(message)
         if(message == 'exists') {
             // console.log('act already exists in the database');
-            span.html = '&#79;'; 
-             btn.css("cursor", "default");
-             btn.attr("onclick", "").unbind("click");
-             btn.attr("title", "Already exists");
+            // span.html = '&#79;'; 
+            //  btn.css("cursor", "default");
+            //  btn.attr("onclick", "").unbind("click");
+            //  btn.attr("title", "Already exists");
              
         } else if (message == 'added'){
-            span.html = '&#10004;'; 
-            btn.css("cursor", "default");
-            btn.attr("onclick", "").unbind("click");
-            btn.attr("title", "Added successfully");
+            // span.html = '&#10004;'; 
+            // btn.css("cursor", "default");
+            // btn.attr("onclick", "").unbind("click");
+            // btn.attr("title", "Added successfully");
+            console.log("act added succefsuly");
 
         } else if (message == 'error') {
-        //    console.log('error adding the act');     
+          //  console.log('error adding the act');     
         }
 
         
