@@ -46,25 +46,32 @@ function createActsGrid() {
     // each entry here represents one column
     columnDefs: [
       { field: "id", hide:true }, //checkboxSelection: true
-      { field: "text", editable: true, minWidth: 1000, checkboxSelection: true},
-      { field: "prob_aok", maxWidth: 120},
-      
+      { field: "text",  editable: true, minWidth: 500, checkboxSelection: true},
+      { field: "prob_aok", maxWidth: 120},      
     ],
+
+    
 
     onFirstDataRendered: headerHeightSetter,
     onColumnResized: headerHeightSetter,
+
+    onGridSizeChanged: () => {
+      gridOptions.api.sizeColumnsToFit();
+  } ,    
 
     // default col def properties get applied to all columns
     defaultColDef: {sortable: true, filter: true,  wrapText: true,  
     autoHeight: true, resizable: true},
     
     // enableRangeSelection: true,
-    fillHandleDirection: 'x',
-    enableFillHandle: true,
+    // fillHandleDirection: 'x',
+    // enableFillHandle: true,
     
     rowSelection: 'multiple', // allow rows to be selected
     animateRows: true, // have rows animate to new positions when sorted
 
+    pagination: true,
+    paginationAutoPageSize: true,
     // example event handler
     // onCellClicked: params => {
     //   console.log('cell was clicked', params)
@@ -81,7 +88,7 @@ function createActsGrid() {
   .then(response => response.json())
   .then(data => {
     // load fetched data into grid
-    console.log(data[0]);
+    // console.log(data[0]);
     gridOptions.api.setRowData(data);
   });
 }
@@ -89,14 +96,67 @@ function createActsGrid() {
 
 function add_Aoks() {
 
-  var selectedNodes = gridOptions.api.getSelectedNodes()
-  var selectedData = selectedNodes.map( function(node) { return node.data })
+  const selectedNodes = gridOptions.api.getSelectedNodes();
+
+    //label
+    var lbl = document.getElementById("lbl-add");
+    lbl.innerHTML = "";
+  
+    
+  if (selectedNodes.length == 0 ) {
+    lbl.innerHTML = "<span style='color: red;'>"+
+    "Please select acts from the table to add";
+    return;
+  }
+
+  var selectedData = selectedNodes.map( function(node) { return node.data });
+
+  var mapResult = new Map();
+
+
 
   for(let i=0;i<selectedData.length;i++) {
     actID = selectedData[i].id;
 
-    add_AoK(actID);
+    message = add_AoK(actID);
+
+    if (message == "error"){
+      mapResult.set(actID, message);
+    } else {
+      //delet from table
+      
+    }
+    
   }
+
+  if(mapResult.size == 0) {
+    lbl.innerHTML = "<span style='color: green;'>"+
+    "Successfully added <b>"+ selectedData.length+"</b> act(s)</span>";
+    gridOptions.api.applyTransaction({remove: selectedNodes});
+  } else {
+    lbl.innerHTML = "<span style='color: red;'>"+
+    "Could not add "+ mapResult.length+" acts</span>";
+  }
+//   // deal with results
+//   if(message == 'exists') {
+//     // console.log('act already exists in the database');
+//     // span.html = '&#79;'; 
+//     //  btn.css("cursor", "default");
+//     //  btn.attr("onclick", "").unbind("click");
+//     //  btn.attr("title", "Already exists");
+     
+// } else if (message == 'added'){
+//     // span.html = '&#10004;'; 
+//     // btn.css("cursor", "default");
+//     // btn.attr("onclick", "").unbind("click");
+//     // btn.attr("title", "Added successfully");
+//     console.log("act added succefsuly");
+
+// } else if (message == 'error') {
+//   //  console.log('error adding the act');     
+// }
+
+ 
 
 }
 
@@ -123,26 +183,7 @@ function add_AoK(actID){
         
         message = data['message'];
 
-        if(message == 'exists') {
-            // console.log('act already exists in the database');
-            // span.html = '&#79;'; 
-            //  btn.css("cursor", "default");
-            //  btn.attr("onclick", "").unbind("click");
-            //  btn.attr("title", "Already exists");
-             
-        } else if (message == 'added'){
-            // span.html = '&#10004;'; 
-            // btn.css("cursor", "default");
-            // btn.attr("onclick", "").unbind("click");
-            // btn.attr("title", "Added successfully");
-            console.log("act added succefsuly");
-
-        } else if (message == 'error') {
-          //  console.log('error adding the act');     
-        }
-
-        
-        
+       return message; 
     }
 
     ).catch(err => console.log(err));

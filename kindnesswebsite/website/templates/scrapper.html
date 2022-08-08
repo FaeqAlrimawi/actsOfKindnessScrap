@@ -92,11 +92,13 @@
 
 <br/><br/>
 
+<div >
 <button type="button" class="btn btn-primary" onClick="add_Aoks()">Add to AoKs</button>
+<label id="lbl-add" style="padding-left:10px;"></label>
+</div>
 
-<br/><br/>
 
-<div id="myGrid" class="ag-theme-alpine" style="height: 700px"></div>
+<div id="myGrid" class="ag-theme-alpine" style="height: 700px; padding-top:20px;"></div>
 
 
 <br/><br/>
@@ -153,7 +155,7 @@
 
 {% block scripts %}
 
-<script>
+<!--<script>
     var coll = document.getElementsByClassName("collapsible");
     var i;
     
@@ -199,7 +201,7 @@
       
         createGridjsTable("acts-grid", "/api/actdata", columns);
         //createGridjsTable("nonaoks", "/api/nonaokdata", columns);
-      </script>    
+      </script>  -->   
 
       
 <script>  
