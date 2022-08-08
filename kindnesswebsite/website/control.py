@@ -2,6 +2,7 @@
 # from genericpath import exists
 # from glob import glob
 # from multiprocessing.dummy import active_children
+
 from datetime import datetime
 import pickle
 from urllib.request import urlopen
@@ -49,18 +50,18 @@ def load_Model_and_Features():
        features_file = pickle.load(open("./website/static/AoK_features.pkl", "rb"))
 
 
-def addAoK(aok):
+def addAoK(aok, source):
     
     if len(aok)<1:
-        return False
+        return None
 
     ## try to find it in the sentence table
-    scrapperSentence = ScrapperSentence.query.text.filter_by(text=aok).first()
+    # scrapperSentence = ScrapperSentence.query.text.filter_by(text=str(aok)).first()
 
-    websiteURL = scrapperSentence.get_website() if scrapperSentence is not None else ""
+    # websiteURL = scrapperSentence.get_website() if scrapperSentence is not None else ""
     
   
-    new_aok = Aok(act=aok, user_id=current_user.id, source=str(websiteURL))
+    new_aok = Aok(act=aok, user_id=current_user.id, source=str(source))
     db.session.add(new_aok)
     return db.session.commit()
     
@@ -474,6 +475,18 @@ def doesAoKExist(aokDescription):
 #    print("### res checking ", aokDescription, ": ", res)  
    return res
 
+def getSentenceFromDB(sentID):
+    
+    print("id ", sentID)
+    
+    if sentID is None:
+        return None
+    
+    sentence = ScrapperSentence.query.with_entities(ScrapperSentence.text, ScrapperSentence.id).filter_by(id=sentID).first()
+    
+    print("##### sentence ", sentence.text)
+    return sentence
+     
 
 def populateModelTable():
     global model

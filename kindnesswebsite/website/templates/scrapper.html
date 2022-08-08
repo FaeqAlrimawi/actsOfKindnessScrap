@@ -173,13 +173,14 @@
       
       columns = [ 
             { id: 'id', 'hidden': true },
+            
             { id: 'text', name: 'Description', 'attributes': editableCellAttributes, resizable: true },
             { id: 'prob_aok', name: 'Prob (%)', 'attributes': editableCellAttributes, resizable: true },
             {
                 id:'add',    
                 name: 'Add',
                 formatter: (_, row) =>
-                        gridjs.html(`<button class="btn btn-outline-dark" onclick="add_AoK(${row.cells[0].data})"><span aria-hidden="true" >&plus;</span></button>`), 
+                        gridjs.html(`<button class="btn btn-outline-dark" id="btn-${row.cells[0].data}" onclick="add_AoK(${row.cells[0].data}, this)"><span aria-hidden="true" >&plus;</span></button>`), 
                 resizable: true
                 
                 },

@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Aok, NonAok, ScrapperSentence, User
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSentenceFromDB, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
 # import website
 from werkzeug.security import generate_password_hash
 from flask_login import login_user
@@ -227,7 +227,7 @@ def actdata():
     if search:
         query = query.filter(db.or_(
             ScrapperSentence.text.like(f'%{search}%')
-            # ScrapperSentence.s.like(f'%{search}%')
+            
         ))
     total = query.count()
 
@@ -238,8 +238,9 @@ def actdata():
         for s in sort.split(','):
             direction = s[0]
             name = s[1:]
-            if name not in ['text']:
-                name = 'text'
+            if name not in ['text', 'prob_aok']:
+                # name = 'text'
+                continue
             col = getattr(ScrapperSentence, name)
             if direction == '-':
                 col = col.desc()
@@ -292,22 +293,27 @@ def delete_AoK():
 def add_AoK():
     # print("##### in add aok")
     sent = json.loads(request.data)
-    sentStr = sent['aok']   
+    sentID = sent['actID']   
     # websiteURL = aok['websiteURL']
     
-    if type(sentStr) != str:
-        sentStr = str(sentStr)
+    # if type(sentStr) != str:
+    #     sentStr = str(sentStr)
           
-    print("@@@ ", sentStr)                
+    sent = getSentenceFromDB(sentID)
+        
+    if sent is None:        
+        return jsonify({'message':'error'})
+      
+    print("@@@ ", sent)                
     # check if already exists in the database
-    inDB = doesAoKExist(sentStr)
+    inDB = doesAoKExist(sent.text)
     
     if inDB:
         result = jsonify({'message':'exists'})
         # print(result.data)
         return result
     else: 
-        result = addAoK(sentStr) 
+        result = addAoK(sent.text, sent.get_website()) 
         if result:
             
             res = {'message':'added'} 

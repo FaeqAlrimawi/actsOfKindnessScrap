@@ -132,7 +132,7 @@ class WebsiteScrapper(db.Model):
     
 class ScrapperSentence(db.Model):
      id = db.Column(db.Integer, primary_key=True) 
-     text = db.Column(db.String(1000), unique=True)
+     text = db.Column(db.String(1000))
      prob_aok =   db.Column(db.Float)
      website_id = db.Column(db.Integer, db.ForeignKey('website_scrapper.id'))
         
@@ -144,7 +144,7 @@ class ScrapperSentence(db.Model):
         }
         
      def get_website(self):
-         return scrapWebsite.query.url.filter_by(id=self.website_id).first()   
+         return WebsiteScrapper.query.url.filter_by(id=self.website_id).first()   
             
            
                 
