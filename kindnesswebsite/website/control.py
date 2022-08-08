@@ -59,11 +59,23 @@ def addAoK(aok, source):
     # scrapperSentence = ScrapperSentence.query.text.filter_by(text=str(aok)).first()
 
     # websiteURL = scrapperSentence.get_website() if scrapperSentence is not None else ""
-    
   
     new_aok = Aok(act=aok, user_id=current_user.id, source=str(source))
     db.session.add(new_aok)
-    return db.session.commit()
+    db.session.commit()
+    
+    return new_aok
+ 
+    
+def removeFromSentences(aokStr):
+     
+    sentences = ScrapperSentence.query.filter_by(text=str(aokStr)).all()
+     
+    # print("sent to delete: ", sentences)
+
+    for sent in sentences:    
+        db.session.delete(sent)
+        db.session.commit()
     
     
 def checkIfAoK(act):
@@ -251,7 +263,7 @@ def saveSiteMaps(url):
     
     if len(sitemaps) != 0:
         # print("### there are site maps for ", url)
-        print(sitemaps)
+        # print(sitemaps)
         return sitemaps
     
     
@@ -477,14 +489,11 @@ def doesAoKExist(aokDescription):
 
 def getSentenceFromDB(sentID):
     
-    print("id ", sentID)
-    
     if sentID is None:
         return None
     
-    sentence = ScrapperSentence.query.with_entities(ScrapperSentence.text, ScrapperSentence.id).filter_by(id=sentID).first()
+    sentence = ScrapperSentence.query.filter_by(id=sentID).first()
     
-    print("##### sentence ", sentence.text)
     return sentence
      
 
@@ -497,7 +506,7 @@ def populateModelTable():
     
    
     if len(NLPModel.query.all()) ==0 : 
-        print("###  creating a new model")       
+        # print("###  creating a new model")       
         new_model = NLPModel(model=str(model), features=features_file)
         
         if new_model:
@@ -532,7 +541,7 @@ def getModelsInfo():
           numOfNonAoK = model.non_aoks.count()
           record = [name, numOfAoK, numOfNonAoK]
           modelsInfo.append(record)
-          print("## rec: ", record)
+        #   print("## rec: ", record)
           
       return modelsInfo
   

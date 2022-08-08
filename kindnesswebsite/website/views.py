@@ -8,7 +8,7 @@ from flask_login import login_required, current_user
 from . import db
 from .models import Aok, NonAok, ScrapperSentence, User
 import json
-from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSentenceFromDB, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable,  scrapWebsite, addAoK
+from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSentenceFromDB, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable, removeFromSentences,  scrapWebsite, addAoK
 # import website
 from werkzeug.security import generate_password_hash
 from flask_login import login_user
@@ -48,11 +48,9 @@ def guessAoK():
     if request.method == 'POST':
         act = request.form.get('act')
         
-        # print("#### ", act)
         if act:
            probability = checkIfAoK(act)
         #    d =  jsonify(prob=probability) 
-        #    print("wwwww ", probability)
         #    return d   
            return render_template('guessAoK.html', user=current_user, prob=probability, act=act)
         else:
@@ -291,7 +289,7 @@ def delete_AoK():
 
 @views.route('/add-AoK', methods=['POST'])
 def add_AoK():
-    # print("##### in add aok")
+
     sent = json.loads(request.data)
     sentID = sent['actID']   
     # websiteURL = aok['websiteURL']
@@ -303,19 +301,20 @@ def add_AoK():
         
     if sent is None:        
         return jsonify({'message':'error'})
-      
-    print("@@@ ", sent)                
+                    
     # check if already exists in the database
     inDB = doesAoKExist(sent.text)
     
     if inDB:
         result = jsonify({'message':'exists'})
-        # print(result.data)
+    
         return result
     else: 
         result = addAoK(sent.text, sent.get_website()) 
-        if result:
-            
+        
+      
+        if result is not None:
+            removeFromSentences(sent.text)
             res = {'message':'added'} 
             return jsonify(res)
         else:
@@ -360,7 +359,7 @@ def aokScrapper():
         # if( not isPer):
         #    robotUrl = getRobotsURL(websiteURL)
         #    flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
-        # # print(json.dumps(act_probs))
+      
         # return jsonify({"result":"success", "acts":json.dumps(act_probs)});    
         websiteURL = request.form.get('websiteURL')  
                
@@ -377,10 +376,7 @@ def aokScrapper():
         
         #get sitemap
         sitemap = {'sitemap':getSiteMaps(websiteURL)}
-        # print(sitemap)
-        
-        # print(sitemap)
-        # print("sitemap: ", sitemap)    
+    
         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
         isPer = canScrap(websiteURL)
         
@@ -420,7 +416,7 @@ def toggle_theme():
     # # query = request.query_string
     
     # df = pd.read_excel(file_name, sheet_name=sheet_name, usecols=[description_column])[0:100]
-    # # print("#### ",query)
+
 
     # # # search filter
     # search = request.args.get('search[value]')
@@ -428,7 +424,7 @@ def toggle_theme():
     #     df = df.apply(lambda row: row.astype(str).str.contains(f'%{search}').any(), axis=1)
     
     # total_filtered = df.count()
-    # # print("#### ", df)
+
     # # total_filtered = query.count()
 
     # # # sorting
@@ -455,8 +451,7 @@ def toggle_theme():
     # # length = request.args.get('length', type=int)
     # # query = df.offset(start).limit(length)
     
-    
-    # # print(df.values)
+
     # # response
     # return {
     #     # 'data': [user.to_dict() for user in query],

@@ -144,7 +144,10 @@ class ScrapperSentence(db.Model):
         }
         
      def get_website(self):
-         return WebsiteScrapper.query.url.filter_by(id=self.website_id).first()   
+         website = WebsiteScrapper.query.filter_by(id=self.website_id).first()   
+         
+         if website is not None:
+             return website.url
             
            
                 

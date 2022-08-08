@@ -16,15 +16,9 @@ function delete_AoK(aokId){
 
 function add_AoK(actID, btn){
 
-   console.log("#### "+actID) ;
-
    if (btn) {
     span = btn.childNodes[0]
    }
-   
-
-   
-   console.log("#### "+span.textContent) ;
     
    // var act = $('#td-'+row).text();
     // console.log("row: "+row +" act: " + act);
@@ -43,15 +37,16 @@ function add_AoK(actID, btn){
         
         message = data['message'];
 
+        console.log(message)
         if(message == 'exists') {
             // console.log('act already exists in the database');
-             span.html('&#79;'); 
+            span.html = '&#79;'; 
              btn.css("cursor", "default");
              btn.attr("onclick", "").unbind("click");
              btn.attr("title", "Already exists");
              
         } else if (message == 'added'){
-            btn.find('span').html('&#10004;'); 
+            span.html = '&#10004;'; 
             btn.css("cursor", "default");
             btn.attr("onclick", "").unbind("click");
             btn.attr("title", "Added successfully");
@@ -67,110 +62,110 @@ function add_AoK(actID, btn){
     ).catch(err => console.log(err));
 }
 
-function updateAoKText(row, old_act){
+// function updateAoKText(row, old_act){
 
-    var act = $('#txtarea-'+row).val();
+//     var act = $('#txtarea-'+row).val();
 
-    //alert(act);
-    $('#td-'+row).html(act);
+//     //alert(act);
+//     $('#td-'+row).html(act);
    
-   $('#td-'+row).bind("click", function (){ update_AoK('+row+'); }); 
+//    $('#td-'+row).bind("click", function (){ update_AoK('+row+'); }); 
 
-   global_act = act;
+//    global_act = act;
 
-   //update add button if needed
-   btnRow = $('#btn-'+row);
+//    //update add button if needed
+//    btnRow = $('#btn-'+row);
 
-   if(act !== old_act) {
-    let btnSpan = btnRow.find('span');
-    // let spanValue = btnSpan.text();
+//    if(act !== old_act) {
+//     let btnSpan = btnRow.find('span');
+//     // let spanValue = btnSpan.text();
     
-     //if already added
-    // if(spanValue === '&#10004;'){
-        btnSpan.html('&plus;'); 
-        btnRow.css("cursor", "pointer");
-        btnRow.attr("onclick", "").unbind("click");
-        btnRow.bind("click", function (){ add_AoK(row); });
+//      //if already added
+//     // if(spanValue === '&#10004;'){
+//         btnSpan.html('&plus;'); 
+//         btnRow.css("cursor", "pointer");
+//         btnRow.attr("onclick", "").unbind("click");
+//         btnRow.bind("click", function (){ add_AoK(row); });
         
-    // } 
-    fetch('/update-prob', {
-        method: 'POST',
-        body: JSON.stringify({aok: act}),
-        cache: "no-cache",
-        headers: new Headers({
-            "content-type": "application/json"
-        })
-    }).then((response) => {
-        return response.json();
-   }).then((data) => {
-        prob = data['prob'];
-        // console.log("ooooo "+prob);
-        var rounded = Math.round(prob * 100) / 100;
-        $('#td-prob-'+row).html(rounded);
+//     // } 
+//     fetch('/update-prob', {
+//         method: 'POST',
+//         body: JSON.stringify({aok: act}),
+//         cache: "no-cache",
+//         headers: new Headers({
+//             "content-type": "application/json"
+//         })
+//     }).then((response) => {
+//         return response.json();
+//    }).then((data) => {
+//         prob = data['prob'];
+//         // console.log("ooooo "+prob);
+//         var rounded = Math.round(prob * 100) / 100;
+//         $('#td-prob-'+row).html(rounded);
        
-   });
+//    });
 
-}
-
-   
-}
-
-
-function cancelAoKUpdate(act, row){
+// }
 
    
-    $('#td-'+row).html(act);
+// }
+
+
+// function cancelAoKUpdate(act, row){
+
+   
+//     $('#td-'+row).html(act);
 
     
-    $('#td-'+row).bind("click", function (){ update_AoK('+row+'); });
+//     $('#td-'+row).bind("click", function (){ update_AoK('+row+'); });
 
     
-}
+// }
 
-function cancelAoKUpdateESC(e, act, row){
+// function cancelAoKUpdateESC(e, act, row){
 
-    e = e || window.event;
-    var code = e.keyCode;
+//     e = e || window.event;
+//     var code = e.keyCode;
 
-    if(code == 27) {
-        cancelAoKUpdate(act, row);
-    }
+//     if(code == 27) {
+//         cancelAoKUpdate(act, row);
+//     }
 
  
 
-}
+// }
 
-function update_AoK(row){
+// function update_AoK(row){
 
-    var act = $('#td-'+row).text().trim();
+//     var act = $('#td-'+row).text().trim();
 
-    if(global_row != -1) {
-        $('#td-'+global_row).html(global_act);
+//     if(global_row != -1) {
+//         $('#td-'+global_row).html(global_act);
         
-        $('#td-'+global_row).attr("onclick", 'update_AoK('+global_row+')').bind("click");
+//         $('#td-'+global_row).attr("onclick", 'update_AoK('+global_row+')').bind("click");
         
-    }
+//     }
 
 
-        $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
-            '<textarea  name="act"  id="txtarea-'+row+ '" onKeyDown="cancelAoKUpdateESC(event, \''+act+'\',' + row +')" style="width:100%">'+act+'</textarea>' +
+//         $('#td-'+row).html('<div align="left" style="width:100%;"> ' +
+//             '<textarea  name="act"  id="txtarea-'+row+ '" onKeyDown="cancelAoKUpdateESC(event, \''+act+'\',' + row +')" style="width:100%">'+act+'</textarea>' +
             
-            '<button type="button"  class="btn btn-secondary" onClick="updateAoKText('+ row + ',\''+act+'\'' + ')">Update</button>' +
+//             '<button type="button"  class="btn btn-secondary" onClick="updateAoKText('+ row + ',\''+act+'\'' + ')">Update</button>' +
 
-            '&nbsp;&nbsp;' +
+//             '&nbsp;&nbsp;' +
             
-            '<button type="button"  class="btn btn-secondary" onClick="cancelAoKUpdate(\''+act+'\',' + row +')">Cancel</button>' +
+//             '<button type="button"  class="btn btn-secondary" onClick="cancelAoKUpdate(\''+act+'\',' + row +')">Cancel</button>' +
             
-            '</div>');
+//             '</div>');
         
-        $('#td-'+row).attr("onclick", "").unbind("click");
+//         $('#td-'+row).attr("onclick", "").unbind("click");
 
-        $('#txtarea-'+row).focus();
+//         $('#txtarea-'+row).focus();
         
-        global_row = row;
-        global_act = act;
+//         global_row = row;
+//         global_act = act;
    
-}
+// }
 
 
 function checkURL (abc) {
