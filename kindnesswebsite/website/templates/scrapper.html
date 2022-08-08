@@ -76,6 +76,16 @@
     <p class="content" id="div-sitemap=empty">
         Could not retrieve sitemaps. Check: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a>
     </p>
+
+    <br/><br/>
+
+<div >
+<button type="button" class="btn btn-outline-dark" onClick="add_Aoks()">Add to AoKs</button>
+<label id="lbl-add" style="padding-left:10px;"></label>
+</div>
+
+<div id="myGrid" class="ag-theme-alpine" style="height:700px; padding-top:10px;"></div>
+
     {% endif %}
 <br/>
 
@@ -90,18 +100,7 @@
 -->
 
 
-<br/><br/>
 
-<div >
-<button type="button" class="btn btn-primary" onClick="add_Aoks()">Add to AoKs</button>
-<label id="lbl-add" style="padding-left:10px;"></label>
-</div>
-
-
-<div id="myGrid" class="ag-theme-alpine" style="height: 700px; padding-top:20px;"></div>
-
-
-<br/><br/>
 
 <!--
 <div id="acts-grid"></div>
@@ -155,7 +154,7 @@
 
 {% block scripts %}
 
-<!--<script>
+<script>
     var coll = document.getElementsByClassName("collapsible");
     var i;
     
@@ -173,6 +172,7 @@
     </script>
 
 
+    <!--
     <script>
   
         const editableCellAttributes = (data, row, col) => {
@@ -211,7 +211,7 @@
 
         //});
 
-        createActsGrid();
+          createActsGrid();
     });
 
 </script>
