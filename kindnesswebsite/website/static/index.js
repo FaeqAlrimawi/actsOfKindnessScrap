@@ -2,7 +2,7 @@
 var global_row = -1;
 var global_act = "";
 // var initialized = false;
-
+var gridOptions;
 
 function delete_AoK(aokId){
     fetch('/delete-AoK', {
@@ -13,13 +13,86 @@ function delete_AoK(aokId){
     });
 }
 
+function getSelectedRows() {
+  var selectedNodes = gridOptions.api.getSelectedNodes()
+  var selectedData = selectedNodes.map( function(node) { return node.data })
+  var selectedDataStringPresentation = selectedData.map( function(node) { return node.text + ' ' + node.prob_aok }).join(', ')
+  alert('Selected nodes: ' + selectedDataStringPresentation);
+}
+
+
+function headerHeightSetter() {
+  var padding = 20;
+  var height = headerHeightGetter() + padding;
+  gridOptions.api.setHeaderHeight(height);
+}
+
+function headerHeightGetter() {
+  var columnHeaderTexts = [
+      ...document.querySelectorAll('.ag-header-cell-text'),
+  ];
+  var clientHeights = columnHeaderTexts.map(
+      headerText => headerText.clientHeight
+  );
+  var tallestHeaderTextHeight = Math.max(...clientHeights);
+
+  return tallestHeaderTextHeight;
+}
+
+function createActsGrid() {
+  // Grid Options are properties passed to the grid
+   gridOptions = {
+
+    // each entry here represents one column
+    columnDefs: [
+      { field: "id" }, //checkboxSelection: true
+      { field: "text", editable: true, minWidth: 700},
+      { field: "prob_aok" },
+      
+    ],
+
+    onFirstDataRendered: headerHeightSetter,
+    onColumnResized: headerHeightSetter,
+
+    // default col def properties get applied to all columns
+    defaultColDef: {sortable: true, filter: true,  wrapText: true,  
+    autoHeight: true, resizable: true},
+    
+    // enableRangeSelection: true,
+    fillHandleDirection: 'x',
+    enableFillHandle: true,
+    
+    rowSelection: 'multiple', // allow rows to be selected
+    animateRows: true, // have rows animate to new positions when sorted
+
+    // example event handler
+    // onCellClicked: params => {
+    //   console.log('cell was clicked', params)
+    // }
+  };
+
+  // get div to host the grid
+  const eGridDiv = document.getElementById("myGrid");
+  // new grid instance, passing in the hosting DIV and Grid Options
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  // Fetch data from server
+  fetch("/api/actdata")
+  .then(response => response.json())
+  .then(data => {
+    // load fetched data into grid
+    console.log(data[0]);
+    gridOptions.api.setRowData(data);
+  });
+}
+
 
 function add_AoK(actID, btn){
 
    if (btn) {
     span = btn.childNodes[0]
    }
-    
+
    // var act = $('#td-'+row).text();
     // console.log("row: "+row +" act: " + act);
     

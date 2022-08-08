@@ -213,12 +213,15 @@ def nonaokupdate():
     db.session.commit()
     return '', 204
 
+
 @views.route('/api/actdata')
 def actdata():
    
     #  return {'data': [aok.to_dict() for aok in Aok.query]}
     query = ScrapperSentence.query
 
+
+    return [sent.to_dict() for sent in query]
 
    # search filter
     search = request.args.get('search')

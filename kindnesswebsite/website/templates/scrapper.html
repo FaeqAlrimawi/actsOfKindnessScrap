@@ -89,12 +89,20 @@
 {% endif %}
 -->
 
+
 <br/><br/>
 
+
+<div id="myGrid" class="ag-theme-alpine" style="height: 700px"></div>
+
+
+<br/><br/>
+
+<!--
 <div id="acts-grid"></div>
 
 <br/><br/>
-
+-->
 <!--<table id="aoks" class="table table-striped">
     <thead >
         <tr>
@@ -194,9 +202,11 @@
 <script>  
 
     $(document).ready(function(){
-        $('#aoks').DataTable({
+        //$('#aoks').DataTable({
 
-        });
+        //});
+
+        createActsGrid();
     });
 
 </script>
