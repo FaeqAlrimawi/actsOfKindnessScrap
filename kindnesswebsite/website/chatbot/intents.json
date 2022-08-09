@@ -1,0 +1,22 @@
+{
+
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": ["hello", "how are you", "is there anyone?"],
+            "responses": ["Hello there!", "Good day!", "Hi there!", "How are you!?"]
+        },
+
+        {
+            "tag": "bye",
+            "patterns": ["bye", "see you later"],
+            "responses": ["Bye!", "Have a nice day", "Goodbye!"]    
+        },
+        
+        {
+            "tag":"aok",
+            "patterns": ["suggest aok", "give me an aok"],
+            "responses":["here you go!", "please use this"]
+        }
+    ]
+}
