@@ -3,8 +3,8 @@
     "intents": [
         {
             "tag": "greeting",
-            "patterns": ["hello", "how are you", "is there anyone?"],
-            "responses": ["Hello there!", "Good day!", "Hi there!", "How are you!?"]
+            "patterns": ["hello", "how are you", "is there anyone?", "hey"],
+            "responses": ["Hello there!", "Good day!", "Hi there!", "Hi, how are you!?"]
         },
 
         {

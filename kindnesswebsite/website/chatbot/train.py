@@ -8,7 +8,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 
-with open('intents.json', 'r') as f:
+with open('website/chatbot/intents.json', 'r') as f:
     intents = json.load(f)
     
     
@@ -80,7 +80,7 @@ train_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, 
 # gpu support
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model = NeuralNet(input_size=input_size,hidden_size=hidden_size,num_classes=output_size).to(device)
+model = NeuralNet(input_size=input_size,hidden_size=hidden_size, output_size=output_size).to(device)
 
  
 # loss and optimizer
@@ -102,10 +102,10 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
         
-#     if (epoch+1) % 100 == 0:
-#         print(f'epoch {epoch+1}/{num_epochs}, loss={loss.item():.4f}')    
+    if (epoch+1) % 100 == 0:
+        print(f'epoch {epoch+1}/{num_epochs}, loss={loss.item():.4f}')    
         
-# print(f'final loss, loss={loss.item():.4f}')    
+print(f'final loss, loss={loss.item():.4f}')    
 
 ## save the model
 data = {
@@ -117,7 +117,7 @@ data = {
     "tags": tags
 }    
 
-FILE = "data.pth"
+FILE = "website/chatbot/data.pth"
 
 torch.save(data, FILE)
 
