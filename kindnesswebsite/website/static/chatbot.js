@@ -22,7 +22,7 @@ display() {
     sendButton.addEventListener('click', () => this.onSendButton(chatBox));
 
     const node = chatBox.querySelector('input');
-    node.addEventListener('keyup', ({key: string}) => {
+    node.addEventListener('keyup', (key) => {
         if (key == "Enter") {
             this.onSendButton(chatBox);
         }
@@ -31,7 +31,7 @@ display() {
 
 toggleState(chatbox) {
     this.state = !this.state;
-    console.log("i'm toggling the state " + state);
+    // console.log("i'm toggling the state " + this.state);
 
     //show or hide the box
     if(this.state){
@@ -83,8 +83,8 @@ onSendButton(chatbox) {
 updateChatText(chatbox) {
     var html = "";
 
-    this.messages.slice().reverse().forEach(function(item, number) {
-        if (item.name === "sam") {
+    this.messages.slice().reverse().forEach(function(item) {
+        if (item.name === "Sam") {
             html +='<div class="messages__item messages__item--visitor">' + item.message + '</div>';
         } else {
             html +='<div class="messages__item messages__item--operator">' + item.message + '</div>';
