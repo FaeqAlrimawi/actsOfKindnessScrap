@@ -8,7 +8,7 @@
 {% block  content%}
 
 
-<div class="chatbox" style="width: 50%; height: 50%;">
+<div class="chatbox" style="width: 60%; height: 60%;">
     <div class="chatbox__support" style="width: 100%; height: 100%;">
 
         <div class="chatbox__header">
@@ -48,6 +48,6 @@
 <!--<script>
     $SCRIPT_ROOT = {{ request.script_root|tojson }};
 </script>-->
-<script type="text/javascript" src="{{ url_for('static', filename='chatbot.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
 {% endblock  %}

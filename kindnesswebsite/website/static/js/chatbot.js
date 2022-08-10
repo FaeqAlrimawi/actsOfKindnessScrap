@@ -57,7 +57,7 @@ onSendButton(chatbox) {
      }
 
 
-     let msg1 = {name: "User", message: text1}
+     let msg1 = {name: "User", message: text1};
 
      this.messages.push(msg1);
      let botName = this.name;
@@ -92,9 +92,9 @@ updateChatText(chatbox) {
    let botName = this.name;
     this.messages.slice().reverse().forEach(function(item) {
         if (item.name === botName) {
-            html += '<div class="messages__item messages__item--visitor">' + item.message + '</div></div>';
+            html += '<div class="messages__item messages__item--operator">' + item.message + '</div>';
         } else {
-            html +='<div class="messages__item messages__item--operator">' + item.message + '</div>';
+            html +='<div class="messages__item messages__item--visitor">' + item.message + '</div>';
         }
     });
 
