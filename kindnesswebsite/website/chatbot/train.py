@@ -69,7 +69,7 @@ hidden_size = 8
 output_size = len(tags)
 input_size = len(all_words) # equals to len(x_train[0])
 learning_rate = 0.001
-num_epochs = 4000
+num_epochs = 2000
 
 # print(input_size, len(all_words))
 # print(output_size, tags)

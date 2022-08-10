@@ -21,6 +21,7 @@
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
+    
 }
 
 /* CONTENT IS CLOSE */
@@ -82,13 +83,13 @@
     margin-left: auto;
 }
 
-.create
+/*.create
 {
 background-image: url('https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png');
 background-repeat: no-repeat;
 padding-left: 30px;  /* width of the image plus a little extra padding */
-display: block;  /* may not need this, but I've found I do */
-}
+/*display: block;  /* may not need this, but I've found I do */
+/*}*/
 
 .messages__item--visitor {
     margin-right: auto;
