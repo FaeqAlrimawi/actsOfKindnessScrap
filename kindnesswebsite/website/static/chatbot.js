@@ -1,14 +1,16 @@
-class Chatbox {
+class Chatbot {
 
-    constructor() {
+    constructor(botName) {
         this.args = {
             openButton: document.querySelector('.chatbox__button'),
             chatBox: document.querySelector('.chatbox__support'),
             sendButton: document.querySelector('.send__button'),
+            
         }
 
     this.state = false;
     this.messages = [];
+    this.name = botName;
     
 }
 
@@ -58,7 +60,7 @@ onSendButton(chatbox) {
      let msg1 = {name: "User", message: text1}
 
      this.messages.push(msg1);
-
+     let botName = this.name;
 
      fetch('/',  {
         method: 'POST',
@@ -69,7 +71,7 @@ onSendButton(chatbox) {
      })
      .then(r=> r.json())
      .then(r=> {
-        let msg2 = {name: "Sam", message: r.answer};
+        let msg2 = {name: botName, message: r.answer};
         this.messages.push(msg2);
         this.updateChatText(chatbox);
         textField.value = "";
@@ -84,9 +86,13 @@ onSendButton(chatbox) {
 updateChatText(chatbox) {
     var html = "";
 
+    // let imageHeader = '<div class="chatbox__image--header"><img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png"' +
+    //  'alt="image"></div><div class="chatbox__content--header">';
+
+   let botName = this.name;
     this.messages.slice().reverse().forEach(function(item) {
-        if (item.name === "Sam") {
-            html +='<div class="messages__item messages__item--visitor">' + item.message + '</div>';
+        if (item.name === botName) {
+            html += '<div class="messages__item messages__item--visitor">' + item.message + '</div></div>';
         } else {
             html +='<div class="messages__item messages__item--operator">' + item.message + '</div>';
         }
@@ -100,7 +106,13 @@ updateChatText(chatbox) {
 }
 
 
-const chatbox = new Chatbox();
+const chatbot = new Chatbot("Eleos");
 
-chatbox.display();
+// chatbot.state = true;
+chatbot.display();
+chatbot.toggleState(chatbot.args.chatBox);
+chatbot.messages.push({name:chatbot.name, message: "Hi, I'm " +chatbot.name + ". How are you?"});
+
+chatbot.updateChatText(chatbot.args.chatBox);
+
 
