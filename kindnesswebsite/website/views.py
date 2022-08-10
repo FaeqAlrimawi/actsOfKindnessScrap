@@ -5,6 +5,8 @@
 from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session, abort
 # import os
 from flask_login import login_required, current_user
+
+from website.chatbot.chat import get_response
 from . import db
 from .models import Aok, NonAok, ScrapperSentence, User
 import json
@@ -38,8 +40,19 @@ def home():
     populateDatabaseWithAoKs()
     populateDatabaseWithNonAoKs()
     
+    if request.method == 'POST':
+        text = request.get_json().get("message")
+        
+        #TODO: check if text is valid
+        
+        response = get_response(text)
+        message = {"answer": response}
+        
+        return jsonify(message)
+        
+        
                 
-    return render_template("home.html", user=current_user)
+    return render_template("chatbot.html", user=current_user)
 
 
 @views.route('/guessAoK', methods=['POST', 'GET'])

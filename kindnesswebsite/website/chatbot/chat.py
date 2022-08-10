@@ -2,8 +2,8 @@ from msilib.schema import tables
 import random
 import json
 import torch
-from model  import NeuralNet
-from preprocessing import bag_of_words, tokenize
+from website.chatbot.model  import NeuralNet
+from website.chatbot.preprocessing import bag_of_words, tokenize
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -31,32 +31,70 @@ model.eval()
 
 bot_name = "Davi"
 
-print("let's chat! type 'quit' to exit")
+# print("let's chat! type 'quit' to exit")
 
-while True:
-    sentence = input("You: ")
+# while True:
+#     sentence = input("You: ")
     
-    if sentence == "quit":
-        break
+#     if sentence == "quit":
+#         break
+    
+#     tokenized_sentence = tokenize(sentence)
+#     x = bag_of_words(tokenized_sentence, all_words)
+#     x = x.reshape(1, x.shape[0]) # need to understand
+#     x = torch.from_numpy(x).to(device)
+    
+#     output = model(x)
+    
+#     _, predicted = torch.max(output, dim=1)
+    
+#     tag = tags[predicted.item()]
+    
+#     ## check prob
+#     probs = torch.softmax(output, dim=1)
+#     prob = probs[0][predicted.item()]
+    
+#     if prob.item() > 0.75:
+#         for intent in intents["intents"]:
+#             if tag == intent["tag"]:
+#                 print(f'{bot_name}: {random.choice(intent["responses"])}')   
+#     else:
+#         print(f'{bot_name}: Sorry, I don\'t understand')   
+        
+        
+def get_response(sentence):
     
     tokenized_sentence = tokenize(sentence)
     x = bag_of_words(tokenized_sentence, all_words)
     x = x.reshape(1, x.shape[0]) # need to understand
     x = torch.from_numpy(x).to(device)
-    
+
     output = model(x)
-    
+
     _, predicted = torch.max(output, dim=1)
-    
+
     tag = tags[predicted.item()]
-    
+
     ## check prob
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
-    
+
     if prob.item() > 0.75:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                print(f'{bot_name}: {random.choice(intent["responses"])}')   
-    else:
-        print(f'{bot_name}: Sorry, I don\'t understand')   
+                return random.choice(intent["responses"])
+            
+    return "I don't understand..."
+
+
+
+if __name__ == "__main__":
+    print("Let's chat! (type 'quit' to exit)")
+    while True:
+        # sentence = "do you use credit cards?"
+        sentence = input("You: ")
+        if sentence == "quit":
+            break
+
+        resp = get_response(sentence)
+        print(resp)
