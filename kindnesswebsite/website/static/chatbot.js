@@ -22,8 +22,9 @@ display() {
     sendButton.addEventListener('click', () => this.onSendButton(chatBox));
 
     const node = chatBox.querySelector('input');
-    node.addEventListener('keyup', (key) => {
-        if (key == "Enter") {
+    node.addEventListener('keyup', (keyEvent) => {
+       
+        if (keyEvent.key === "Enter") {
             this.onSendButton(chatBox);
         }
     })

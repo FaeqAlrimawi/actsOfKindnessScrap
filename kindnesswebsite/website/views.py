@@ -52,6 +52,24 @@ def home():
         
         
                 
+    return render_template("home.html", user=current_user)
+
+
+# the route of our website
+@views.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    
+    if request.method == 'POST':
+        text = request.get_json().get("message")
+        
+        #TODO: check if text is valid
+        
+        response = get_response(text)
+        message = {"answer": response}
+        
+        return jsonify(message)
+        
+            
     return render_template("chatbot.html", user=current_user)
 
 
