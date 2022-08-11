@@ -2,7 +2,10 @@
 
 {% block title %}AoK Scrapper{% endblock  %}
 
-{% block header  %}<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/scrapper.css')}}">{% endblock  %}
+{% block header  %}<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/scrapper.css')}}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/scrap.js') }}"></script>
+
+{% endblock  %}
 
 {% block  content %}
 
@@ -23,7 +26,6 @@
 <br/>
 <br/>
 
-<div id="div-table">
   
     {% if  websiteURL %}
     <div class="collapsible" id="div-sitemap" >
@@ -76,6 +78,7 @@
     <p class="content" id="div-sitemap=empty">
         Could not retrieve sitemaps. Check: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a>
     </p>
+    {% endif %}
 
     <br/><br/>
 
@@ -84,70 +87,21 @@
 <label id="lbl-add" style="padding-left:10px;"></label>
 </div>
 
+
 <div id="myGrid" class="ag-theme-alpine" style="height:700px; padding-top:10px;"></div>
 
-    {% endif %}
-<br/>
+<script>
 
-
-<!--
-{% if canScrap == False %}
-<div class="w3-panel w3-pale-yellow w3-border">
-<h3>Warning</h3>
-<p>Scraping may not be permissible on this webpage per the website's permissions. See: <a href="{{robotsURL}}" target="_blank">{{robotsURL}}</a><p>
-   </div>
-{% endif %}
--->
-
-
-
-
-<!--
-<div id="acts-grid"></div>
-
-<br/><br/>
--->
-<!--<table id="aoks" class="table table-striped">
-    <thead >
-        <tr>
-        <th>#</th>
-        <th>Description</th>
-        <th>Prob (%)</th>
-        <th>Add</th>
-        </tr>
-    </thead>
-    <tbody> 
-    
-    {% for act_and_prob in acts_and_probs['data'] %}
-    <tr>
-
-        <th scope="row">{{ loop.index }}</th>
-        <td id="td-{{loop.index}}" onClick="update_AoK({{loop.index}})">
-            {{act_and_prob['text']}}
-            
-        </td>
-
+ // let data = "{{acts_and_probs['data']}}";
+  //let total = "{{acts_and_probs['total']}}";
+  //console.log("testing " + data );
+  fillActsGrid("{{websiteURL}}");
+  </script>
   
 
-        <td id="td-prob-{{loop.index}}">
-            {{"{:.2f}".format(act_and_prob['prob_aok'])}}
-        </td>
-        
-        <td >
-            <button type="button" class="btn btn-outline-dark" id="btn-{{loop.index}}" onClick="add_AoK({{loop.index}}, '{{websiteURL}}')" data-toggle="tooltip" title="Add Act to AoK Database">
-                <span aria-hidden="true" >&plus;</span>
-            </button>
-           <!-- <i class="fa fa-times-circle remove" style="font-size: 22px; color: red;"></i>-->
-
-   <!--</td>
-    </tr>
-    {% endfor %}
-    
-    </tbody>
-    </table> -->
-
     {% endif %}
-</div>
+
+
     
 {% endblock  %}
 
@@ -172,39 +126,6 @@
     </script>
 
 
-    <!--
-    <script>
-  
-        const editableCellAttributes = (data, row, col) => {
-          if (row) {
-            return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
-          }
-          else {
-            return {};
-          }
-      };
-      
-      columns = [ 
-            { id: 'id', 'hidden': true },
-            
-            { id: 'text', name: 'Description', 'attributes': editableCellAttributes, resizable: true },
-            { id: 'prob_aok', name: 'Prob (%)', 'attributes': editableCellAttributes, resizable: true },
-            {
-                id:'add',    
-                name: 'Add',
-                formatter: (_, row) =>
-                        gridjs.html(`<button class="btn btn-outline-dark" id="btn-${row.cells[0].data}" onclick="add_AoK(${row.cells[0].data}, this)"><span aria-hidden="true" >&plus;</span></button>`), 
-                resizable: true
-                
-                },
-          ];
-      
-        createGridjsTable("acts-grid", "/api/actdata", columns);
-        //createGridjsTable("nonaoks", "/api/nonaokdata", columns);
-      </script>  -->   
-
-      <script type="text/javascript" src="{{ url_for('static', filename='js/scrap.js') }}"></script>
-
 <script>  
 
     $(document).ready(function(){
@@ -216,7 +137,7 @@
           
     });
 
-    $(document).on('submit','#scrapForm',function(e)
+   /* $(document).on('submit','#scrapForm',function(e)
       {
       console.log($("#websiteURL").val());  
      // console.log('hello');
@@ -232,7 +153,7 @@
           console.log('saved');
         }
       })
-    });
+    });*/
 
 </script>
 

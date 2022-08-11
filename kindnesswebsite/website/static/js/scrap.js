@@ -2,7 +2,7 @@
 // var global_row = -1;
 // var global_act = "";
 // var initialized = false;
-var gridOptions;
+var gridOptions = null;
 
 function getSelectedRows() {
   var selectedNodes = gridOptions.api.getSelectedNodes()
@@ -30,7 +30,20 @@ function headerHeightGetter() {
   return tallestHeaderTextHeight;
 }
 
+function fillActsGrid(data) {
+    console.log("filling grid  " + data);
+
+    // if(gridOptions == null) {
+    //     createActsGrid();
+    // }
+
+    // gridOptions.api.setRowData(JSON.parse(data));
+
+}
+
+
 function createActsGrid() {
+    console.log("create grid");
   // Grid Options are properties passed to the grid
    gridOptions = {
 
@@ -182,6 +195,8 @@ function checkURL (abc) {
 // //    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
 //     return formData
 // }
+
+
 
 
 function scrap(websiteURL) {
