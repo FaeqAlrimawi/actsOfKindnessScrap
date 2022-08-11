@@ -30,20 +30,33 @@ function headerHeightGetter() {
   return tallestHeaderTextHeight;
 }
 
-function fillActsGrid(data) {
-    console.log("filling grid  " + data);
+function fillActsGrid(website) {
+    console.log("filling grid  " + website);
 
-    // if(gridOptions == null) {
-    //     createActsGrid();
-    // }
+    if(gridOptions == null) {
+        createActsGrid();
+    }
 
-    // gridOptions.api.setRowData(JSON.parse(data));
+    fetch("/api/actdata", {
+      method: 'POST',
+      body: JSON.stringify({website: website}),
+      cache: "no-cache",
+      headers: new Headers({
+          "content-type": "application/json"
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // load fetched data into grid
+    // console.log(data[0]);
+    gridOptions.api.setRowData(data);
+  });
 
 }
 
 
 function createActsGrid() {
-    console.log("create grid");
+    // console.log("create grid");
   // Grid Options are properties passed to the grid
    gridOptions = {
 
@@ -86,6 +99,7 @@ function createActsGrid() {
   // new grid instance, passing in the hosting DIV and Grid Options
   new agGrid.Grid(eGridDiv, gridOptions);
 
+  // gridOptions.api.hideOverlay();
   // Fetch data from server
   // fetch("/api/actdata")
   // .then(response => response.json())

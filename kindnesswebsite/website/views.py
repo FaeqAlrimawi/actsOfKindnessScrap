@@ -2,13 +2,14 @@
 # from operator import methodcaller
 # from numpy import result_type
 # import pandas as pd
+from urllib import response
 from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session, abort
 # import os
 from flask_login import login_required, current_user
 
 from website.chatbot.chat import get_response
 from . import db
-from .models import Aok, NonAok, ScrapperSentence, User
+from .models import Aok, NonAok, ScrapperSentence, User, WebsiteScrapper
 import json
 from .control import canScrap, checkIfAoK, doesAoKExist, getBaseURL, getModelsInfo, getRobotsURL, getSentenceFromDB, getSiteMaps, populateDatabaseWithAoKs, populateDatabaseWithNonAoKs, populateModelTable, removeFromSentences,  scrapWebsite, addAoK
 # import website
@@ -245,61 +246,82 @@ def nonaokupdate():
     return '', 204
 
 
-@views.route('/api/actdata')
-def actdata():
+# @views.route('/api/actdata')
+# def actdata():
    
-    #  return {'data': [aok.to_dict() for aok in Aok.query]}
-    query = ScrapperSentence.query
+#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
+#     query = ScrapperSentence.query
+    
+#     website = request.args.get('website')
+#     websiteID = WebsiteScrapper.query.filter_by(url=website)
+    
+#     print(" @@@", website, " id ", websiteID)
 
+#     return [sent.to_dict() for sent in query.filter_by(url_id=websiteID)]
 
-    return [sent.to_dict() for sent in query]
-
-   # search filter
-    search = request.args.get('search')
-    if search:
-        query = query.filter(db.or_(
-            ScrapperSentence.text.like(f'%{search}%')
+#    # search filter
+#     search = request.args.get('search')
+#     if search:
+#         query = query.filter(db.or_(
+#             ScrapperSentence.text.like(f'%{search}%')
             
-        ))
-    total = query.count()
+#         ))
+#     total = query.count()
 
-   # sorting
-    sort = request.args.get('sort')
-    if sort:
-        order = []
-        for s in sort.split(','):
-            direction = s[0]
-            name = s[1:]
-            if name not in ['text', 'prob_aok']:
-                # name = 'text'
-                continue
-            col = getattr(ScrapperSentence, name)
-            if direction == '-':
-                col = col.desc()
-            order.append(col)
-        if order:
-            query = query.order_by(*order)
+#    # sorting
+#     sort = request.args.get('sort')
+#     if sort:
+#         order = []
+#         for s in sort.split(','):
+#             direction = s[0]
+#             name = s[1:]
+#             if name not in ['text', 'prob_aok']:
+#                 # name = 'text'
+#                 continue
+#             col = getattr(ScrapperSentence, name)
+#             if direction == '-':
+#                 col = col.desc()
+#             order.append(col)
+#         if order:
+#             query = query.order_by(*order)
 
 
-   # pagination
-    start = request.args.get('start', type=int, default=-1)
-    length = request.args.get('length', type=int, default=-1)
-    if start != -1 and length != -1:
-        query = query.offset(start).limit(length)
+#    # pagination
+#     start = request.args.get('start', type=int, default=-1)
+#     length = request.args.get('length', type=int, default=-1)
+#     if start != -1 and length != -1:
+#         query = query.offset(start).limit(length)
 
-    # response
-    return {
-        'data': [sent.to_dict() for sent in query],
-        'total': total,
-    }
+#     # response
+#     return {
+#         'data': [sent.to_dict() for sent in query],
+#         'total': total,
+#     }
        
        
 @views.route('/api/actdata', methods=['POST'])
 def actdataupdate():
+    
     data = request.get_json()
-    if 'id' not in data:
+    print("==== ", data['website']) 
+     
+    if 'website' not in data and 'id' not in data:
         abort(400)
         
+    website = data['website']  
+    
+    if website:
+        query = ScrapperSentence.query
+        
+        website = data['website']
+        websiteID = WebsiteScrapper.query.filter_by(url=str(website)).first()
+        
+        if websiteID:
+            print(" @@@", website, " id ", websiteID.id)
+
+            return [sent.to_dict() for sent in query.filter_by(website_id=websiteID.id)]
+
+    
     sent = ScrapperSentence.query.get(data['id'])
     for field in ['text']:
         if field in data:
