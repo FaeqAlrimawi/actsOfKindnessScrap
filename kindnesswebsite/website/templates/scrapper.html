@@ -203,7 +203,8 @@
         //createGridjsTable("nonaoks", "/api/nonaokdata", columns);
       </script>  -->   
 
-      
+      <script type="text/javascript" src="{{ url_for('static', filename='js/scrap.js') }}"></script>
+
 <script>  
 
     $(document).ready(function(){
@@ -211,7 +212,26 @@
 
         //});
 
-          createActsGrid();
+          //createActsGrid();
+          
+    });
+
+    $(document).on('submit','#scrapForm',function(e)
+      {
+      console.log($("#websiteURL").val());  
+     // console.log('hello');
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'/aok-scrapper',
+        data:JSON.stringify(websiteURL:$("#websiteURL").val()),
+        success:function(result)
+        {
+          
+          //console.log("result: " + result['acts_probs'][0]);
+          console.log('saved');
+        }
+      })
     });
 
 </script>
