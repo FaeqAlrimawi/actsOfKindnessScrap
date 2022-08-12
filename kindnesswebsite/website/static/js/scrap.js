@@ -98,14 +98,11 @@ function add_Aoks() {
   const selectedNodes = gridOptions.api.getSelectedNodes();
   const selectedRows = gridOptions.api.getSelectedRows();
 
-    //label
-    var lbl = document.getElementById("lbl-add");
-    lbl.innerHTML = "";
-  
     
   if (selectedNodes.length == 0 ) {
-    lbl.innerHTML = "<span style='color: red;'>"+
-    "Please select acts from the table";
+    let msg = "<span class=\"w3-red w3-round\" style=\"font-size: 1.2em;\"> "+
+    "&nbsp;&nbsp; Please select acts from the table &nbsp;&nbsp; </span>";
+    showActOpMsg(msg);
     return;
   }
 
@@ -129,16 +126,13 @@ function add_Aoks() {
   }
 
   if(mapResult.size == 0) {
-    lbl.innerHTML = "<span style='color: green;'>"+
-    "Successfully added <b>"+ selectedData.length+"</b> act(s)</span>";
-    setTimeout(function(){
-      lbl.innerHTML="";
-      },3000);
+   showActOpMsg("<span style='color: green;'>"+
+    "Successfully added <b>"+ selectedData.length+"</b> act(s)</span>");
   
     // gridOptions.api.applyTransaction({remove: selectedNodes});
   } else {
-    lbl.innerHTML = "<span style='color: red;'>"+
-    "Could not add "+ mapResult.length+" acts</span>";
+    showActOpMsg("<span style='color: red;'>"+
+    "Could not add "+ mapResult.length+" acts</span>");
   }
 
 
@@ -268,13 +262,13 @@ function deleteAoKs() {
   const selectedRows = gridOptions.api.getSelectedRows();
 
     //label
-    var lbl = document.getElementById("lbl-add");
-    lbl.innerHTML = "";
+    // var lbl = document.getElementById("lbl-add");
+    // lbl.innerHTML = "";
   
     
   if (selectedNodes.length == 0 ) {
-    lbl.innerHTML = "<span style='color: red;'>"+
-    "Please select acts from the table";
+   showActOpMsg("<span style='color: red;'>"+
+    "Please select acts from the table");
     return;
   }
 
@@ -298,16 +292,13 @@ function deleteAoKs() {
   }
 
   if(mapResult.size == 0) {
-    lbl.innerHTML = "<span style='color: green;'>"+
-    "Successfully deleted <b>"+ selectedData.length+"</b> act(s)</span>";
-    setTimeout(function(){
-      lbl.innerHTML="";
-      },3000);
-  
+    showActOpMsg("<span style='color: green;'>"+
+    "Successfully deleted <b>"+ selectedData.length+"</b> act(s)</span>");
+    
     // gridOptions.api.applyTransaction({remove: selectedNodes});
   } else {
-    lbl.innerHTML = "<span style='color: red;'>"+
-    "Could not delete "+ mapResult.length+" acts</span>";
+    showActOpMsg("<span style='color: red;'>"+
+    "Could not delete "+ mapResult.length+" acts</span>");
   }
 
 }
@@ -345,7 +336,7 @@ function notifyDoubleClick() {
 
   if (!clicked) {
     // if(oneClickInerval == null) {
-      oneClickInerval = setInterval(showDeleteAlert, 500)
+      oneClickInerval = setInterval(showDeleteAlert, 600)
       clicked = true;
     // }
     
@@ -374,8 +365,8 @@ function showDeleteAlert() {
   
   var lbl = document.getElementById("lbl-add");
 
-  lbl.innerHTML = "<span class=\"w3-orange w3-round\" style=\"font-size: 1.2em;\"> "+
-  "<b> &nbsp;&nbsp; Double Click</b> to delete &nbsp;&nbsp; </span>";
+  showActOpMsg("<span class=\"w3-orange w3-round\" style=\"font-size: 1.2em;\"> "+
+  "<b> &nbsp;&nbsp; Double Click</b> to delete &nbsp;&nbsp; </span>");
  
    clicked = false;
 
@@ -387,3 +378,14 @@ function showDeleteAlert() {
 
 }
 
+function showActOpMsg(msg) {
+
+  var lbl = document.getElementById("lbl-add");
+
+  lbl.innerHTML = msg;
+
+  setTimeout(function(){
+    lbl.innerHTML="";
+    },2000);
+
+}
