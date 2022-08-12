@@ -55,7 +55,7 @@ function createActsGrid() {
     columnDefs: [
       { field: "id", hide:true }, 
      
-      { field: "act",  headerName:"AoK", editable: false},
+      { field: "act",  headerName:"AoK", editable: false, minWidth:700},
       { field: "source",  headerName:"Source", editable: false},
       { field: "date",  headerName:"Date Added", editable: false}    
     ],
