@@ -37,13 +37,8 @@ function createActsGrid() {
         valueGetter: "node.rowIndex + 1", maxWidth: 90, minWidth:80,   checkboxSelection: true
       },
       { field: "text",  headerName:"Text", editable: true, minWidth: 500},
-      { field: "prob_aok", headerName:"AoK%", maxWidth: 100, valueFormatter: params => params.data.prob_aok.toFixed(2)},  
-      {field:"btn-delete", headerName:"Del", cellRenderer: function(params) {
-              return `<button type="button" class="close" onClick="deleteAoK(${params.data.id})">
-              <span aria-hidden="true">&times;</span>
-          </button>`
-      },  
-      maxWidth:70}    
+      { field: "prob_aok", headerName:"AoK%", maxWidth: 100, valueFormatter: params => params.data.prob_aok.toFixed(2)}
+      
     ],
 
     
