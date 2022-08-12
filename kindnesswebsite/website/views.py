@@ -314,14 +314,30 @@ def actdataupdate():
             oldAct = oldAndNewAct[0]
             newAct = oldAndNewAct[1]
             
-            print("updating ", oldAct, " to ", newAct)
-            
             field = 'text'
             sentences = query.filter_by(text=str(oldAct)).all()
             for sent in sentences:
                 setattr(sent, field, newAct)
                 db.session.commit()
-                return ["success"]
+            
+            return jsonify({"response": "success"})
+        
+        case 'removeAct':
+            actID = data['data']
+            print("delete id ", actID)
+            if actID is None:
+                return jsonify({})
+            
+            act = query.get(int(actID))
+            
+            
+            
+            if act is None:
+                return jsonify({})
+            
+            db.session().delete(act)
+            db.session.commit()
+            return jsonify({"response": "success"})
             
            
            

@@ -1,5 +1,7 @@
 
 var gridOptions = null;
+var oneClickInerval = null;
+var clicked = false;
 
 
 function headerHeightSetter() {
@@ -35,7 +37,13 @@ function createActsGrid() {
         valueGetter: "node.rowIndex + 1", maxWidth: 90, minWidth:80,   checkboxSelection: true
       },
       { field: "text",  headerName:"Text", editable: true, minWidth: 500},
-      { field: "prob_aok", headerName:"AoK%", maxWidth: 100, valueFormatter: params => params.data.prob_aok.toFixed(2)},      
+      { field: "prob_aok", headerName:"AoK%", maxWidth: 100, valueFormatter: params => params.data.prob_aok.toFixed(2)},  
+      {field:"btn-delete", headerName:"Del", cellRenderer: function(params) {
+              return `<button type="button" class="close" onClick="deleteAoK(${params.data.id})">
+              <span aria-hidden="true">&times;</span>
+          </button>`
+      },  
+      maxWidth:70}    
     ],
 
     
@@ -250,10 +258,135 @@ function updateAct(oldAct, newAct){
   // load fetched data into grid
   // console.log(data[0]);
   // gridOptions.api.setRowData(data);
-  console.log("updated successfully")
+  // if(data['response'] == "success") {
+  // console.log("updated successfully")
+  // }
 });
 
 }
 
+function deleteAoKs() {
 
+  const selectedNodes = gridOptions.api.getSelectedNodes();
+  const selectedRows = gridOptions.api.getSelectedRows();
+
+    //label
+    var lbl = document.getElementById("lbl-add");
+    lbl.innerHTML = "";
+  
+    
+  if (selectedNodes.length == 0 ) {
+    lbl.innerHTML = "<span style='color: red;'>"+
+    "Please select acts from the table";
+    return;
+  }
+
+  var selectedData = selectedNodes.map( function(node) { return node.data });
+
+  var mapResult = new Map();
+
+
+  for(let i=0;i<selectedData.length;i++) {
+    actID = selectedData[i].id;
+
+    message = deleteAoK(actID);
+
+    if (message == "error"){
+      mapResult.set(actID, message);
+    } else {
+      //delet from table
+      gridOptions.api.applyTransaction({remove: [selectedRows[i]]});
+    }
+    
+  }
+
+  if(mapResult.size == 0) {
+    lbl.innerHTML = "<span style='color: green;'>"+
+    "Successfully deleted <b>"+ selectedData.length+"</b> act(s)</span>";
+    setTimeout(function(){
+      lbl.innerHTML="";
+      },3000);
+  
+    // gridOptions.api.applyTransaction({remove: selectedNodes});
+  } else {
+    lbl.innerHTML = "<span style='color: red;'>"+
+    "Could not delete "+ mapResult.length+" acts</span>";
+  }
+
+}
+
+function deleteAoK(id) {
+
+  console.log("deleting " + id);
+
+  if(id == null ) {
+    return;
+  }  
+
+  fetch("/api/actdata", {
+    method: 'POST',
+    body: JSON.stringify({operation:'removeAct', data:id}),
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+})
+.then(response => response.json())
+.then(data => {
+  // load fetched data into grid
+  // console.log(data[0]);
+  // gridOptions.api.setRowData(data);
+  return data['response']
+  
+ 
+});
+
+}
+
+function notifyDoubleClick() {
+
+
+  if (!clicked) {
+    // if(oneClickInerval == null) {
+      oneClickInerval = setInterval(showDeleteAlert, 500)
+      clicked = true;
+    // }
+    
+    // setTimeout(oneClickInerval);
+     
+  } else {
+    clearInterval(oneClickInerval);
+    clicked = false;
+  }
+ 
+
+ 
+    
+  // lbl.innerHTML = "<span class=\"w3-orange w3-round\" style=\"font-size: 1.2em;\"> "+
+  // "<b> &nbsp;&nbsp; Double Click</b> to delete &nbsp;&nbsp; </span>";
+
+  // setTimeout(function(){
+  //   lbl.innerHTML="";
+  //   },2000);
+
+  
+}
+
+
+function showDeleteAlert() {
+  
+  var lbl = document.getElementById("lbl-add");
+
+  lbl.innerHTML = "<span class=\"w3-orange w3-round\" style=\"font-size: 1.2em;\"> "+
+  "<b> &nbsp;&nbsp; Double Click</b> to delete &nbsp;&nbsp; </span>";
+ 
+   clicked = false;
+
+   clearInterval(oneClickInerval);
+
+   setTimeout(function(){
+    lbl.innerHTML="";
+    },2000);
+
+}
 
