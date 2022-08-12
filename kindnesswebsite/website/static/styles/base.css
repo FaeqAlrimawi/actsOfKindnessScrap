@@ -84,3 +84,8 @@ body {
 .link:hover {
   text-decoration: underline;
 }
+
+.ag-cell-wrap-text {
+  word-break: break-word;
+  line-height: 2;
+}

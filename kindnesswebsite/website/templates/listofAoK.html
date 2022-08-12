@@ -3,6 +3,7 @@
 
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/listofAoK.css')}}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/listofAoK.js') }}"></script>
 {% endblock %}
 
 
@@ -20,29 +21,11 @@
 </div>
 
 
-<div class="content" id="aoks"></div>
-<!--<br/>
-<table id="aoks" >
-<thead>
-    <tr>
-    <th>Description</th>
-    <th>Source</th>
-    <th>Date Added</th>
-    </tr>
-</thead>
-<tbody> 
+<div class="content" id="aoks">
 
-{% for aok in aoks %}
-<tr>
-    <th scope="row">{{ loop.index }}</th>
-    <td>{{aok.act}}</td>
-    <td>{{aok.source}}</td>
-    <td>{{aok.date}}</td>
-</tr>
-{% endfor %} 
+  <div id="myGrid" class="ag-theme-alpine" style="height:700px; padding-top:10px;"></div>
 
-</tbody>
-</table>-->
+</div>
 
 
 <br/><br/>
@@ -106,32 +89,12 @@
     }
     </script>
 
-   
-<script>
-  
-  const editableCellAttributes = (data, row, col) => {
-    if (row) {
-      return {contentEditable: 'true', 'data-element-id': row.cells[0].data};
-    }
-    else {
-      return {};
-    }
-};
 
-columns = [ 
-      { id: 'id', 'hidden': true },
-      { id: 'act', name: 'Description', 'attributes': editableCellAttributes },
-      { id: 'source', name: 'Source', 'attributes': editableCellAttributes },
-      { id: 'date', name: 'Date' },
-    ];
-
-  createGridjsTable("aoks", "/api/aokdata", columns);
-  createGridjsTable("nonaoks", "/api/nonaokdata", columns);
-</script>    
 
 <script>
     $(document).ready(function(){
 
+        fillActsGrid();
              /* $('#aoks').DataTable({
                 ajax: '/api/data',
                 serverSide: true,

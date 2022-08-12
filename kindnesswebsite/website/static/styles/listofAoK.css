@@ -59,3 +59,9 @@
       text-decoration: underline;
       color: #da5f9e;
     }
+
+
+    .ag-cell-wrap-text {
+      word-break: break-word;
+      line-height: 2;
+}

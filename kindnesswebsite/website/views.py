@@ -2,6 +2,7 @@
 # from operator import methodcaller
 # from numpy import result_type
 # import pandas as pd
+from email.policy import default
 from urllib import response
 from flask import Blueprint, flash, jsonify, render_template, request, redirect, Markup, session, abort
 # import os
@@ -126,64 +127,40 @@ def listofAoK():
     # return df.to_html()
  
  
-@views.route('/api/aokdata')
+@views.route('/api/aokdata', methods=["POST"])
 def aokdata():
    
     #  return {'data': [aok.to_dict() for aok in Aok.query]}
     query = Aok.query
-
-
-   # search filter
-    search = request.args.get('search')
-    if search:
-        query = query.filter(db.or_(
-            Aok.act.like(f'%{search}%'),
-            Aok.source.like(f'%{search}%')
-        ))
-    total = query.count()
-
-   # sorting
-    sort = request.args.get('sort')
-    if sort:
-        order = []
-        for s in sort.split(','):
-            direction = s[0]
-            name = s[1:]
-            if name not in ['act', 'source', 'date']:
-                name = 'act'
-            col = getattr(Aok, name)
-            if direction == '-':
-                col = col.desc()
-            order.append(col)
-        if order:
-            query = query.order_by(*order)
-
-
-   # pagination
-    start = request.args.get('start', type=int, default=-1)
-    length = request.args.get('length', type=int, default=-1)
-    if start != -1 and length != -1:
-        query = query.offset(start).limit(length)
-
-    # response
-    return {
-        'data': [aok.to_dict() for aok in query],
-        'total': total,
-    }
-       
-       
-@views.route('/api/aokdata', methods=['POST'])
-def aokupdate():
     data = request.get_json()
-    if 'id' not in data:
-        abort(400)
+    
+    if 'operation' not in data:
+        abort(400) 
+
+    operation = data['operation']
+    
+    match operation:
+        case 'fetch-all':
+            return [aok.to_dict() for aok in query]
+        case _:
+            print("@@@ nothing")
+            return []
+              
+    
+       
+       
+# @views.route('/api/aokdata', methods=['POST'])
+# def aokupdate():
+#     data = request.get_json()
+#     if 'id' not in data:
+#         abort(400)
         
-    aok = Aok.query.get(data['id'])
-    for field in ['act', 'source', 'date']:
-        if field in data:
-            setattr(aok, field, data[field])
-    db.session.commit()
-    return '', 204
+#     aok = Aok.query.get(data['id'])
+#     for field in ['act', 'source', 'date']:
+#         if field in data:
+#             setattr(aok, field, data[field])
+#     db.session.commit()
+#     return '', 204
            
            
 @views.route('/api/nonaokdata')
@@ -312,8 +289,7 @@ def actdataupdate():
     
     if website:
         query = ScrapperSentence.query
-        
-        website = data['website']
+    
         websiteID = WebsiteScrapper.query.filter_by(url=str(website)).first()
         
         if websiteID:
@@ -567,3 +543,63 @@ def toggle_theme():
 #         return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, acts_and_probs=acts_and_probs, sitemap=sitemap) 
     
 #     return render_template("scrapper.html", user=current_user)
+
+
+# @views.route('/api/aokdata')
+# def aokdata():
+   
+#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
+#     query = Aok.query
+
+
+#    # search filter
+#     search = request.args.get('search')
+#     if search:
+#         query = query.filter(db.or_(
+#             Aok.act.like(f'%{search}%'),
+#             Aok.source.like(f'%{search}%')
+#         ))
+#     total = query.count()
+
+#    # sorting
+#     sort = request.args.get('sort')
+#     if sort:
+#         order = []
+#         for s in sort.split(','):
+#             direction = s[0]
+#             name = s[1:]
+#             if name not in ['act', 'source', 'date']:
+#                 name = 'act'
+#             col = getattr(Aok, name)
+#             if direction == '-':
+#                 col = col.desc()
+#             order.append(col)
+#         if order:
+#             query = query.order_by(*order)
+
+
+#    # pagination
+#     start = request.args.get('start', type=int, default=-1)
+#     length = request.args.get('length', type=int, default=-1)
+#     if start != -1 and length != -1:
+#         query = query.offset(start).limit(length)
+
+#     # response
+#     return {
+#         'data': [aok.to_dict() for aok in query],
+#         'total': total,
+#     }
+       
+       
+# @views.route('/api/aokdata', methods=['POST'])
+# def aokupdate():
+#     data = request.get_json()
+#     if 'id' not in data:
+#         abort(400)
+        
+#     aok = Aok.query.get(data['id'])
+#     for field in ['act', 'source', 'date']:
+#         if field in data:
+#             setattr(aok, field, data[field])
+#     db.session.commit()
+#     return '', 204

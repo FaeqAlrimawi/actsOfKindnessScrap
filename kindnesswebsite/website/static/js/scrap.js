@@ -1,15 +1,5 @@
 
-// var global_row = -1;
-// var global_act = "";
-// var initialized = false;
 var gridOptions = null;
-
-function getSelectedRows() {
-  var selectedNodes = gridOptions.api.getSelectedNodes()
-  var selectedData = selectedNodes.map( function(node) { return node.data })
-  var selectedDataStringPresentation = selectedData.map( function(node) { return node.text + ' ' + node.prob_aok }).join(', ')
-  alert('Selected nodes: ' + selectedDataStringPresentation);
-}
 
 
 function headerHeightSetter() {
@@ -31,7 +21,7 @@ function headerHeightGetter() {
 }
 
 function fillActsGrid(website) {
-    console.log("filling grid  " + website);
+   
 
     if(gridOptions == null) {
         createActsGrid();
