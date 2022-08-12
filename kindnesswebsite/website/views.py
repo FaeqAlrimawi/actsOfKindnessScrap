@@ -142,6 +142,7 @@ def aokdata():
     match operation:
         case 'fetch-all':
             return [aok.to_dict() for aok in query]
+
         case _:
             print("@@@ nothing")
             return []
@@ -163,64 +164,68 @@ def aokdata():
 #     return '', 204
            
            
-@views.route('/api/nonaokdata')
-def nonaokdata():
+# @views.route('/api/nonaokdata')
+# def nonaokdata():
    
-    #  return {'data': [aok.to_dict() for aok in Aok.query]}
-    query = NonAok.query
+#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
+#     query = NonAok.query
 
 
-   # search filter
-    search = request.args.get('search')
-    if search:
-        query = query.filter(db.or_(
-            NonAok.act.like(f'%{search}%'),
-            NonAok.source.like(f'%{search}%')
-        ))
-    total = query.count()
+#    # search filter
+#     search = request.args.get('search')
+#     if search:
+#         query = query.filter(db.or_(
+#             NonAok.act.like(f'%{search}%'),
+#             NonAok.source.like(f'%{search}%')
+#         ))
+#     total = query.count()
 
-   # sorting
-    sort = request.args.get('sort')
-    if sort:
-        order = []
-        for s in sort.split(','):
-            direction = s[0]
-            name = s[1:]
-            if name not in ['act', 'source', 'date']:
-                name = 'act'
-            col = getattr(NonAok, name)
-            if direction == '-':
-                col = col.desc()
-            order.append(col)
-        if order:
-            query = query.order_by(*order)
+#    # sorting
+#     sort = request.args.get('sort')
+#     if sort:
+#         order = []
+#         for s in sort.split(','):
+#             direction = s[0]
+#             name = s[1:]
+#             if name not in ['act', 'source', 'date']:
+#                 name = 'act'
+#             col = getattr(NonAok, name)
+#             if direction == '-':
+#                 col = col.desc()
+#             order.append(col)
+#         if order:
+#             query = query.order_by(*order)
 
 
-   # pagination
-    start = request.args.get('start', type=int, default=-1)
-    length = request.args.get('length', type=int, default=-1)
-    if start != -1 and length != -1:
-        query = query.offset(start).limit(length)
+#    # pagination
+#     start = request.args.get('start', type=int, default=-1)
+#     length = request.args.get('length', type=int, default=-1)
+#     if start != -1 and length != -1:
+#         query = query.offset(start).limit(length)
 
-    # response
-    return {
-        'data': [aok.to_dict() for aok in query],
-        'total': total,
-    }
+#     # response
+#     return {
+#         'data': [aok.to_dict() for aok in query],
+#         'total': total,
+#     }
        
        
 @views.route('/api/nonaokdata', methods=['POST'])
 def nonaokupdate():
+    
+    query = NonAok.query
     data = request.get_json()
-    if 'id' not in data:
-        abort(400)
-        
-    nonaok = NonAok.query.get(data['id'])
-    for field in ['act', 'source', 'date']:
-        if field in data:
-            setattr(nonaok, field, data[field])
-    db.session.commit()
-    return '', 204
+    
+    if 'operation' not in data:
+        abort(400) 
+
+    operation = data['operation']
+    
+    match operation:
+        case 'fetch-all':
+            return [nonaok.to_dict() for nonaok in query]
+        case _:
+            return []
 
 
 # @views.route('/api/actdata')
@@ -280,30 +285,44 @@ def nonaokupdate():
 def actdataupdate():
     
     data = request.get_json()
- 
+    query = ScrapperSentence.query
      
-    if 'website' not in data and 'id' not in data:
+    if 'operation' not in data:
         abort(400)
-        
-    website = data['website']  
     
-    if website:
-        query = ScrapperSentence.query
+    operation = data['operation']    
     
-        websiteID = WebsiteScrapper.query.filter_by(url=str(website)).first()
-        
-        if websiteID:
-       
-            return [sent.to_dict() for sent in query.filter_by(website_id=websiteID.id)]
-        else:
-            return [] 
-
-    sent = ScrapperSentence.query.get(data['id'])
-    for field in ['text']:
-        if field in data:
-            setattr(sent, field, data[field])
-    db.session.commit()
-    return '', 204
+    
+    match operation:
+        case 'fetch-all':
+            website = data['data']  
+            if website:
+             
+    
+                websiteID = WebsiteScrapper.query.filter_by(url=str(website)).first()
+                
+                if websiteID:
+            
+                    return [sent.to_dict() for sent in query.filter_by(website_id=websiteID.id)]
+                else:
+                    return [] 
+        case 'updateAct':
+            oldAndNewAct = data['data']
+            if len(oldAndNewAct) <2:
+                return ''
+            
+            oldAct = oldAndNewAct[0]
+            newAct = oldAndNewAct[1]
+            
+            print("updating ", oldAct, " to ", newAct)
+            
+            field = 'text'
+            sentences = query.filter_by(text=str(oldAct)).all()
+            for sent in sentences:
+                setattr(sent, field, newAct)
+                db.session.commit()
+                return ["success"]
+            
            
            
 @views.route('/delete-AoK', methods=['POST'])

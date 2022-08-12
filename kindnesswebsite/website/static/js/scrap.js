@@ -20,29 +20,6 @@ function headerHeightGetter() {
   return tallestHeaderTextHeight;
 }
 
-function fillActsGrid(website) {
-   
-
-    if(gridOptions == null) {
-        createActsGrid();
-    }
-
-    fetch("/api/actdata", {
-      method: 'POST',
-      body: JSON.stringify({website: website}),
-      cache: "no-cache",
-      headers: new Headers({
-          "content-type": "application/json"
-      })
-  })
-  .then(response => response.json())
-  .then(data => {
-    // load fetched data into grid
-    // console.log(data[0]);
-    gridOptions.api.setRowData(data);
-  });
-
-}
 
 
 function createActsGrid() {
@@ -70,7 +47,7 @@ function createActsGrid() {
   } ,    
 
     // default col def properties get applied to all columns
-    defaultColDef: {sortable: true, filter: true,  wrapText: true,  
+    defaultColDef: {sortable: true, filter: true,  wrapText: true,  flex: 1,
     autoHeight: true, resizable: true, cellClass: 'locked-col',  lockPosition: 'left'},
     
     // enableRangeSelection: true,
@@ -86,6 +63,12 @@ function createActsGrid() {
     // onCellClicked: params => {
     //   console.log('cell was clicked', params)
     // }
+    onCellValueChanged: e => {
+      let newAct = e.newValue;
+      let oldAct = e.oldValue;
+
+      updateAct(oldAct, newAct);
+    } 
   };
 
   // get div to host the grid
@@ -223,6 +206,54 @@ function scrap(websiteURL) {
 // }
 
 
+function fillActsGrid(website) {
+   
+
+  if(gridOptions == null) {
+      createActsGrid();
+  }
+
+  fetch("/api/actdata", {
+    method: 'POST',
+    body: JSON.stringify({operation: 'fetch-all', data:website}),
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+})
+.then(response => response.json())
+.then(data => {
+  // load fetched data into grid
+  // console.log(data[0]);
+  gridOptions.api.setRowData(data);
+});
+
+}
+
+
+function updateAct(oldAct, newAct){
+
+  if(newAct == null || newAct == "" ) {
+    return;
+  }  
+
+  fetch("/api/actdata", {
+    method: 'POST',
+    body: JSON.stringify({operation:'updateAct', data: [oldAct, newAct]}),
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+})
+.then(response => response.json())
+.then(data => {
+  // load fetched data into grid
+  // console.log(data[0]);
+  // gridOptions.api.setRowData(data);
+  console.log("updated successfully")
+});
+
+}
 
 
 

@@ -38,7 +38,11 @@
 </div>
 
 
-<div class="content" id="nonaoks"></div>
+<div class="content" id="nonaoks">
+
+  <div id="nonAokmyGrid" class="ag-theme-alpine" style="height:700px; padding-top:10px;"></div>
+
+</div>
 <!--<br/>
 <table id="nonaoks" class="table table-striped">
 <thead>
@@ -94,7 +98,8 @@
 <script>
     $(document).ready(function(){
 
-      fillActsGrid();
+      fillAoKsGrid();
+      fillNonAoKsGrid();
              /* $('#aoks').DataTable({
                 ajax: '/api/data',
                 serverSide: true,
