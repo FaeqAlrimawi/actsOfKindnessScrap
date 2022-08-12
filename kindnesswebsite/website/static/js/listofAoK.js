@@ -22,10 +22,10 @@ function headerHeightSetter() {
   
 
 function fillActsGrid() {
-     console.log("filling grid  ");
+
 
     if(gridOptions == null) {
-        createActsGrid();
+        createAoKsGrid();
     }
 
     fetch("/api/aokdata", { 
@@ -46,7 +46,7 @@ function fillActsGrid() {
 }
 
 
-function createActsGrid() {
+function createAoKsGrid() {
     // console.log("create grid");
   // Grid Options are properties passed to the grid
    gridOptions = {
@@ -56,7 +56,18 @@ function createActsGrid() {
       { field: "id", hide:true }, 
      
       { field: "act",  headerName:"AoK", editable: false, minWidth:700},
-      { field: "source",  headerName:"Source", editable: false},
+      { field: "source",  headerName:"Source", editable: false, cellRenderer:function(params) {
+
+        let source = params.data.source;
+
+        if(source != null) {
+            return `<a href="${source}" target=_blank">${source}</a>`;
+        }
+
+        return;
+        
+    }
+},
       { field: "date",  headerName:"Date Added", editable: false}    
     ],
 
@@ -103,3 +114,7 @@ function createActsGrid() {
   // });
 }
 
+function hrefSource(params) {
+
+    return "<a href=\""+params.source+"\" target=_blank">+params.source+"</a>";
+}
