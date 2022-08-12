@@ -140,7 +140,7 @@ class ScrapperSentence(db.Model):
         return {
             'id': self.id,
             'text': self.text,
-            'prob_aok': round(float(self.prob_aok),1)
+            'prob_aok': float(self.prob_aok)
         }
         
      def get_website(self):

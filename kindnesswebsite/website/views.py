@@ -303,7 +303,7 @@ def nonaokupdate():
 def actdataupdate():
     
     data = request.get_json()
-    print("==== ", data['website']) 
+ 
      
     if 'website' not in data and 'id' not in data:
         abort(400)
@@ -317,11 +317,11 @@ def actdataupdate():
         websiteID = WebsiteScrapper.query.filter_by(url=str(website)).first()
         
         if websiteID:
-            print(" @@@", website, " id ", websiteID.id)
-
+       
             return [sent.to_dict() for sent in query.filter_by(website_id=websiteID.id)]
+        else:
+            return [] 
 
-    
     sent = ScrapperSentence.query.get(data['id'])
     for field in ['text']:
         if field in data:
@@ -396,51 +396,19 @@ def update_prob():
 def aokScrapper():
     
     if request.method == 'POST':
-        # data = json.loads(request.data)
-        # websiteURL = data['websiteURL']         
-        # sentences = scrapWebsite(websiteURL)
-        # act_probs = []
-        
-        # if sentences:
-        #     for sent in sentences:
-
-        #         prob = checkIfAoK(sent)
-        #         pair = {'act':sent, 'prob':prob}
-        #         act_probs.append(pair)
-        
-            
-        # # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
-        # isPer = canScrap(websiteURL)
-        
-        # if( not isPer):
-        #    robotUrl = getRobotsURL(websiteURL)
-        #    flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
-      
-        # return jsonify({"result":"success", "acts":json.dumps(act_probs)});    
+     
         websiteURL = request.form.get('websiteURL')  
                
-        # print("@@@ ", websiteURL) 
-        
-        # acts_and_probs = {"data":scrapWebsite(websiteURL)}
+      
         sents =  scrapWebsite(websiteURL)
-        # print(setns)
+      
         acts_and_probs = {'data': [{"sents":"1"}, {"sents":"1"}],
         'total': len(sents),
         }
-        # print(acts_and_probs)
-        # act_probs = []
-        
-        # if sentences:
-        #     for sent in sentences:
-
-        #         prob = checkIfAoK(sent)
-        #         pair = (sent, prob)
-        #         act_probs.append(pair)
-            
-        
+      
         #get sitemap
         sitemap = {'sitemap':getSiteMaps(websiteURL)}
-        # sitemap = getSiteMaps(websiteURL)
+     
     
         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
         isPer = canScrap(websiteURL)
@@ -450,13 +418,7 @@ def aokScrapper():
         if not isPer:
            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
             
-        # data = {"acts_probs": acts_and_probs, 
-        #         "sitemap":{"sites" : sitemap,
-        #                    "scrappingPermitted":isPer,
-        #                    "robotURL": robotUrl,
-        #                    "baseURL": baseURL}
-        #         }     
-        # return jsonify(data)    
+     
         return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, acts_and_probs=acts_and_probs, sitemap=sitemap) 
     
     return render_template("scrapper.html", user=current_user)
@@ -537,3 +499,71 @@ def toggle_theme():
 
 
 
+# @views.route("/aok-scrapper", methods=["POST", "GET"])
+# def aokScrapper():
+    
+#     if request.method == 'POST':
+#         # data = json.loads(request.data)
+#         # websiteURL = data['websiteURL']         
+#         # sentences = scrapWebsite(websiteURL)
+#         # act_probs = []
+        
+#         # if sentences:
+#         #     for sent in sentences:
+
+#         #         prob = checkIfAoK(sent)
+#         #         pair = {'act':sent, 'prob':prob}
+#         #         act_probs.append(pair)
+        
+            
+#         # # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
+#         # isPer = canScrap(websiteURL)
+        
+#         # if( not isPer):
+#         #    robotUrl = getRobotsURL(websiteURL)
+#         #    flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
+      
+#         # return jsonify({"result":"success", "acts":json.dumps(act_probs)});    
+#         websiteURL = request.form.get('websiteURL')  
+               
+#         # print("@@@ ", websiteURL) 
+        
+#         # acts_and_probs = {"data":scrapWebsite(websiteURL)}
+#         sents =  scrapWebsite(websiteURL)
+#         # print(setns)
+#         acts_and_probs = {'data': [{"sents":"1"}, {"sents":"1"}],
+#         'total': len(sents),
+#         }
+#         # print(acts_and_probs)
+#         # act_probs = []
+        
+#         # if sentences:
+#         #     for sent in sentences:
+
+#         #         prob = checkIfAoK(sent)
+#         #         pair = (sent, prob)
+#         #         act_probs.append(pair)
+            
+        
+#         #get sitemap
+#         sitemap = {'sitemap':getSiteMaps(websiteURL)}
+#         # sitemap = getSiteMaps(websiteURL)
+    
+#         # return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, act_probs=act_probs, canScrap=True)
+#         isPer = canScrap(websiteURL)
+        
+#         robotUrl = getRobotsURL(websiteURL)
+#         baseURL = getBaseURL(websiteURL)
+#         if not isPer:
+#            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
+            
+#         # data = {"acts_probs": acts_and_probs, 
+#         #         "sitemap":{"sites" : sitemap,
+#         #                    "scrappingPermitted":isPer,
+#         #                    "robotURL": robotUrl,
+#         #                    "baseURL": baseURL}
+#         #         }     
+#         # return jsonify(data)    
+#         return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, acts_and_probs=acts_and_probs, sitemap=sitemap) 
+    
+#     return render_template("scrapper.html", user=current_user)

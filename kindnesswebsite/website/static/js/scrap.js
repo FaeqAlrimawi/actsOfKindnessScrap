@@ -62,9 +62,13 @@ function createActsGrid() {
 
     // each entry here represents one column
     columnDefs: [
-      { field: "id", hide:true }, //checkboxSelection: true
-      { field: "text",  editable: true, minWidth: 500, checkboxSelection: true},
-      { field: "prob_aok", maxWidth: 120},      
+      { field: "id", hide:true }, 
+      {
+        headerName: "#",
+        valueGetter: "node.rowIndex + 1", maxWidth: 90, minWidth:80,   checkboxSelection: true
+      },
+      { field: "text",  headerName:"Text", editable: true, minWidth: 500},
+      { field: "prob_aok", headerName:"AoK%", maxWidth: 100, valueFormatter: params => params.data.prob_aok.toFixed(2)},      
     ],
 
     
@@ -77,7 +81,7 @@ function createActsGrid() {
 
     // default col def properties get applied to all columns
     defaultColDef: {sortable: true, filter: true,  wrapText: true,  
-    autoHeight: true, resizable: true},
+    autoHeight: true, resizable: true, cellClass: 'locked-col',  lockPosition: 'left'},
     
     // enableRangeSelection: true,
     // fillHandleDirection: 'x',
@@ -123,7 +127,7 @@ function add_Aoks() {
     
   if (selectedNodes.length == 0 ) {
     lbl.innerHTML = "<span style='color: red;'>"+
-    "Please select acts from the table to add";
+    "Please select acts from the table";
     return;
   }
 

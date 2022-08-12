@@ -65,3 +65,8 @@
       cursor: pointer;
       align-items: flex-end;
     }
+
+    .ag-cell-wrap-text {
+      word-break: break-word;
+      line-height: 2;
+}
