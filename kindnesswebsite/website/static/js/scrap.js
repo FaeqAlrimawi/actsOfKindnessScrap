@@ -72,6 +72,8 @@ function createActsGrid() {
 
       updateAct(oldAct, newAct);
     } 
+
+    
   };
 
   // get div to host the grid
