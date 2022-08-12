@@ -146,68 +146,6 @@ def aokdata():
         case _:
             print("@@@ nothing")
             return []
-              
-    
-       
-       
-# @views.route('/api/aokdata', methods=['POST'])
-# def aokupdate():
-#     data = request.get_json()
-#     if 'id' not in data:
-#         abort(400)
-        
-#     aok = Aok.query.get(data['id'])
-#     for field in ['act', 'source', 'date']:
-#         if field in data:
-#             setattr(aok, field, data[field])
-#     db.session.commit()
-#     return '', 204
-           
-           
-# @views.route('/api/nonaokdata')
-# def nonaokdata():
-   
-#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
-#     query = NonAok.query
-
-
-#    # search filter
-#     search = request.args.get('search')
-#     if search:
-#         query = query.filter(db.or_(
-#             NonAok.act.like(f'%{search}%'),
-#             NonAok.source.like(f'%{search}%')
-#         ))
-#     total = query.count()
-
-#    # sorting
-#     sort = request.args.get('sort')
-#     if sort:
-#         order = []
-#         for s in sort.split(','):
-#             direction = s[0]
-#             name = s[1:]
-#             if name not in ['act', 'source', 'date']:
-#                 name = 'act'
-#             col = getattr(NonAok, name)
-#             if direction == '-':
-#                 col = col.desc()
-#             order.append(col)
-#         if order:
-#             query = query.order_by(*order)
-
-
-#    # pagination
-#     start = request.args.get('start', type=int, default=-1)
-#     length = request.args.get('length', type=int, default=-1)
-#     if start != -1 and length != -1:
-#         query = query.offset(start).limit(length)
-
-#     # response
-#     return {
-#         'data': [aok.to_dict() for aok in query],
-#         'total': total,
-#     }
        
        
 @views.route('/api/nonaokdata', methods=['POST'])
@@ -227,60 +165,7 @@ def nonaokupdate():
         case _:
             return []
 
-
-# @views.route('/api/actdata')
-# def actdata():
-   
-#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
-#     query = ScrapperSentence.query
-    
-#     website = request.args.get('website')
-#     websiteID = WebsiteScrapper.query.filter_by(url=website)
-    
-#     print(" @@@", website, " id ", websiteID)
-
-#     return [sent.to_dict() for sent in query.filter_by(url_id=websiteID)]
-
-#    # search filter
-#     search = request.args.get('search')
-#     if search:
-#         query = query.filter(db.or_(
-#             ScrapperSentence.text.like(f'%{search}%')
-            
-#         ))
-#     total = query.count()
-
-#    # sorting
-#     sort = request.args.get('sort')
-#     if sort:
-#         order = []
-#         for s in sort.split(','):
-#             direction = s[0]
-#             name = s[1:]
-#             if name not in ['text', 'prob_aok']:
-#                 # name = 'text'
-#                 continue
-#             col = getattr(ScrapperSentence, name)
-#             if direction == '-':
-#                 col = col.desc()
-#             order.append(col)
-#         if order:
-#             query = query.order_by(*order)
-
-
-#    # pagination
-#     start = request.args.get('start', type=int, default=-1)
-#     length = request.args.get('length', type=int, default=-1)
-#     if start != -1 and length != -1:
-#         query = query.offset(start).limit(length)
-
-#     # response
-#     return {
-#         'data': [sent.to_dict() for sent in query],
-#         'total': total,
-#     }
-       
-       
+      
 @views.route('/api/actdata', methods=['POST'])
 def actdataupdate():
     
@@ -413,9 +298,9 @@ def aokScrapper():
       
         sents =  scrapWebsite(websiteURL)
       
-        acts_and_probs = {'data': [{"sents":"1"}, {"sents":"1"}],
-        'total': len(sents),
-        }
+        # acts_and_probs = {'data': [{"sents":"1"}, {"sents":"1"}],
+        # 'total': len(sents),
+        # }
       
         #get sitemap
         sitemap = {'sitemap':getSiteMaps(websiteURL)}
@@ -430,8 +315,11 @@ def aokScrapper():
            flash(Markup("Scraping may not be permissible on this webpage per the website's permissions. For more info, see: <a href=\""+robotUrl+"\" target='_blank' class=\"alert-link\">"+robotUrl + "</a>") , category='warning')
             
      
-        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, acts_and_probs=acts_and_probs, sitemap=sitemap) 
+        return render_template("scrapper.html", user=current_user, websiteURL=websiteURL, robotsURL=robotUrl, baseURL=baseURL, sitemap=sitemap) 
     
+    # get all sites already visited
+    siteURLs = [url.url for url in WebsiteScrapper.query.all()]
+    print("@@@@ ", siteURLs)
     return render_template("scrapper.html", user=current_user)
 
 
@@ -456,6 +344,125 @@ def toggle_theme():
     return redirect(request.args.get("current_page"))
 
 
+             
+    
+       
+    
+# @views.route('/api/actdata')
+# def actdata():
+   
+#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
+#     query = ScrapperSentence.query
+    
+#     website = request.args.get('website')
+#     websiteID = WebsiteScrapper.query.filter_by(url=website)
+    
+#     print(" @@@", website, " id ", websiteID)
+
+#     return [sent.to_dict() for sent in query.filter_by(url_id=websiteID)]
+
+#    # search filter
+#     search = request.args.get('search')
+#     if search:
+#         query = query.filter(db.or_(
+#             ScrapperSentence.text.like(f'%{search}%')
+            
+#         ))
+#     total = query.count()
+
+#    # sorting
+#     sort = request.args.get('sort')
+#     if sort:
+#         order = []
+#         for s in sort.split(','):
+#             direction = s[0]
+#             name = s[1:]
+#             if name not in ['text', 'prob_aok']:
+#                 # name = 'text'
+#                 continue
+#             col = getattr(ScrapperSentence, name)
+#             if direction == '-':
+#                 col = col.desc()
+#             order.append(col)
+#         if order:
+#             query = query.order_by(*order)
+
+
+#    # pagination
+#     start = request.args.get('start', type=int, default=-1)
+#     length = request.args.get('length', type=int, default=-1)
+#     if start != -1 and length != -1:
+#         query = query.offset(start).limit(length)
+
+#     # response
+#     return {
+#         'data': [sent.to_dict() for sent in query],
+#         'total': total,
+#     }
+       
+ 
+    
+# @views.route('/api/aokdata', methods=['POST'])
+# def aokupdate():
+#     data = request.get_json()
+#     if 'id' not in data:
+#         abort(400)
+        
+#     aok = Aok.query.get(data['id'])
+#     for field in ['act', 'source', 'date']:
+#         if field in data:
+#             setattr(aok, field, data[field])
+#     db.session.commit()
+#     return '', 204
+           
+           
+# @views.route('/api/nonaokdata')
+# def nonaokdata():
+   
+#     #  return {'data': [aok.to_dict() for aok in Aok.query]}
+#     query = NonAok.query
+
+
+#    # search filter
+#     search = request.args.get('search')
+#     if search:
+#         query = query.filter(db.or_(
+#             NonAok.act.like(f'%{search}%'),
+#             NonAok.source.like(f'%{search}%')
+#         ))
+#     total = query.count()
+
+#    # sorting
+#     sort = request.args.get('sort')
+#     if sort:
+#         order = []
+#         for s in sort.split(','):
+#             direction = s[0]
+#             name = s[1:]
+#             if name not in ['act', 'source', 'date']:
+#                 name = 'act'
+#             col = getattr(NonAok, name)
+#             if direction == '-':
+#                 col = col.desc()
+#             order.append(col)
+#         if order:
+#             query = query.order_by(*order)
+
+
+#    # pagination
+#     start = request.args.get('start', type=int, default=-1)
+#     length = request.args.get('length', type=int, default=-1)
+#     if start != -1 and length != -1:
+#         query = query.offset(start).limit(length)
+
+#     # response
+#     return {
+#         'data': [aok.to_dict() for aok in query],
+#         'total': total,
+#     }
+ 
+ 
+ 
 # @views.route("/api/data")
 # def data():
     # # query = request.query_string
