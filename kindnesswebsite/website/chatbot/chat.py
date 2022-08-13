@@ -4,6 +4,7 @@ import json
 import torch
 from website.chatbot.model  import NeuralNet
 from website.chatbot.preprocessing import bag_of_words, tokenize
+from ..models import Aok
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -82,12 +83,32 @@ def get_response(sentence):
     if prob.item() > 0.75:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                return random.choice(intent["responses"])
+                if tag == "suggestAok":
+                    return suggestAoK(None)
+                else:
+                    return random.choice(intent["responses"])
             
     return "I don't understand..."
 
 
-
+def suggestAoK(categories):
+    
+    if categories is None:
+        # get a random aok from the database
+        query = Aok.query
+        
+        numOfRows = query.count()
+        
+        randIndex = random.randint(0, numOfRows-1)
+        
+        randAok = query.get(randIndex)
+        
+        if randAok is not None:
+            return randAok.act
+    else:
+        #TODO: search with categories
+        return "" 
+    
 if __name__ == "__main__":
     print("Let's chat! (type 'quit' to exit)")
     while True:

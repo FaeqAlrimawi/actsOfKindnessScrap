@@ -40,18 +40,7 @@ def home():
     
     populateModelTable()
     populateDatabaseWithAoKs()
-    populateDatabaseWithNonAoKs()
-    
-    if request.method == 'POST':
-        text = request.get_json().get("message")
-        
-        #TODO: check if text is valid
-        
-        response = get_response(text)
-        message = {"answer": response}
-        
-        return jsonify(message)
-        
+    populateDatabaseWithNonAoKs()  
         
                 
     return render_template("home.html", user=current_user)

@@ -62,7 +62,7 @@ onSendButton(chatbox) {
      this.messages.push(msg1);
      let botName = this.name;
 
-     fetch('/',  {
+     fetch('/chatbot',  {
         method: 'POST',
         body:JSON.stringify({message: text1}),
         headers: {

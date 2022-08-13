@@ -4,7 +4,7 @@
 
         {"tag": "greeting",
         "patterns": ["Hi there", "How are you", "Is anyone there?", "Hello", "Good day", "hey", "what's up"],
-        "responses": ["Hello, thanks for asking", "Good to see you again", "Hi there, how can I help?"],
+        "responses": ["Hello!", "Hi there, Hi, how can I help?"],
         "context": [""]
        },
        {"tag": "goodbye",
@@ -38,8 +38,8 @@
        },
         
         {
-            "tag":"aok",
-            "patterns": ["suggest aok", "give me an aok"],
+            "tag":"suggestAok",
+            "patterns": ["suggest aok", "give me an aok", "tell me an act of kindness to do", "can you suggest an aok?", "what is an example of act of kindness?"],
             "responses":["here you go!", "please use this"]
         }
     ]
