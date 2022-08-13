@@ -62,6 +62,9 @@ bot_name = "Davi"
 #     else:
 #         print(f'{bot_name}: Sorry, I don\'t understand')   
         
+   
+isAokSuggested = False
+isAokSuggestedCounter = 5
         
 def get_response(sentence):
     
@@ -83,39 +86,68 @@ def get_response(sentence):
     if prob.item() > 0.75:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                if tag == "suggestAok":
-                    return suggestAoK(None)
-                else:
-                    return random.choice(intent["responses"])
-            
-    return "I don't understand..."
+                match tag:
+                    case "suggestAok":
+                        suggestedAok = suggestAoK(None)
+                        return(suggestedAok)   
+                    case _:
+                        return [random.choice(intent["responses"])]
+
+    return ["I don't understand..."]
 
 
 def suggestAoK(categories):
+    global isAokSuggested
+    global isAokSuggestedCounter
+    
+    # get a random aok from the database
+    query = Aok.query
+    msgs = []  
     
     if categories is None:
-        # get a random aok from the database
-        query = Aok.query
-        
+    
         numOfRows = query.count()
-        
+         
         randIndex = random.randint(0, numOfRows-1)
         
         randAok = query.get(randIndex)
         
         if randAok is not None:
-            return randAok.act
+            # return randAok.act
+            msgs.append(randAok.act)
+            if not isAokSuggested:
+                extraMsg = "Would you like another? You can specify a category by typing \"for friend, family, coworker, stranger\""
+                isAokSuggested = True
+                msgs.append(extraMsg)
+                # return [randAok.act, extraMsg]                        
+            else:
+            #     return [randAok.act]  
+                isAokSuggestedCounter = isAokSuggestedCounter-1
+                if isAokSuggestedCounter == 0:
+                    isAokSuggested = False
+                    isAokSuggestedCounter = 5
+            
+            
     else:
         #TODO: search with categories
-        return "" 
+        msgs.append("TBD")
+        
+    if len(msgs) == 0:
+        msgs.append("Sorry couldn't find one this time")
+        
+    return msgs         
+   
+   
+   
+   
     
-if __name__ == "__main__":
-    print("Let's chat! (type 'quit' to exit)")
-    while True:
-        # sentence = "do you use credit cards?"
-        sentence = input("You: ")
-        if sentence == "quit":
-            break
+# if __name__ == "__main__":
+#     print("Let's chat! (type 'quit' to exit)")
+#     while True:
+#         # sentence = "do you use credit cards?"
+#         sentence = input("You: ")
+#         if sentence == "quit":
+#             break
 
-        resp = get_response(sentence)
-        print(resp)
+#         resp = get_response(sentence)
+#         print(resp)

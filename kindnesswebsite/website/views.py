@@ -55,9 +55,10 @@ def chatbot():
         
         #TODO: check if text is valid
         
-        response = get_response(text)
-        message = {"answer": response}
+        responses = get_response(text)
+        message = {"answers": responses}
         
+        print("@@@ ", message)
         return jsonify(message)
         
             

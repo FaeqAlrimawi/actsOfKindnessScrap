@@ -71,8 +71,13 @@ onSendButton(chatbox) {
      })
      .then(r=> r.json())
      .then(r=> {
-        let msg2 = {name: botName, message: r.answer};
-        this.messages.push(msg2);
+        let answers = r.answers
+
+        for (let index in answers) {
+            console.log("answer: " + answers[index]);
+            let msg2 = {name: botName, message: answers[index]};
+            this.messages.push(msg2);
+        }
         this.updateChatText(chatbox);
         textField.value = "";
      }).catch((error) => {
